@@ -19,8 +19,8 @@ class StepService: IStepService {
         return step 
     }
     
-    func updateStep(id: Int?) {
-        stepRepository?.updateStep(id: id)
+    func updateStep(id: Int?, step: Step?) {
+        stepRepository?.updateStep(id: id, step: step)
     }
     
     func deleteStep(id: Int?) {

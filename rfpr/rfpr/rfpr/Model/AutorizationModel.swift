@@ -40,12 +40,6 @@ extension Autorization: Equatable {
     }
     
     static func != (lhs: Autorization, rhs: Autorization) -> Bool {
-        if lhs.login != rhs.login ||
-            lhs.password != rhs.password  {
-            return true
-        }
-        else {
-            return false
-        }
+        return !(lhs == rhs)
     }
 }

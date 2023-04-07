@@ -45,11 +45,13 @@ class ITeamRepositoryTests: XCTestCase {
     }
     
     func testUpdateTeam() {
-        XCTAssertEqual(teamRepository.updateTeam(name: "Aaa") as! String, "Data of teams type was updated")
+        let team = Team(id: 1, name: "1", participants: nil, competitions: nil, score: 0)
+        XCTAssertEqual(teamRepository.updateTeam(name: "Aaa", team: team) as! String, "Data of teams type was updated")
     }
     
     func testUpdateTeamNil() {
-        XCTAssertNil(teamRepository.updateTeam(name: nil))
+        let team = Team(id: 1, name: "1", participants: nil, competitions: nil, score: 0)
+        XCTAssertNil(teamRepository.updateTeam(name: nil, team: team))
     }
     
     func testDeleteTeam() {
@@ -117,96 +119,12 @@ class ITeamRepositoryTests: XCTestCase {
     
     func testGetParticipantByTeam() throws {
         let participants = [Participant(id: 1, fullname: "Иванов", city: "Москва", birthday: nil, role: "Участник", autorization: nil, score: 0)]
-        let team = [Team(id: 1, name: "1", participants: participants, competitions: nil, score: 0)]
-        
+
         XCTAssertEqual(teamRepository.getParticipantByTeam(id: 1), participants)
     }
     
     func testGetParticipantByTeamNil() throws {
         XCTAssertNil(teamRepository.getParticipantByTeam(id: 3))
     }
-    
-    func testsGetTeamsByAscending() throws {
-        let participants = [Participant(id: 0, fullname: "Иванов", city: "Ижевск", birthday: nil, role: "Участник", autorization: nil, score: 6600),
-                            Participant(id: 1, fullname: "Петров", city: "Москва", birthday: nil, role: "Участник", autorization: nil, score: 9800),
-                            Participant(id: 2, fullname: "Сидоров", city: "Челябинск", birthday: nil, role: "Участник", autorization: nil, score: 2650)]
-        
-            
-        
-        let teams = [Team(id: 2, name: "Подводный мир", participants: [participants[2], participants[0]], competitions: nil, score: 9250),
-                     Team(id: 1, name: "Скумбрия", participants: [participants[1], participants[2]], competitions: nil, score: 12450),
-                     Team(id: 0, name: "Батискаф", participants: [participants[0], participants[1]], competitions: nil, score: 16400)]
-        
-        XCTAssertEqual(teamRepository.getTeams(parameter: SortParameter.ascending, stepName: nil), teams)
-    }
-    
-    func testsGetTeamsByDecreasing() throws {
-        let participants = [Participant(id: 0, fullname: "Иванов", city: "Ижевск", birthday: nil, role: "Участник", autorization: nil, score: 6600),
-                            Participant(id: 1, fullname: "Петров", city: "Москва", birthday: nil, role: "Участник", autorization: nil, score: 9800),
-                            Participant(id: 2, fullname: "Сидоров", city: "Челябинск", birthday: nil, role: "Участник", autorization: nil, score: 2650)]
-        
-            
-        
-        let teams = [Team(id: 0, name: "Батискаф", participants: [participants[0], participants[1]], competitions: nil, score: 16400),
-                     Team(id: 1, name: "Скумбрия", participants: [participants[1], participants[2]], competitions: nil, score: 12450),
-                     Team(id: 2, name: "Подводный мир", participants: [participants[2], participants[0]], competitions: nil, score: 9250)]
-        
-        XCTAssertEqual(teamRepository.getTeams(parameter: SortParameter.decreasing, stepName: nil), teams)
-    }
-    
-    func testsGetTeamsByNil() throws {
-        let participants = [Participant(id: 0, fullname: "Иванов", city: "Ижевск", birthday: nil, role: "Участник", autorization: nil, score: 0),
-                            Participant(id: 1, fullname: "Петров", city: "Москва", birthday: nil, role: "Участник", autorization: nil, score: 0),
-                            Participant(id: 2, fullname: "Сидоров", city: "Челябинск", birthday: nil, role: "Участник", autorization: nil, score: 0)]
-        
-            
-        
-        let teams = [Team(id: 0, name: "Батискаф", participants: [participants[0], participants[1]], competitions: nil, score: 0),
-                     Team(id: 1, name: "Скумбрия", participants: [participants[1], participants[2]], competitions: nil, score: 0),
-                     Team(id: 2, name: "Подводный мир", participants: [participants[2], participants[0]], competitions: nil, score: 0)]
-        
-        XCTAssertEqual(teamRepository.getTeams(parameter: nil, stepName: nil), teams)
-    }
-    
-    func testsGetTeamsByStepByAscending() throws {
-        let participants = [Participant(id: 0, fullname: "Иванов", city: "Ижевск", birthday: nil, role: "Участник", autorization: nil, score: 5000),
-                            Participant(id: 1, fullname: "Петров", city: "Москва", birthday: nil, role: "Участник", autorization: nil, score: 8500),
-                            Participant(id: 2, fullname: "Сидоров", city: "Челябинск", birthday: nil, role: "Участник", autorization: nil, score: 450)]
-        
-            
-        
-        let teams = [Team(id: 2, name: "Подводный мир", participants: [participants[2], participants[0]], competitions: nil, score: 5450),
-                     Team(id: 1, name: "Скумбрия", participants: [participants[1], participants[2]], competitions: nil, score: 8950),
-                     Team(id: 0, name: "Батискаф", participants: [participants[0], participants[1]], competitions: nil, score: 13500)]
-        
-        XCTAssertEqual(teamRepository.getTeams(parameter: SortParameter.ascending, stepName: "1"), teams)
-    }
-    
-    func testsGetTeamsByStepByDecreasing() throws {
-        let participants = [Participant(id: 0, fullname: "Иванов", city: "Ижевск", birthday: nil, role: "Участник", autorization: nil, score: 1600),
-                            Participant(id: 1, fullname: "Петров", city: "Москва", birthday: nil, role: "Участник", autorization: nil, score: 1300),
-                            Participant(id: 2, fullname: "Сидоров", city: "Челябинск", birthday: nil, role: "Участник", autorization: nil, score: 2200)]
-        
-            
-        
-        let teams = [Team(id: 2, name: "Подводный мир", participants: [participants[2], participants[0]], competitions: nil, score: 3800),
-                     Team(id: 1, name: "Скумбрия", participants: [participants[1], participants[2]], competitions: nil, score: 3500),
-                     Team(id: 0, name: "Батискаф", participants: [participants[0], participants[1]], competitions: nil, score: 2900)]
-                     
-        XCTAssertEqual(teamRepository.getTeams(parameter: SortParameter.decreasing, stepName: "2"), teams)
-    }
-    
-    func testsGetTeamsByStepByNil() throws {
-        let participants = [Participant(id: 0, fullname: "Иванов", city: "Ижевск", birthday: nil, role: "Участник", autorization: nil, score: 0),
-                            Participant(id: 1, fullname: "Петров", city: "Москва", birthday: nil, role: "Участник", autorization: nil, score: 0),
-                            Participant(id: 2, fullname: "Сидоров", city: "Челябинск", birthday: nil, role: "Участник", autorization: nil, score: 0)]
-        
-            
-        
-        let teams = [Team(id: 0, name: "Батискаф", participants: [participants[0], participants[1]], competitions: nil, score: 0),
-                     Team(id: 1, name: "Скумбрия", participants: [participants[1], participants[2]], competitions: nil, score: 0),
-                     Team(id: 2, name: "Подводный мир", participants: [participants[2], participants[0]], competitions: nil, score: 0)]
-        
-        XCTAssertEqual(teamRepository.getTeams(parameter: nil, stepName: "1"), teams)
-    }
+
 }

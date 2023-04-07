@@ -37,11 +37,13 @@ class LootServiceTests: XCTestCase {
     }
     
     func testUpdateLoot() throws {
-        XCTAssertNoThrow(lootService.updateLoot(id: 1))
+        let loot = Loot(id: 1, fish: "1", weight: 500, score: 1000, step: nil)
+        XCTAssertNoThrow(lootService.updateLoot(id: 1, loot: loot))
     }
     
     func testUpdateLootNil() throws {
-        XCTAssertNoThrow(lootService.updateLoot(id: nil))
+        let loot = Loot(id: 1, fish: "1", weight: 500, score: 1000, step: nil)
+        XCTAssertNoThrow(lootService.updateLoot(id: nil, loot: loot))
     }
     
     func testDeleteLoot() throws {

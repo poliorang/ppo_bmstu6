@@ -32,11 +32,13 @@ class IStepRepositoryTests: XCTestCase {
     }
     
     func testUpdateStep() throws {
-        XCTAssertEqual(stepRepository.updateStep(id: 1) as! String, "Data of steps type was updated")
+        let step = Step(id: 1, name: "1", participant: nil, competition: nil)
+        XCTAssertEqual(stepRepository.updateStep(id: 1, step: step) as! String, "Data of steps type was updated")
     }
     
     func testUpdateStepNil() throws {
-        XCTAssertNil(stepRepository.updateStep(id: nil))
+        let step = Step(id: 1, name: "1", participant: nil, competition: nil)
+        XCTAssertNil(stepRepository.updateStep(id: nil, step: step))
     }
     
     func testDeleteStep() throws {

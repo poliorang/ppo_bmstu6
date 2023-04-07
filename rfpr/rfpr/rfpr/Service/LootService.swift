@@ -19,8 +19,8 @@ class LootService: ILootService {
         return loot
     }
     
-    func updateLoot(id: Int?) {
-        lootRepository?.updateLoot(id: id)
+    func updateLoot(id: Int?, loot: Loot?) {
+        lootRepository?.updateLoot(id: id, loot: loot)
     }
     
     func deleteLoot(id: Int?) {

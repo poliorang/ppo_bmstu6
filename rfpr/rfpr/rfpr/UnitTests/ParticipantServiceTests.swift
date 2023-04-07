@@ -12,11 +12,15 @@ class ParticipantServiceTests: XCTestCase {
     
     var participantService: IParticipantService!
     var participantRepository: IParticipantRepository!
+    var getDataService: IGetDataService!
+    var getDataRepository: IGetDataRepository!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         participantRepository = MockParticipantRepository()
-        participantService = ParticipantService(participantRepository: participantRepository)
+        getDataRepository = MockGetDataRepository()
+        getDataService = GetDataService(getDataRepository: getDataRepository)
+        participantService = ParticipantService(participantRepository: participantRepository, getDataService: getDataService)
     }
 
     override func tearDownWithError() throws {
@@ -31,11 +35,13 @@ class ParticipantServiceTests: XCTestCase {
     }
     
     func testUpdateParticipant() {
-        XCTAssertNoThrow(participantService.updateParticipant(id: 1))
+        let participant = Participant(id: 1, fullname: "aaa", city: "vvv", birthday: nil, role: "aa", autorization: nil, score: 0)
+        XCTAssertNoThrow(participantService.updateParticipant(id: 1, participant: participant))
     }
     
     func testUpdateParticipantNil() {
-        XCTAssertNoThrow(participantService.updateParticipant(id: nil))
+        let participant = Participant(id: 1, fullname: "aaa", city: "vvv", birthday: nil, role: "aa", autorization: nil, score: 0)
+        XCTAssertNoThrow(participantService.updateParticipant(id: nil, participant: participant))
     }
     
     func testDeleteParticipant() {
@@ -58,32 +64,4 @@ class ParticipantServiceTests: XCTestCase {
     func testGetParticipantNilId() throws {
         XCTAssertNil(participantService.getParticipant(id: nil))
     }
-
-//    func testsGetParticipantsByAscending() throws {
-//        let participants = [Participant(id: 0, fullname: "Иванов", city: "Ижевск", birthday: nil, role:                          "Участник", autorization: nil, score: nil),
-//                            Participant(id: 1, fullname: "Петров", city: "Москва", birthday: nil, role: "Участник", autorization: nil, score: nil),
-//                            Participant(id: 2, fullname: "Сидоров", city: "Челябинск", birthday: nil, role: "Участник", autorization: nil, score: nil),
-//                            Participant(id: 3, fullname: "Егоров", city: "Екатеринбург", birthday: nil, role: "Участник", autorization: nil, score: nil)]
-//        
-//        XCTAssertEqual(participantService.getParticipants(parameter: SortParameter.ascending, stepName: nil), participants)
-//    }
-//    
-//    func testsGetParticipantsByDecreasing() throws {
-//        let participants = [Participant(id: 3, fullname: "Егоров", city: "Екатеринбург", birthday: nil, role: "Участник", autorization: nil, score: nil),
-//                            Participant(id: 2, fullname: "Сидоров", city: "Челябинск", birthday: nil, role: "Участник", autorization: nil, score: nil),
-//                            Participant(id: 1, fullname: "Петров", city: "Москва", birthday: nil, role: "Участник", autorization: nil, score: nil),
-//                            Participant(id: 0, fullname: "Иванов", city: "Ижевск", birthday: nil, role:                          "Участник", autorization: nil, score: nil)]
-//        
-//        XCTAssertEqual(participantService.getParticipants(parameter: SortParameter.decreasing, stepName: nil), participants)
-//    }
-//    
-//    func testsGetParticipantsByNil() throws {
-//        let participants = [Participant(id: 2, fullname: "Сидоров", city: "Челябинск", birthday: nil, role: "Участник", autorization: nil, score: nil),
-//                            Participant(id: 0, fullname: "Иванов", city: "Ижевск", birthday: nil, role:                          "Участник", autorization: nil, score: nil),
-//                            Participant(id: 3, fullname: "Егоров", city: "Екатеринбург", birthday: nil, role: "Участник", autorization: nil, score: nil),
-//                            Participant(id: 1, fullname: "Петров", city: "Москва", birthday: nil, role: "Участник", autorization: nil, score: nil)]
-//        
-//        XCTAssertEqual(participantService.getParticipants(parameter: nil, stepName: nil), participants)
-//    }
-
 }

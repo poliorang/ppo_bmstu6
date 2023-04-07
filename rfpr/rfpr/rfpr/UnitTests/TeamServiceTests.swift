@@ -12,11 +12,15 @@ class TeamServiceTests: XCTestCase {
 
     var teamService: ITeamService!
     var teamRepository: ITeamRepository!
+    var getDataRepository: IGetDataRepository!
+    var getDataService: IGetDataService!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         teamRepository = MockTeamRepository()
-        teamService = TeamService(teamRepository: teamRepository)
+        getDataRepository = MockGetDataRepository()
+        getDataService = GetDataService(getDataRepository: getDataRepository)
+        teamService = TeamService(teamRepository: teamRepository, getDataService: getDataService)
     }
 
     override func tearDownWithError() throws {
@@ -48,11 +52,13 @@ class TeamServiceTests: XCTestCase {
     }
     
     func testUpdateTeam() {
-        XCTAssertNoThrow(teamService.updateTeam(name: "Aaa"))
+        let team = Team(id: 1, name: "1", participants: nil, competitions: nil, score: 0)
+        XCTAssertNoThrow(teamService.updateTeam(name: "Aaa", team: team))
     }
     
     func testUpdateTeamNil() {
-        XCTAssertNoThrow(teamService.updateTeam(name: nil))
+        let team = Team(id: 1, name: "1", participants: nil, competitions: nil, score: 0)
+        XCTAssertNoThrow(teamService.updateTeam(name: nil, team: team))
     }
     
     func testDeleteTeam() {

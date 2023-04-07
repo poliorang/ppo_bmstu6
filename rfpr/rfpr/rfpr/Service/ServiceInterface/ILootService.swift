@@ -8,6 +8,6 @@
 protocol ILootService {
     func createLoot(id: Int?, fish: String?, weight: Int?, step: Step?) -> Loot?
     
-    func updateLoot(id: Int?)
+    func updateLoot(id: Int?, loot: Loot?)
     func deleteLoot(id: Int?)
 }

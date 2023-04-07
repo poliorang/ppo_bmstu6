@@ -26,10 +26,11 @@ class MockStepRepository: IStepRepository, ILootToStepRepository {
         return step 
     }
     
-    func updateStep(id: Int?) -> Any? {
-        guard let id = id else { return nil }
+    func updateStep(id: Int?, step: Step?) -> Any? {
+        guard let id = id,
+              let step = step else { return nil }
         
-        return dataManager.updateData(storeData: StoreDataType.steps, id: id, name: nil)
+        return dataManager.updateData(storeData: StoreDataType.steps, id: id, entry: step, name: nil)
     }
     
     func deleteStep(id: Int?) -> Any? {

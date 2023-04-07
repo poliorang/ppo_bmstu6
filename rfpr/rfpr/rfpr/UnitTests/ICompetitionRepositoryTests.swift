@@ -46,11 +46,13 @@ class ICompetitionRepositoryTests: XCTestCase {
     }
     
     func testUpdateCompetition() throws {
-        XCTAssertEqual(competitionRepository.updateCompetition(name: "Aaa") as! String, "Data of competitions type was updated")
+        let competition = Competition(id: 1, name: "1", teams: nil)
+        XCTAssertEqual(competitionRepository.updateCompetition(name: "Aaa", competition: competition) as! String, "Data of competitions type was updated")
     }
     
     func testUpdateCompetitionNil() throws {
-        XCTAssertNil(competitionRepository.updateCompetition(name: nil))
+        let competition = Competition(id: 1, name: "1", teams: nil)
+        XCTAssertNil(competitionRepository.updateCompetition(name: nil, competition: competition))
     }
     
     func testDeleteCompetition() throws {

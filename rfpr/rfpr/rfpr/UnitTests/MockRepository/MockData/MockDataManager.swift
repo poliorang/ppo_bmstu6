@@ -111,7 +111,7 @@ class MockDataManager: IDataManager {
         return nil
     }
     
-    func updateData(storeData: StoreDataType, id: Int?, name: String?) -> Any? {
+    func updateData(storeData: StoreDataType, id: Int?, entry: Any?, name: String?) -> Any? {
         
         return "Data of \(storeData) type was updated"
     }

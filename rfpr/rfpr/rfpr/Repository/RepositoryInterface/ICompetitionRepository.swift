@@ -10,6 +10,6 @@ protocol ICompetitionRepository {
     func createCompetition(id: Int?, name: String?, teams: [Team]?) -> Competition?
     
     func getCompetition(id: Int?) -> Competition?
-    func updateCompetition(name: String?) -> Any?
+    func updateCompetition(name: String?, competition: Competition?) -> Any?
     func deleteCompetition(name: String?) -> Any?
 }

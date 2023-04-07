@@ -60,6 +60,10 @@
 		4AF3405029DB1F8500463098 /* ICompetitionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF3404F29DB1F8500463098 /* ICompetitionRepositoryTests.swift */; };
 		4AF3405229DB7DBE00463098 /* ITeamRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF3405129DB7DBE00463098 /* ITeamRepositoryTests.swift */; };
 		4AF3405429DB8FFA00463098 /* IParticipantRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF3405329DB8FFA00463098 /* IParticipantRepositoryTests.swift */; };
+		4AFBE92F29DF328600C2F705 /* GetDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBE92E29DF328500C2F705 /* GetDataService.swift */; };
+		4AFBE93129DF335F00C2F705 /* IGetDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBE93029DF335F00C2F705 /* IGetDataRepository.swift */; };
+		4AFBE93429DF33BD00C2F705 /* MockGetDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBE93329DF33BD00C2F705 /* MockGetDataRepository.swift */; };
+		4AFBE93629DF344D00C2F705 /* IGetDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBE93529DF344D00C2F705 /* IGetDataService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +140,10 @@
 		4AF3404F29DB1F8500463098 /* ICompetitionRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICompetitionRepositoryTests.swift; sourceTree = "<group>"; };
 		4AF3405129DB7DBE00463098 /* ITeamRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITeamRepositoryTests.swift; sourceTree = "<group>"; };
 		4AF3405329DB8FFA00463098 /* IParticipantRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IParticipantRepositoryTests.swift; sourceTree = "<group>"; };
+		4AFBE92E29DF328500C2F705 /* GetDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDataService.swift; sourceTree = "<group>"; };
+		4AFBE93029DF335F00C2F705 /* IGetDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGetDataRepository.swift; sourceTree = "<group>"; };
+		4AFBE93329DF33BD00C2F705 /* MockGetDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockGetDataRepository.swift; sourceTree = "<group>"; };
+		4AFBE93529DF344D00C2F705 /* IGetDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGetDataService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +230,7 @@
 				4AE1778029D9CB06009FF250 /* CompetitionService.swift */,
 				4AE1778229D9CC08009FF250 /* TeamService.swift */,
 				4AE1778429D9CC25009FF250 /* ParticipantService.swift */,
+				4AFBE92E29DF328500C2F705 /* GetDataService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -252,6 +261,7 @@
 				4A24427829D482F10065E32B /* ICompetitionService.swift */,
 				4A24427A29D486120065E32B /* ITeamService.swift */,
 				4A24427E29D489890065E32B /* IParticipantService.swift */,
+				4AFBE93529DF344D00C2F705 /* IGetDataService.swift */,
 			);
 			path = ServiceInterface;
 			sourceTree = "<group>";
@@ -279,6 +289,7 @@
 				4AE1777A29D9BFB7009FF250 /* ITeamByParticipantRepository.swift */,
 				4AE1777C29D9C5BB009FF250 /* IParticipantByTeamRepository.swift */,
 				4AE1777E29D9C712009FF250 /* IParticipantToTeamRepository.swift */,
+				4AFBE93029DF335F00C2F705 /* IGetDataRepository.swift */,
 			);
 			path = RepositoryInterface;
 			sourceTree = "<group>";
@@ -292,6 +303,7 @@
 				4AE1776929D8DFEA009FF250 /* MockCompetitionRepository.swift */,
 				4AE1777029D9AEC4009FF250 /* MockTeamRepository.swift */,
 				4AE1777829D9BC31009FF250 /* MockParticipantRepository.swift */,
+				4AFBE93329DF33BD00C2F705 /* MockGetDataRepository.swift */,
 			);
 			path = MockRepository;
 			sourceTree = "<group>";
@@ -439,6 +451,9 @@
 			files = (
 				4AE1777929D9BC31009FF250 /* MockParticipantRepository.swift in Sources */,
 				4AE1778129D9CB06009FF250 /* CompetitionService.swift in Sources */,
+				4AFBE93129DF335F00C2F705 /* IGetDataRepository.swift in Sources */,
+				4AFBE92F29DF328600C2F705 /* GetDataService.swift in Sources */,
+				4AFBE93629DF344D00C2F705 /* IGetDataService.swift in Sources */,
 				4AE1776A29D8DFEA009FF250 /* MockCompetitionRepository.swift in Sources */,
 				4A24427029D47BD40065E32B /* CompetitionModel.swift in Sources */,
 				4AE1777D29D9C5BB009FF250 /* IParticipantByTeamRepository.swift in Sources */,
@@ -465,6 +480,7 @@
 				4A24426929D309E50065E32B /* AutorizationModel.swift in Sources */,
 				4A24422C29D2EF480065E32B /* ViewController.swift in Sources */,
 				4AE1776C29D8E183009FF250 /* ICompetitionRepository.swift in Sources */,
+				4AFBE93429DF33BD00C2F705 /* MockGetDataRepository.swift in Sources */,
 				4AE1776029D71BA9009FF250 /* IStepRepository.swift in Sources */,
 				4AE1778529D9CC25009FF250 /* ParticipantService.swift in Sources */,
 				4A24428C29D49E000065E32B /* MockLootRepository.swift in Sources */,

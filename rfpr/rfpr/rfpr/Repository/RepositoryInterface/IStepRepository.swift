@@ -8,6 +8,6 @@
 protocol IStepRepository {
     func createStep(id: Int?, name: String?, participant: Participant?, competition: Competition?) -> Step?
     
-    func updateStep(id: Int?) -> Any?
+    func updateStep(id: Int?, step: Step?) -> Any?
     func deleteStep(id: Int?) -> Any?
 }

@@ -26,7 +26,7 @@ protocol IDataManager {
     func getData(storeData: StoreDataType) -> [Any]?
     func getDataByIdName(storeData: StoreDataType, id: Int?, name: String?) -> Any?
     
-    func updateData(storeData: StoreDataType, id: Int?, name: String?) -> Any?
+    func updateData(storeData: StoreDataType, id: Int?, entry: Any?, name: String?) -> Any?
     func deleteData(storeData: StoreDataType, id: Int?, name: String?) -> Any?
 
     func addTo(firstTypeOfData: StoreDataType, firstEntity: Any?,

@@ -10,7 +10,7 @@ import Foundation
 protocol IParticipantService {
     func createParticipant(id: Int?, fullname: String?, city: String?, birthday: Date?, role: String?, autorization: Autorization?, score: Int) -> Participant?
     
-    func updateParticipant(id: Int?)
+    func updateParticipant(id: Int?, participant: Participant?)
     func deleteParticipant(id: Int?)
     
     func getParticipant(id: Int?) -> Participant?

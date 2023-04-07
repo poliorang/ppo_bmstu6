@@ -8,6 +8,6 @@
 protocol IStepService {
     func createStep(id: Int?, name: String?, participant: Participant?, competition: Competition?) -> Step?
     
-    func updateStep(id: Int?)
+    func updateStep(id: Int?, step: Step?)
     func deleteStep(id: Int?) 
 }

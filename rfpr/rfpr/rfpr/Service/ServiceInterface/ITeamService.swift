@@ -8,7 +8,7 @@
 protocol ITeamService {
     func createTeam(id: Int?, name: String?, participants: [Participant]?, competitions: [Competition]?, score: Int) -> Team?
     
-    func updateTeam(name: String?)
+    func updateTeam(name: String?, team: Team?)
     func deleteTeam(name: String?)
     
     func getTeam(name: String?) -> Team?

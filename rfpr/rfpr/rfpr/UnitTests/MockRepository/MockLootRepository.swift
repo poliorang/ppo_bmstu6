@@ -29,10 +29,11 @@ class MockLootRepository: ILootRepository {
         return loot
     }
     
-    func updateLoot(id: Int?) -> Any? {
-        guard let id = id else { return nil }
+    func updateLoot(id: Int?, loot: Loot?) -> Any? {
+        guard let id = id,
+              let loot = loot else { return nil }
         
-        return dataManager.updateData(storeData: StoreDataType.loots, id: id, name: nil)
+        return dataManager.updateData(storeData: StoreDataType.loots, id: id, entry: loot, name: nil)
     }
     
     func deleteLoot(id: Int?) -> Any? {

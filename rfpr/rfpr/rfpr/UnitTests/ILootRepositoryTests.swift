@@ -38,11 +38,13 @@ class ILootRepositoryTests: XCTestCase {
     }
     
     func testUpdateLoot() throws {
-        XCTAssertEqual(lootRepository.updateLoot(id: 1) as! String, "Data of loots type was updated")
+        let loot = Loot(id: 1, fish: "1", weight: 500, score: 1000, step: nil)
+        XCTAssertEqual(lootRepository.updateLoot(id: 1, loot: loot) as! String, "Data of loots type was updated")
     }
     
     func testUpdateLootNil() throws {
-        XCTAssertNil(lootRepository.updateLoot(id: nil))
+        let loot = Loot(id: 1, fish: "1", weight: 500, score: 1000, step: nil)
+        XCTAssertNil(lootRepository.updateLoot(id: nil, loot: loot))
     }
     
     func testDeleteLoot() throws {

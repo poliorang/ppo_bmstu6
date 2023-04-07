@@ -23,8 +23,8 @@ class CompetitionService: ICompetitionService {
         return competition
     }
     
-    func updateCompetition(name: String?) {
-        competitionRepository?.updateCompetition(name: name)
+    func updateCompetition(name: String?, competition: Competition?) {
+        competitionRepository?.updateCompetition(name: name, competition: competition)
     }
     
     func deleteCompetition(name: String?) {

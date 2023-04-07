@@ -49,11 +49,13 @@ class CompetitionServiceTests: XCTestCase {
     }
     
     func testUpdateCompetition() throws {
-        XCTAssertNoThrow(competitionService.updateCompetition(name: "Aaa"))
+        let competition = Competition(id: 1, name: "1", teams: nil)
+        XCTAssertNoThrow(competitionService.updateCompetition(name: "Aaa", competition: competition))
     }
     
     func testUpdateCompetitionNil() throws {
-        XCTAssertNoThrow(competitionService.updateCompetition(name: nil))
+        let competition = Competition(id: 1, name: "1", teams: nil)
+        XCTAssertNoThrow(competitionService.updateCompetition(name: nil, competition: competition))
     }
     
     func testDeleteCompetition() throws {

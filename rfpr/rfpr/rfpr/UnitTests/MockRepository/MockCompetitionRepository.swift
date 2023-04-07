@@ -29,10 +29,11 @@ class MockCompetitionRepository: ICompetitionRepository, IStepToCompetitionRepos
         return competitions as? Competition
     }
     
-    func updateCompetition(name: String?) -> Any? {
-        guard let name = name else { return nil }
+    func updateCompetition(name: String?, competition: Competition?) -> Any? {
+        guard let name = name,
+              let competition = competition else { return nil }
         
-        return dataManager.updateData(storeData: StoreDataType.competitions, id: nil, name: name)
+        return dataManager.updateData(storeData: StoreDataType.competitions, id: nil, entry: competition, name: name)
     }
     
     func deleteCompetition(name: String?) -> Any? {

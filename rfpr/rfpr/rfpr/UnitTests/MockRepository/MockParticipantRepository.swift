@@ -29,10 +29,11 @@ class MockParticipantRepository: IParticipantRepository, ITeamByParticipantRepos
         return participant
     }
     
-    func updateParticipant(id: Int?) -> Any? {
-        guard let id = id else { return nil }
+    func updateParticipant(id: Int?, participant: Participant?) -> Any? {
+        guard let id = id,
+              let participant = participant else { return nil }
         
-        return dataManager.updateData(storeData: StoreDataType.participants, id: id, name: nil)
+        return dataManager.updateData(storeData: StoreDataType.participants, id: id, entry: participant, name: nil)
     }
     
     func deleteParticipant(id: Int?) -> Any? {
@@ -48,76 +49,14 @@ class MockParticipantRepository: IParticipantRepository, ITeamByParticipantRepos
         return participant as? Participant
     }
     
-    
-    func getParticipants(parameter: SortParameter?, stepName: String?) -> [Participant]? {
-        
-        let participants = dataManager.getParticipants()
-        
-        guard var participants = participants else {
-            return nil
-        }
-        
-        for i in 0..<participants.count {
-            
-            let steps = getStepsByParticipant(id: participants[i].id, stepName: stepName)
-            
-            var score = 0
-            if let steps = steps {
-                for step in steps {
-                    
-                    let loots = getLootsByStep(id: step.id)
-                    if let loots = loots {
-                        for loot in loots { score += loot.score }
-                    }
-                }
-            }
-            
-            participants[i].score = score
-        }
-        
-        if parameter == .ascending {
-            return participants.sorted(by: { $0.score < $1.score })
-        }
-        
-        if parameter == .decreasing {
-            return participants.sorted(by: { $0.score > $1.score })
-        }
-        
-        return participants
+    func getParticipants() -> [Participant]? {
+        return dataManager.getParticipants()
     }
-    
+
     func getTeamByParticipant(id: Int?) -> [Team]? {
         guard let id = id else { return nil }
         
         let teams = dataManager.getBy(firstTypeOfData: StoreDataType.participants, id: id, secondTypeOfData: StoreDataType.teams)
         return teams as? [Team]
     }
-    
-    
-    func getStepsByParticipant(id: Int?, stepName: String?) -> [Step]? {
-        guard let id = id else {
-            return nil
-        }
-
-        let steps: [Step]?
-        if let stepName = stepName {
-            steps = dataManager.stepsWithParticipantIdWithStepName(id: id, stepName: stepName)
-        } else {
-            steps = dataManager.stepsWithParticipantId(id: id)
-        }
-        
-        return steps
-    }
-    
-    
-    func getLootsByStep(id: Int?) -> [Loot]? {
-        guard let id = id else {
-            return nil
-        }
-
-        let loots = dataManager.lootsWithSteptId(id: id)
-        
-        return loots
-    }
-                                                                                                                              
 }

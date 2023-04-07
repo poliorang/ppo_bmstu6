@@ -35,11 +35,13 @@ class StepServiceTests: XCTestCase {
     }
     
     func testUpdateStep() throws {
-        XCTAssertNoThrow(stepService.updateStep(id: 1))
+        let step = Step(id: 1, name: "1", participant: nil, competition: nil)
+        XCTAssertNoThrow(stepService.updateStep(id: 1, step: step))
     }
     
     func testUpdateStepNil() throws {
-        XCTAssertNoThrow(stepService.updateStep(id: nil))
+        let step = Step(id: 1, name: "1", participant: nil, competition: nil)
+        XCTAssertNoThrow(stepService.updateStep(id: nil, step: step))
     }
     
     func testDeleteStep() throws {

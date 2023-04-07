@@ -25,10 +25,11 @@ class MockTeamRepository: ITeamRepository, ICompetitionToTeamRepository,
         return team
     }
     
-    func updateTeam(name: String?) -> Any? {
-        guard let name = name else { return nil }
+    func updateTeam(name: String?, team: Team?) -> Any? {
+        guard let name = name,
+              let team = team else { return nil }
         
-        return dataManager.updateData(storeData: StoreDataType.teams, id: nil, name: name)
+        return dataManager.updateData(storeData: StoreDataType.teams, id: nil, entry: team, name: name)
     }
     
     func deleteTeam(name: String?) -> Any? {
@@ -44,50 +45,9 @@ class MockTeamRepository: ITeamRepository, ICompetitionToTeamRepository,
         return team as? Team
     }
     
-    func getTeams(parameter: SortParameter?, stepName: String?) -> [Team]? {
-        let teams = dataManager.getTeams()
-        
-        guard var teams = teams else {
-            return nil
-        }
-        
-        for i in 0..<teams.count {
-            var score = 0
-            
-            if let participants = teams[i].participants {
-                
-                var participantScore = 0
-                for j in 0..<participants.count {
-                    let steps = getStepsByParticipant(id: teams[i].participants![j].id, stepName: stepName)
-
-                    if let steps = steps {
-                        for step in steps {
-                            
-                            let loots = getLootsByStep(id: step.id)
-                            if let loots = loots {
-                                for loot in loots { participantScore += loot.score }
-                            }
-                        }
-                    }
-                    teams[i].participants![j].score = participantScore
-                }
-                score += participantScore
-            }
-            
-            teams[i].score = score
-        }
-        
-        if parameter == .ascending {
-            return teams.sorted(by: { $0.score < $1.score })
-        }
-        
-        if parameter == .decreasing {
-            return teams.sorted(by: { $0.score > $1.score })
-        }
-        
-        return teams
+    func getTeams() -> [Team]? {
+        return dataManager.getTeams()
     }
-    
     
     func addCompetition(competition: Competition?, team: Team?) -> Any? {
         guard let competition = competition,
@@ -108,31 +68,5 @@ class MockTeamRepository: ITeamRepository, ICompetitionToTeamRepository,
               let team = team else { return nil }
         
         return dataManager.addTo(firstTypeOfData: StoreDataType.participants, firstEntity: participant, secondTypeOfData: StoreDataType.teams, secondEntity: team)
-    }
-    
-    func getStepsByParticipant(id: Int?, stepName: String?) -> [Step]? {
-        guard let id = id else {
-            return nil
-        }
-
-        let steps: [Step]?
-        if let stepName = stepName {
-            steps = dataManager.stepsWithParticipantIdWithStepName(id: id, stepName: stepName)
-        } else {
-            steps = dataManager.stepsWithParticipantId(id: id)
-        }
-        
-        return steps
-    }
-    
-    
-    func getLootsByStep(id: Int?) -> [Loot]? {
-        guard let id = id else {
-            return nil
-        }
-
-        let loots = dataManager.lootsWithSteptId(id: id)
-        
-        return loots
     }
 }
