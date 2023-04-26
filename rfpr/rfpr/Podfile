@@ -1,0 +1,10 @@
+platform :ios, '12.0'
+
+target 'rfpr' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for rfpr
+  pod 'RealmSwift', '~>10.24.0'
+
+end

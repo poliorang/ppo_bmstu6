@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "1DFCD401-2C4E-40A4-B393-0EEA74C8F842"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "190F5982-AE1B-4CB0-BDA5-F04B344F64D4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rfpr/Model/AutorizationModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "isParticipant(participant:database:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "190F5982-AE1B-4CB0-BDA5-F04B344F64D4 - bf4ab8eccba840dc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "rfpr.Autorization.isParticipant(participant: rfpr.Autorization, database: Swift.Array&lt;rfpr.Autorization&gt;) -&gt; Swift.Bool"
+                  moduleName = "rfpr"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/poliorang/Desktop/%D0%9C%D0%93%D0%A2%D0%A3%20/6%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9F%D0%9F%D0%9E/ppo/rfpr/rfpr/rfpr/Model/AutorizationModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "174">
+               </Location>
+               <Location
+                  uuid = "190F5982-AE1B-4CB0-BDA5-F04B344F64D4 - eb1a6691a8d88acd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AutorizationUnitTests.Autorization.isParticipant(participant: AutorizationUnitTests.Autorization, database: Swift.Array&lt;AutorizationUnitTests.Autorization&gt;) -&gt; Swift.Bool"
+                  moduleName = "AutorizationUnitTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/poliorang/Desktop/%D0%9C%D0%93%D0%A2%D0%A3%20/6%20%D1%81%D0%B5%D0%BC%D0%B5%D1%81%D1%82%D1%80/%D0%9F%D0%9F%D0%9E/ppo/rfpr/rfpr/rfpr/Model/AutorizationModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "174">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F86F724D-D1CA-4B19-A8A0-11164591ED7D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rfpr/UnitTests/StepRepositoryTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "testUpdateStep()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4E7AA7E6-37DC-48C0-B1AC-EE2555546049"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rfpr/UnitTests/StepServiceTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "10"
+            endingLineNumber = "10"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8F6E72A0-6485-4EC5-AEA2-FFB2B8697A05"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rfpr/UnitTests/TeamServiceTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
+            landmarkName = "testsGetTeamsByStepByNil()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

@@ -1,0 +1,13 @@
+//
+//  IStepRepository.swift
+//  rfpr
+//
+//  Created by poliorang on 31.03.2023.
+//
+
+protocol IStepRepository {
+    func createStep(step: Step) throws -> Step?
+    
+    func updateStep(previousStep: Step, newStep: Step) throws -> Step? 
+    func deleteStep(step: Step) throws
+}
