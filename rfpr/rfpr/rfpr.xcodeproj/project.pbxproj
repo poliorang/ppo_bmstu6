@@ -96,6 +96,7 @@
 		4AF5A1A02A02C846005DD13D /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF5A19F2A02C846005DD13D /* config.swift */; };
 		4AF5A1A22A05A72D005DD13D /* TeamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF5A1A12A05A72D005DD13D /* TeamController.swift */; };
 		4AF5A1A42A079AC3005DD13D /* GetDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF5A1A32A079AC3005DD13D /* GetDataRepository.swift */; };
+		4AFA3EF92A0A7CCD0038B7CE /* TeamParticipantTableMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFA3EF82A0A7CCD0038B7CE /* TeamParticipantTableMode.swift */; };
 		4AFBE92F29DF328600C2F705 /* GetDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBE92E29DF328500C2F705 /* GetDataService.swift */; };
 		4AFBE93129DF335F00C2F705 /* IGetDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBE93029DF335F00C2F705 /* IGetDataRepository.swift */; };
 		4AFBE93629DF344D00C2F705 /* IGetDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBE93529DF344D00C2F705 /* IGetDataService.swift */; };
@@ -207,6 +208,7 @@
 		4AF5A19F2A02C846005DD13D /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 		4AF5A1A12A05A72D005DD13D /* TeamController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamController.swift; sourceTree = "<group>"; };
 		4AF5A1A32A079AC3005DD13D /* GetDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDataRepository.swift; sourceTree = "<group>"; };
+		4AFA3EF82A0A7CCD0038B7CE /* TeamParticipantTableMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamParticipantTableMode.swift; sourceTree = "<group>"; };
 		4AFBE92E29DF328500C2F705 /* GetDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDataService.swift; sourceTree = "<group>"; };
 		4AFBE93029DF335F00C2F705 /* IGetDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGetDataRepository.swift; sourceTree = "<group>"; };
 		4AFBE93529DF344D00C2F705 /* IGetDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGetDataService.swift; sourceTree = "<group>"; };
@@ -548,6 +550,7 @@
 				4AEE59F72A0030E500534AC8 /* AlertManager.swift */,
 				4AF5A19D2A02C817005DD13D /* ServicesManager.swift */,
 				4AF5A19F2A02C846005DD13D /* config.swift */,
+				4AFA3EF82A0A7CCD0038B7CE /* TeamParticipantTableMode.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -777,6 +780,7 @@
 				4A6132A229E86A810025CDC9 /* DataError.swift in Sources */,
 				4A9D46C029EEBA420059750F /* TeamRepository.swift in Sources */,
 				4A24422A29D2EF480065E32B /* SceneDelegate.swift in Sources */,
+				4AFA3EF92A0A7CCD0038B7CE /* TeamParticipantTableMode.swift in Sources */,
 				4AF5A19E2A02C817005DD13D /* ServicesManager.swift in Sources */,
 				4A1F1E952A011B77002DFE7B /* CompetitionViews.swift in Sources */,
 				4A8E370129FDA229009A0930 /* MockLootRepository.swift in Sources */,

@@ -12,10 +12,25 @@ protocol ToDetailTeamDelegateProtocol {
     func sendCompetitionToTeamViewController(competition: Competition?)
 }
 
+protocol ToDetailParticipantDelegateProtocol {
+    func sendCompetitionToParticipantViewController(competition: Competition?)
+}
+
+protocol ToDetailParticipantUpdateDelegateProtocol {
+    func sendParticipantToParticipantViewController(participant: Participant?)
+}
+
+protocol ToDetailTeamtUpdateDelegateProtocol {
+    func sendTeamToTeamViewController(team: Team?)
+}
+
 class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
     typealias TeamTableViewCell = UITableViewCell
     
-    var competitionDelegate: ToDetailTeamDelegateProtocol? = nil
+    var competitionDelegateTeam: ToDetailTeamDelegateProtocol? = nil
+    var competitionDelegateParticipant: ToDetailParticipantDelegateProtocol? = nil
+    var participantDelegateParticipant: ToDetailParticipantUpdateDelegateProtocol? = nil
+    var teamDelegateTeam: ToDetailTeamtUpdateDelegateProtocol? = nil
     
     var services: ServicesManager! = nil
     let alertManager = AlertManager.shared
@@ -69,6 +84,8 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
         self.teams = competition.teams
     }
     
+    
+    
     func getParticipants(){
         do {
             participants = [Participant]()
@@ -117,7 +134,7 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
     }
     
     func setupTeamsOrParticipantsBarButton() {
-        self.teamsOrParticipantsButton = UIBarButtonItem(title: "Команды", style: UIBarButtonItem.Style.done,
+        self.teamsOrParticipantsButton = UIBarButtonItem(title: tableMode.teams.rawValue, style: UIBarButtonItem.Style.done,
                                                     target: self, action: #selector(teamsOrParticipantsPressed(_:)))
         self.navigationItem.rightBarButtonItem = teamsOrParticipantsButton
     }
@@ -144,10 +161,16 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
     
     private func setupSearchBar(_ searchBar: UISearchBar) {
         self.view.addSubview(searchBar)
+        if teamsOrParticipantsButton?.title == tableMode.teams.rawValue {
+            searchBar.placeholder = "Название команды"
+        }
+        if teamsOrParticipantsButton?.title == tableMode.participants.rawValue {
+            searchBar.placeholder = "Имя участника"
+        }
         
         searchBar.searchBarStyle = UISearchBar.Style.default
         searchBar.backgroundColor = .systemBackground
-        searchBar.placeholder = "Название команды"
+        
         searchBar.sizeToFit()
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         
@@ -189,12 +212,12 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
     
     @objc
     func buttonCreateTeamTapped(sender: UIButton) {
-        if teamsOrParticipantsButton?.title == "Команды" {
+        if teamsOrParticipantsButton?.title == tableMode.teams.rawValue {
             let detailTeamController = DetailTeamViewController()
             
             // чтобы можно было использовать только методы, определенные протоколе
-            competitionDelegate = detailTeamController
-            competitionDelegate?.sendCompetitionToTeamViewController(competition: competition)
+            competitionDelegateTeam = detailTeamController
+            competitionDelegateTeam?.sendCompetitionToTeamViewController(competition: competition)
             
             // чтобы обновлять в динамике таблицу
             // (после нажатия на кнопку создания нового соревнования в другом контроллере
@@ -208,21 +231,41 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
             present(detailTeamController, animated: true, completion: nil)
         }
        
-        if teamsOrParticipantsButton?.title == "Участники" {
+        if teamsOrParticipantsButton?.title == tableMode.participants.rawValue {
             let detailParticipantController = DetailParticipantViewController()
+            
+            // чтобы можно было использовать только методы, определенные протоколе
+            competitionDelegateParticipant = detailParticipantController
+            competitionDelegateParticipant?.sendCompetitionToParticipantViewController(competition: competition)
+            
+            let updateTableCompletion:() -> Void = {
+                self.getParticipants()
+                self.tableView.reloadData()
+            }
+            
+            detailParticipantController.gettedCompletion = updateTableCompletion
             present(detailParticipantController, animated: true, completion: nil)
         }
     }
     
     @objc
     func teamsOrParticipantsPressed(_ sender: UIBarButtonItem ) {
-        print("TAPPED ", sender.title as Any)
-        if sender.title == "Команды" {
-            sender.title = "Участники"
+        switch sender.title {
+        
+        case tableMode.participants.rawValue:
+            sender.title = tableMode.teams.rawValue
+            searchBar.placeholder = "Название команды"
+            getTeamsByCompetition()
             self.tableView.reloadData()
-        } else {
-            sender.title = "Команды"
+        
+        case tableMode.teams.rawValue:
+            sender.title = tableMode.participants.rawValue
+            searchBar.placeholder = "Имя участника"
+            getParticipants()
             self.tableView.reloadData()
+        
+        default:
+            return
         }
     }
 }
@@ -231,13 +274,9 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableView {
         case self.tableView:
-//            getTeamsByCompetition()
-//            getParticipants()
-            
-            if teamsOrParticipantsButton?.title == "Команды" {
+            if teamsOrParticipantsButton?.title == tableMode.teams.rawValue {
                 guard let teams = self.teams else {
-                    alertManager.showAlert(presentTo: self,
-                                           title: "Внимание",
+                    alertManager.showAlert(presentTo: self, title: "Внимание",
                                            message: "Нет ни одной команды")
                     return 0
                 }
@@ -245,9 +284,9 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
                 return teams.count
             }
             
+            
             guard let participants = self.participants else {
-                alertManager.showAlert(presentTo: self,
-                                       title: "Внимание",
+                alertManager.showAlert(presentTo: self, title: "Внимание",
                                        message: "Нет ни одного участника")
                 return 0
             }
@@ -265,11 +304,10 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
 //        getTeamsByCompetition()
 //        getParticipants()
         
-        if teamsOrParticipantsButton?.title == "Команды" {
+        if teamsOrParticipantsButton?.title == tableMode.teams.rawValue {
             let team = self.teams?[indexPath.row]
             guard let team = team else {
-                alertManager.showAlert(presentTo: self,
-                                       title: "Внимание",
+                alertManager.showAlert(presentTo: self, title: "Внимание",
                                        message: "Команда не распознана")
                 return cell
             }
@@ -282,8 +320,7 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
         
         let participant = self.participants?[indexPath.row]
         guard let participant = participant else {
-            alertManager.showAlert(presentTo: self,
-                                   title: "Внимание",
+            alertManager.showAlert(presentTo: self, title: "Внимание",
                                    message: "Участник не распознан")
             return cell
         }
@@ -305,7 +342,7 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
             getTeamsByCompetition()
             getParticipants()
             
-            if teamsOrParticipantsButton?.title == "Команды" {
+            if teamsOrParticipantsButton?.title == tableMode.teams.rawValue {
                 
                 var team: Team?
                 do {
@@ -316,8 +353,7 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
 
                     team = try services.teamService.getTeam(name: name)?.first
                 } catch {
-                    alertManager.showAlert(presentTo: self,
-                                           title: "Внимание",
+                    alertManager.showAlert(presentTo: self, title: "Внимание",
                                            message: "Команды не найдена")
                     return
                 }
@@ -325,8 +361,7 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
                 do {
                     try services.teamService.deleteTeam(team: team)
                 } catch {
-                    alertManager.showAlert(presentTo: self,
-                                           title: "Внимание",
+                    alertManager.showAlert(presentTo: self, title: "Внимание",
                                            message: "Не удалось удалить команду")
                 }
                 
@@ -336,8 +371,7 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
                 tableView.endUpdates()
                 
                 if teams!.count <= 0 {
-                    alertManager.showAlert(presentTo: self,
-                                           title: "Внимание",
+                    alertManager.showAlert(presentTo: self, title: "Внимание",
                                            message: "Нет ни одной команды")
                 }
                 
@@ -354,8 +388,7 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
 
                 participant = try services.participantService.getParticipant(fullname: fullname)?.first
             } catch {
-                alertManager.showAlert(presentTo: self,
-                                       title: "Внимание",
+                alertManager.showAlert(presentTo: self, title: "Внимание",
                                        message: "Участник не найден")
                 return
             }
@@ -363,8 +396,7 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
             do {
                 try services.participantService.deleteParticipant(participant: participant)
             } catch {
-                alertManager.showAlert(presentTo: self,
-                                       title: "Внимание",
+                alertManager.showAlert(presentTo: self, title: "Внимание",
                                        message: "Не удалось удалить участника")
             }
             
@@ -374,10 +406,76 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
             tableView.endUpdates()
             
             if participants!.count <= 0 {
-                alertManager.showAlert(presentTo: self,
-                                       title: "Внимание",
+                alertManager.showAlert(presentTo: self, title: "Внимание",
                                        message: "Нет ни одного участника")
             }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("section: \(indexPath.section)")
+        print("row: \(indexPath.row)")
+        
+        if teamsOrParticipantsButton?.title == tableMode.participants.rawValue {
+            let participant: Participant?
+            
+            let fullname = "\(participants?[indexPath.row].lastName ?? "") \(participants?[indexPath.row].firstName ?? "")"
+            do {
+                try participant = services.participantService.getParticipant(fullname: fullname)?.first
+            } catch {
+                alertManager.showAlert(presentTo: self, title: "Внимание",
+                                       message: "Участник не найден")
+                return 
+            }
+            
+            
+            let detailParticipantController = DetailParticipantViewController()
+            
+            // чтобы можно было использовать только методы, определенные протоколе
+            competitionDelegateParticipant = detailParticipantController
+            competitionDelegateParticipant?.sendCompetitionToParticipantViewController(competition: competition)
+            
+            participantDelegateParticipant = detailParticipantController
+            participantDelegateParticipant?.sendParticipantToParticipantViewController(participant: participant)
+            
+            let updateTableCompletion:() -> Void = {
+                self.getParticipants()
+                self.tableView.reloadData()
+            }
+            
+            detailParticipantController.gettedCompletion = updateTableCompletion
+            present(detailParticipantController, animated: true, completion: nil)
+        }
+        
+        if teamsOrParticipantsButton?.title == tableMode.teams.rawValue {
+            let team: Team?
+            
+            let teamName = teams?[indexPath.row].name
+            do {
+                try team = services.teamService.getTeam(name: teamName)?.first
+            } catch {
+                alertManager.showAlert(presentTo: self, title: "Внимание",
+                                       message: "Команда не найдена")
+                return
+            }
+            
+            
+            let detailTeamController = DetailTeamViewController()
+            
+            // чтобы можно было использовать только методы, определенные протоколе
+            competitionDelegateTeam = detailTeamController
+            competitionDelegateTeam?.sendCompetitionToTeamViewController(competition: competition)
+            
+            teamDelegateTeam = detailTeamController
+            teamDelegateTeam?.sendTeamToTeamViewController(team: team)
+            
+            let updateTableCompletion:() -> Void = {
+                self.getTeamsByCompetition()
+                self.tableView.reloadData()
+            }
+            
+            detailTeamController.gettedCompletion = updateTableCompletion
+            present(detailTeamController, animated: true, completion: nil)
         }
     }
 }
@@ -391,7 +489,7 @@ extension TeamViewController: UISearchBarDelegate{
     
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if teamsOrParticipantsButton?.title == "Команды" {
+        if teamsOrParticipantsButton?.title == tableMode.teams.rawValue {
             if searchText == "" {
                 getTeamsByCompetition()
             } else {
@@ -430,7 +528,7 @@ extension TeamViewController: UISearchBarDelegate{
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        if teamsOrParticipantsButton?.title == "Команды" {
+        if teamsOrParticipantsButton?.title == tableMode.teams.rawValue {
             if searchBar.text == "" {
                 getTeamsByCompetition()
             } else {

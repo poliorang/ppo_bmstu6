@@ -7,19 +7,17 @@
 
 import UIKit
 
-class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol {
+class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol,
+                                ToDetailTeamtUpdateDelegateProtocol {
     var services: ServicesManager! = nil
     let alertManager = AlertManager.shared
     
     let nameLabel = UILabel(frame: CGRect(x: 20, y: 70, width: 320, height: 40))
     let nameTextField = UITextField(frame: CGRect(x: 20, y: 100, width: 300, height: 40))
     
-    let firstParticipantTextField = UITextField(frame: CGRect(x: 20, y: 300,
-                                                              width: 300, height: 40))
-    var secondParticipantTextField = UITextField(frame: CGRect(x: 20, y: 370,
-                                                               width: 300, height: 40))
-    let thirdParticipantTextField = UITextField(frame: CGRect(x: 20, y: 440,
-                                                              width: 300, height: 40))
+    let firstParticipantTextField = UITextField(frame: CGRect(x: 20, y: 300, width: 300, height: 40))
+    var secondParticipantTextField = UITextField(frame: CGRect(x: 20, y: 370, width: 300, height: 40))
+    let thirdParticipantTextField = UITextField(frame: CGRect(x: 20, y: 440, width: 300, height: 40))
     
     let toolBar = UIToolbar()
     let participantPicker = UIPickerView()
@@ -28,20 +26,22 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol {
     
     var selectedTextField: UITextField? = nil
     var participants = [Participant]()
-    var competition: Competition?   // получается из TeamController
+    var competition: Competition?       // получается из TeamController
+    var updateTeam: Team? // получить из TeamController
+    var firstlyParticipants: [Participant]? // участники переж редактированием
+    
     var gettedCompletion: (() -> Void)? // обновление таблицы в TeamController
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
 
-        guard let competition = competition else {
+        guard let _ = competition else {
             alertManager.showAlert(presentTo: self,
                                    title: "Внимание",
                                    message: "Соревнование не распознано")
             return
         }
-        print("COMPETITION ", competition.name)
         
         setupServices()
         getParticipants()
@@ -58,8 +58,20 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol {
                                     participantPicker, toolBar)
         setupCreateTeamButton(createTeamButton)
         
+        setupUpdate()
         
         createTeamButton.addTarget(self, action: #selector(buttonCreateTeamTapped(sender:)), for: .touchUpInside)
+    }
+    
+    func sendTeamToTeamViewController(team: Team?) {
+        guard let team = team else {
+            alertManager.showAlert(presentTo: self,
+                                   title: "Внимание",
+                                   message: "Команда не распознана")
+            return
+        }
+
+        self.updateTeam = team
     }
     
     func sendCompetitionToTeamViewController(competition: Competition?) {
@@ -77,9 +89,35 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol {
         do {
             try services = ServicesManager()
         } catch {
-            alertManager.showAlert(presentTo: self,
-                                   title: "Внимание",
+            alertManager.showAlert(presentTo: self, title: "Внимание",
                                    message: "Не удалось получить доступ к базе данных")
+        }
+    }
+    
+    func setupUpdate() {
+        
+        if let updateTeam = updateTeam {
+            firstlyParticipants = try? services.participantService.getParticipantByTeam(team: updateTeam)
+            print("LJFNSVJKFNVSJKFNJKSR ", firstlyParticipants)
+            nameTextField.text = updateTeam.name
+            
+            let participantsByTeam: [Participant]?
+            do {
+                participantsByTeam = try services.participantService.getParticipantByTeam(team: updateTeam)
+            } catch {
+                alertManager.showAlert(presentTo: self, title: "Внимание",
+                                       message: "Не удалось найти участников команды")
+                return
+            }
+            
+            if let participantsByTeam = participantsByTeam {
+                firstParticipantTextField.text = 0 < participantsByTeam.count ?
+                                                participantsByTeam[0].lastName + " " + participantsByTeam[0].firstName : ""
+                secondParticipantTextField.text = 1 < participantsByTeam.count ?
+                                                participantsByTeam[1].lastName + " " + participantsByTeam[1].firstName : ""
+                thirdParticipantTextField.text = 2 < participantsByTeam.count ?
+                                                participantsByTeam[2].lastName + " " + participantsByTeam[2].firstName : ""
+            }
         }
     }
     
@@ -129,6 +167,7 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol {
         second.placeholder = "Второй участник"
         third.placeholder = "Третий участник"
     }
+    
     
     private func setupParticipantPicker(_ picker: UIPickerView) {
         picker.delegate = self
@@ -203,8 +242,6 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol {
     
     @objc
     func buttonCreateTeamTapped(sender: UIButton) {
-        print("TAPPED")
-        
         var team: Team? = nil
         guard var teamName = nameTextField.text else {
             alertManager.showAlert(presentTo: self,
@@ -212,9 +249,6 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol {
                                    message: "Введите название команды")
             return
         }
-        
-        teamName = teamName.removingLeadingSpaces().removingFinalSpaces()
-        
         if teamName == "" || teamName == " " {
             alertManager.showAlert(presentTo: self,
                                    title: "Внимание",
@@ -222,25 +256,64 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol {
             return
         }
         
+        teamName = teamName.removingLeadingSpaces().removingFinalSpaces()
         let participantOfCreatedTeam = getParticipantsFromTextFields()
         
-        do {
-            try team = services.teamService.createTeam(id: nil, name: teamName, competitions: nil, score: 0)
-            try services.teamService.addCompetition(team: team, competition: competition)
-//            try services.competitionService.addTeam(team: team, competition: competition)
-            
-            for participant in participantOfCreatedTeam ?? [] {
-                try services.teamService.addParticipant(participant: participant, team: team)
+        
+        if let updateTeam = updateTeam {
+            do {
+                let newTeam = Team(id: nil, name: teamName, competitions: nil, score: 0)
+                team = try services.teamService.updateTeam(previousTeam: updateTeam, newTeam: newTeam)
+                
+                for participant in participantOfCreatedTeam ?? [] {
+                    try services.teamService.addParticipant(participant: participant, team: team)
+                }
+                try services.teamService.addCompetition(team: team, competition: competition)
+                
+                // если есть участники, которых удалили из команды
+                let deletedParticipants = Set(firstlyParticipants ?? []).subtracting(Set(participantOfCreatedTeam ?? []))
+                print("F ", firstlyParticipants)
+                print("NEW ", participantOfCreatedTeam)
+                print("DELETE ", deletedParticipants)
+                
+                if deletedParticipants.isEmpty == false {
+                    for participant in deletedParticipants {
+                        let newParticipant = Participant(id: participant.id, lastName: participant.lastName, firstName: participant.firstName, patronymic: participant.patronymic, team: nil, city: participant.city, birthday: participant.birthday, role: participant.role, score: participant.score)
+                        do {
+                            _ = try services.participantService.updateParticipant(previousParticipant: participant, newParticipant: newParticipant)
+                        } catch {
+                            alertManager.showAlert(presentTo: self,
+                                                   title: "Внимание",
+                                                   message: "Не удалось удалить участника из команды")
+                        }
+                    }
+                }
+                
+            } catch {
+                print("\(team?.name ?? "") WASN'T CREATED")
+                alertManager.showAlert(presentTo: self, title: "Внимание",
+                                       message: "Команда не была обновлена")
             }
             
-        } catch {
-            print("\(team?.name ?? "") WASN'T CREATED")
-            alertManager.showAlert(presentTo: self,
-                                   title: "Внимание",
-                                   message: "Команда не была создано")
-            
+        } else {
+            do {
+                try team = services.teamService.createTeam(id: nil, name: teamName, competitions: nil, score: 0)
+                try services.teamService.addCompetition(team: team, competition: competition)
+    //            try services.competitionService.addTeam(team: team, competition: competition)
+                
+                for participant in participantOfCreatedTeam ?? [] {
+                    try services.teamService.addParticipant(participant: participant, team: team)
+                }
+                
+            } catch {
+                print("\(team?.name ?? "") WASN'T CREATED")
+                alertManager.showAlert(presentTo: self, title: "Внимание",
+                                       message: "Команда не была создано")
+                
+            }
+            print("\(team?.name ?? "") WAS CREATED")
         }
-        print("\(team?.name ?? "") WAS CREATED")
+        
         dismiss(animated: true, completion: gettedCompletion)
     }
 }
