@@ -7,8 +7,14 @@
 
 import Foundation
 
+enum Role: Int {
+    case participant = 1
+    case referee = 2
+    case admin = 3
+}
+
 struct Participant: Hashable {
-    var id: String
+    var id: String?
     var lastName: String
     var firstName: String
     var patronymic: String?

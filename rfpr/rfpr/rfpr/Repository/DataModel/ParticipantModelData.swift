@@ -7,6 +7,14 @@
 import Foundation
 import RealmSwift
 
+class RoleRealm: Object {
+    @Persisted private var privateRole: Int = Role.participant.rawValue
+    var role: Role {
+        get { return Role(rawValue: privateRole)! }
+        set { privateRole = newValue.rawValue }
+    }
+}
+
 class ParticipantRealm: Object {
     @Persisted(primaryKey: true) var _id: ObjectId
     @Persisted var lastName: String

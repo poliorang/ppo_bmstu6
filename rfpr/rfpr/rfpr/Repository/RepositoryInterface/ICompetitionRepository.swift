@@ -12,5 +12,5 @@ protocol ICompetitionRepository {
     func updateCompetition(previousCompetition: Competition, newCompetition: Competition) throws -> Competition? 
     func deleteCompetition(competition: Competition) throws
     
-    func getCompetition() throws -> [Competition]?
+    func getCompetitions() throws -> [Competition]?
 }

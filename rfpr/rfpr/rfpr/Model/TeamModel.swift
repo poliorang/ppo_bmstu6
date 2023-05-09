@@ -8,7 +8,7 @@
 import RealmSwift
 
 struct Team: Hashable {
-    var id: String
+    var id: String?
     var name: String
     var competitions: [Competition]?
     var score: Int

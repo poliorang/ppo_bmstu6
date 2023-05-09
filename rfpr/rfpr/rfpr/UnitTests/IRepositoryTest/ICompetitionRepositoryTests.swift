@@ -70,7 +70,7 @@ class ICompetitionRepositoryTests: XCTestCase {
         
         let competitions = [competition1, competition2, competition3]
         
-        XCTAssertEqual(try competitionRepository.getCompetition(), competitions)
+        XCTAssertEqual(try competitionRepository.getCompetitions(), competitions)
     }
         
     func testAddTeam() throws {

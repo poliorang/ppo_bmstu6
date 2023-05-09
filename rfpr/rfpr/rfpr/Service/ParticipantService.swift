@@ -12,16 +12,21 @@ class ParticipantService: IParticipantService {
     let participantRepository: IParticipantRepository?
     let getDataService: IGetDataService?
     
-    init(participantRepository: IParticipantRepository, getDataService: IGetDataService) {
+    let participantByTeamRepository: IParticipantByTeamRepository?
+    
+    init(participantRepository: IParticipantRepository,
+         getDataService: IGetDataService,
+         participantByTeamRepository: IParticipantByTeamRepository) {
         self.participantRepository = participantRepository
         self.getDataService = getDataService
+        
+        self.participantByTeamRepository = participantByTeamRepository
     }
     
     
     func createParticipant(id: String?, lastName: String?, firstName: String?, patronymic: String?, team: Team?, city: String?, birthday: Date?, role: String?, score: Int) throws -> Participant {
         
-        guard let id = id,
-              let lastName = lastName,
+        guard let lastName = lastName,
               let firstName = firstName,
               let city = city,
               let birthday = birthday,
@@ -69,6 +74,7 @@ class ParticipantService: IParticipantService {
     func deleteParticipant(participant: Participant?) throws {
         guard let participant = participant else {
             throw ParameterError.funcParameterError
+            print("ParameterError")
         }
         
         do {
@@ -167,6 +173,15 @@ class ParticipantService: IParticipantService {
         
         return participants
     }
-
+    
+    func getParticipantByTeam(team: Team?) throws -> [Participant]? {
+        guard let team = team else {
+            throw ParameterError.funcParameterError
+        }
+        
+        let participants = try participantByTeamRepository?.getParticipantByTeam(team: team)
+        
+        return participants
+    }
 }
 

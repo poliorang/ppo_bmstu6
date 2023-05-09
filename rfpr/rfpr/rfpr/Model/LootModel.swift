@@ -6,7 +6,7 @@
 //
 
 struct Loot {
-    var id: String
+    var id: String?
     var fish: String
     var weight: Int
     var step: Step?

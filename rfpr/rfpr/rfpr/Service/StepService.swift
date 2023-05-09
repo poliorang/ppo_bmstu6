@@ -14,8 +14,7 @@ class StepService: IStepService {
     }
     
     func createStep(id: String?, name: String?, participant: Participant?, competition: Competition?) throws -> Step {
-        guard let id = id,
-              let name = name else {
+        guard let name = name else {
                   throw ParameterError.funcParameterError
         }
         

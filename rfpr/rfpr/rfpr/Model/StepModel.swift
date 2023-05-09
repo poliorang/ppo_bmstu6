@@ -6,7 +6,7 @@
 //
 
 struct Step {
-    var id: String
+    var id: String?
     var name: String
     var participant: Participant?
     var competition: Competition?

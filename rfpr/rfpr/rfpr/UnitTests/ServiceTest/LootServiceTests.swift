@@ -32,7 +32,7 @@ class LootServiceTests: XCTestCase {
     
     func testCreateLootNilId() throws {
         let step = Step(id: "1", name: "1", participant: nil, competition: nil)
-        XCTAssertThrowsError(try lootService.createLoot(id: nil, fish: "Щука", step: step, weight: 500))
+        XCTAssertNoThrow(try lootService.createLoot(id: nil, fish: "Щука", step: step, weight: 500))
     }
     
     func testCreateLootNilName() throws {

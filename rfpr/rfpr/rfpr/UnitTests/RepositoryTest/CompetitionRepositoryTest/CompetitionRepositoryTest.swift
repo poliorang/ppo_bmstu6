@@ -143,6 +143,6 @@ class CompetitionRepositoryTest: XCTestCase {
             Competition(id: "6442852b2b74d595cb4f4754", name: "Юг", teams: nil)]
         
 
-        XCTAssertEqual(Set(try competitionRepository.getCompetition() ?? []), Set(competitions))
+        XCTAssertEqual(Set(try competitionRepository.getCompetitions() ?? []), Set(competitions))
     }
 }

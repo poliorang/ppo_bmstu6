@@ -14,8 +14,7 @@ class LootService: ILootService {
     }
     
     func createLoot(id: String?, fish: String?, step: Step?, weight: Int?) throws -> Loot {
-        guard let id = id,
-              let fish = fish,
+        guard let fish = fish,
               let weight = weight else {
                   throw ParameterError.funcParameterError
         }

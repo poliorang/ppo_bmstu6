@@ -6,23 +6,32 @@
 //
 
 class TeamService: ITeamService {
-    
+   
     let teamRepository: ITeamRepository?
+    
+    let participantToTeamRepository: IParticipantToTeamRepository?
+    let competitionToTeamRepository: ICompetitionToTeamRepository?
+    
     let participantRepository: IParticipantByTeamRepository?
     let getDataService: IGetDataService?
     
     init(teamRepository: ITeamRepository,
          participantRepository: IParticipantByTeamRepository,
-         getDataService: IGetDataService) {
+         getDataService: IGetDataService,
+         participantToTeamRepository: IParticipantToTeamRepository,
+         competitionToTeamRepository: ICompetitionToTeamRepository) {
         
         self.teamRepository = teamRepository
         self.participantRepository = participantRepository
         self.getDataService = getDataService
+        
+        self.participantToTeamRepository = participantToTeamRepository
+        self.competitionToTeamRepository = competitionToTeamRepository
     }
     
+    
     func createTeam(id: String?, name: String?, competitions: [Competition]?, score: Int) throws -> Team {
-        guard let id = id,
-              let name = name else {
+        guard let name = name else {
                   throw ParameterError.funcParameterError
         }
         
@@ -157,4 +166,48 @@ class TeamService: ITeamService {
         return teams
     }
     
+    func getTeamsByCompetition(competitionName: String?) throws -> [Team]? {
+        let teams = try teamRepository?.getTeams()
+
+        guard let teams = teams else {
+            return nil
+        }
+        
+        var resultTeams = [Team]()
+        
+        for team in teams {
+            guard let competitions = team.competitions else {
+                continue
+            }
+            
+            for competition in competitions {
+                if competition.name == competitionName {
+                    resultTeams.append(team)
+                    continue
+                }
+            }
+        }
+        
+        if resultTeams.isEmpty { return nil }
+        
+        return resultTeams
+    }
+    
+    func addParticipant(participant: Participant?, team: Team?) throws {
+        guard let participant = participant,
+              let team = team else {
+                  throw ParameterError.funcParameterError
+        }
+        
+        try participantToTeamRepository?.addParticipant(participant: participant, team: team)
+    }
+    
+    func addCompetition(team: Team?, competition: Competition?) throws {
+        guard let competition = competition,
+              let team = team else {
+                  throw ParameterError.funcParameterError
+        }
+        
+        try competitionToTeamRepository?.addCompetition(team: team, competition: competition)
+    }
 }

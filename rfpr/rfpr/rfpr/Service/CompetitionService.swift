@@ -8,14 +8,16 @@
 class CompetitionService: ICompetitionService {
     
     let competitionRepository: ICompetitionRepository?
+    let teamToCompetitionRepository: ITeamToCompetitionRepository?
     
-    init(competitionRepository: ICompetitionRepository) {
+    init(competitionRepository: ICompetitionRepository,
+         teamToCompetitionRepository: ITeamToCompetitionRepository) {
         self.competitionRepository = competitionRepository
+        self.teamToCompetitionRepository = teamToCompetitionRepository
     }
     
     func createCompetition(id: String?, name: String?, teams: [Team]?) throws -> Competition {
-        guard let id = id,
-              let name = name else {
+        guard let name = name else {
                   throw ParameterError.funcParameterError
         }
         
@@ -74,7 +76,7 @@ class CompetitionService: ICompetitionService {
         
         let competitions: [Competition]?
         do {
-            try competitions = competitionRepository?.getCompetition()
+            try competitions = competitionRepository?.getCompetitions()
         } catch DatabaseError.getError {
             throw DatabaseError.getError
         }
@@ -92,5 +94,29 @@ class CompetitionService: ICompetitionService {
         }
         
         return resultCompetitions.isEmpty ? nil : resultCompetitions
+    }
+    
+    func getCompetitions() throws -> [Competition]? {
+        let competitions: [Competition]?
+        do {
+            try competitions = competitionRepository?.getCompetitions()
+        } catch DatabaseError.getError {
+            throw DatabaseError.getError
+        }
+        
+        return competitions
+    }
+    
+    func addTeam(team: Team?, competition: Competition?) throws {
+        guard let team = team,
+              let competition = competition else {
+                  throw ParameterError.funcParameterError
+        }
+        
+        do {
+            try teamToCompetitionRepository?.addTeam(team: team, competition: competition)
+        } catch DatabaseError.getError {
+            throw DatabaseError.getError
+        }
     }
 }

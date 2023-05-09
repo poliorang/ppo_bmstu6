@@ -130,7 +130,8 @@ class CompetitionRepository: ICompetitionRepository, IStepToCompetitionRepositor
         }
     }
     
-    func getCompetition() throws -> [Competition]? {
+    func getCompetitions() throws -> [Competition]? {
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
         let competitionsRealm = realm.objects(CompetitionRealm.self)
         var competitions = [Competition]()
         

@@ -15,4 +15,6 @@ protocol IParticipantService {
     
     func getParticipant(fullname: String?) throws -> [Participant]?
     func getParticipants(parameter: SortParameter?, stepName: String?) throws -> [Participant]?
+    
+    func getParticipantByTeam(team: Team?) throws -> [Participant]?
 }

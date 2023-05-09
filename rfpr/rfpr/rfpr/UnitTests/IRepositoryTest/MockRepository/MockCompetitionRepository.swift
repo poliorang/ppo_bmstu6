@@ -52,7 +52,7 @@ class MockCompetitionRepository: ICompetitionRepository, IStepToCompetitionRepos
         }
     }
     
-    func getCompetition() throws -> [Competition]? {
+    func getCompetitions() throws -> [Competition]? {
         [competition1, competition2, competition3].forEach {
             dbCompetition.append($0)
         }

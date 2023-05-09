@@ -13,4 +13,7 @@ protocol ICompetitionService {
     func deleteCompetition(competition: Competition?) throws
     
     func getCompetition(name: String?) throws -> [Competition]?
+    func getCompetitions() throws -> [Competition]?
+    
+    func addTeam(team: Team?, competition: Competition?) throws 
 }
