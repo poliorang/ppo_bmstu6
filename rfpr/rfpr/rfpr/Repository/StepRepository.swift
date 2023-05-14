@@ -8,8 +8,8 @@
 import Foundation
 import RealmSwift
 
-class StepRepository: IStepRepository, ILootToStepRepository {    
-
+class StepRepository: IStepRepository, ILootToStepRepository, IStepByParticipantRepository {
+  
     let realm: Realm!
     var config: Realm.Configuration!
     init(configRealm: String) throws {
@@ -52,7 +52,7 @@ class StepRepository: IStepRepository, ILootToStepRepository {
         let realmStep: StepRealm
         
         do {
-            realmStep = try step.convertStepToRealm()
+            realmStep = try step.convertStepToRealm(realm)
         } catch {
             throw DatabaseError.addError
         }
@@ -74,8 +74,8 @@ class StepRepository: IStepRepository, ILootToStepRepository {
         var newStep = newStep
         newStep.id = previousStep.id
         
-        let realmPreviousStep = try previousStep.convertStepToRealm()
-        let realmNewStep = try newStep.convertStepToRealm()
+        let realmPreviousStep = try previousStep.convertStepToRealm(realm)
+        let realmNewStep = try newStep.convertStepToRealm(realm)
         
         let stepFromDB = realm.objects(StepRealm.self).where {
             $0._id == realmPreviousStep._id
@@ -99,7 +99,7 @@ class StepRepository: IStepRepository, ILootToStepRepository {
     }
     
     func deleteStep(step: Step) throws {
-        let realmStep = try step.convertStepToRealm()
+        let realmStep = try step.convertStepToRealm(realm)
         
         let stepFromDB = realm.objects(StepRealm.self).where {
             $0._id == realmStep._id
@@ -120,8 +120,8 @@ class StepRepository: IStepRepository, ILootToStepRepository {
     
     
     func addLoot(loot: Loot, step: Step) throws {
-        let realmStep = try step.convertStepToRealm()
-        let realmLoot = try loot.convertLootToRealm()
+        let realmStep = try step.convertStepToRealm(realm)
+        let realmLoot = try loot.convertLootToRealm(realm)
         
         let stepFromDB = realm.objects(StepRealm.self).where {
             $0._id == realmStep._id
@@ -150,7 +150,7 @@ class StepRepository: IStepRepository, ILootToStepRepository {
     }
     
     func deleteLoot(loot: Loot, step: Step) throws {
-        let realmLoot = try loot.convertLootToRealm()
+        let realmLoot = try loot.convertLootToRealm(realm)
         
         let lootFromDB = realm.objects(LootRealm.self).where {
             $0._id == realmLoot._id
@@ -169,4 +169,90 @@ class StepRepository: IStepRepository, ILootToStepRepository {
             throw DatabaseError.updateError
         }
     }
+    
+    func getSteps() throws -> [Step]? {
+        let stepsRealm = realm.objects(StepRealm.self)
+        var steps = [Step]()
+        
+        for step in stepsRealm {
+            steps.append(step.convertStepFromRealm())
+        }
+
+        return steps.isEmpty ? nil : steps
+    }
+    
+    func getStepByParticipant(participant: Participant) throws -> [Step]? {
+        let steps = try! getSteps()
+        
+        var resultSteps = [Step]()
+        if let steps = steps {
+            for step in steps {
+                if step.participant == participant {
+                    resultSteps.append(step)
+                }
+            }
+        }
+        
+        return resultSteps
+    }
+    
+    func getStepByCompetition(competition: Competition) throws -> [Step]? {
+        let steps = try! getSteps()
+        
+        var resultSteps = [Step]()
+        if let steps = steps {
+            for step in steps {
+                if step.competition == competition {
+                    resultSteps.append(step)
+                }
+            }
+        }
+        
+        return resultSteps.isEmpty ? nil : resultSteps
+    }
+    
+    func addParticipant(participant: Participant, step: Step) throws {
+        let realmStep = try step.convertStepToRealm(realm)
+        let realmParticipant = try participant.convertParticipantToRealm(realm)
+        
+
+        let stepsFromDB = realm.objects(StepRealm.self)
+        var stepFromDB: StepRealm? = nil
+        
+        for step in stepsFromDB {
+            if step._id == realmStep._id {
+                stepFromDB = step
+                break
+            }
+        }
+        
+        guard let stepFromDB = stepFromDB else {
+            throw ParameterError.funcParameterError
+        }
+        
+        
+        let participantsFromDB = realm.objects(ParticipantRealm.self)
+        var participantFromDB: ParticipantRealm? = nil
+        
+        for participant in participantsFromDB {
+            if participant._id == realmParticipant._id {
+                participantFromDB = participant
+                break
+            }
+        }
+        
+        guard let participantFromDB = participantFromDB else {
+            throw ParameterError.funcParameterError
+        }
+        
+        do {
+            try realm.write {
+                stepFromDB.participant = participantFromDB
+                realm.add(stepFromDB, update: .modified)
+            }
+        } catch {
+            throw DatabaseError.updateError
+        }
+    }
+    
 }

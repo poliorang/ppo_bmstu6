@@ -5,9 +5,13 @@
 //  Created by poliorang on 31.03.2023.
 //
 
-class MockStepRepository: IStepRepository, ILootToStepRepository {
+class MockStepRepository: IStepRepository, ILootToStepRepository, IStepByParticipantRepository {
     
-    private let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
+    func getStepByParticipant(participant: Participant) throws -> [Step]? {
+        return nil
+    }
+
+    private let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
     private let loot = Loot(id: "1", fish: "Щука", weight: 500, score: 1000)
     
     private var dbSteps = [Step]()
@@ -72,5 +76,19 @@ class MockStepRepository: IStepRepository, ILootToStepRepository {
             throw DatabaseError.addError
         }
     }
+    
+    func getSteps() throws -> [Step]? {
+         return nil
+    }
+    
+    func addParticipant(participant: Participant, step: Step) throws {
+        
+    }
+   
+    func getStepByCompetition(competition: Competition) throws -> [Step]? {
+        return nil
+    }
+    
 }
+
 

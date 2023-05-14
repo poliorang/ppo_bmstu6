@@ -20,12 +20,12 @@ class MockGetDataRepository: IGetDataRepository {
         participants[1].team = team2
         participants[2].team = team3
         
-        let steps = [Step(id: "0", name: "1", participant: participants[0], competition: nil),
-                     Step(id: "1", name: "1", participant: participants[1], competition: nil),
-                     Step(id: "2", name: "1", participant: participants[2], competition: nil),
-                     Step(id: "3", name: "2", participant: participants[0], competition: nil),
-                     Step(id: "4", name: "2", participant: participants[1], competition: nil),
-                     Step(id: "5", name: "2", participant: participants[2], competition: nil)]
+        let steps = [Step(id: "0", name: "1", participant: participants[0], competition: nil, score: 0),
+                     Step(id: "1", name: "1", participant: participants[1], competition: nil, score: 0),
+                     Step(id: "2", name: "1", participant: participants[2], competition: nil, score: 0),
+                     Step(id: "3", name: "2", participant: participants[0], competition: nil, score: 0),
+                     Step(id: "4", name: "2", participant: participants[1], competition: nil, score: 0),
+                     Step(id: "5", name: "2", participant: participants[2], competition: nil, score: 0)]
         
         var resultSteps = [Step]()
         for step in steps {
@@ -42,12 +42,12 @@ class MockGetDataRepository: IGetDataRepository {
         participants[1].team = team2
         participants[2].team = team3
         
-        let steps = [Step(id: "0", name: "1", participant: participants[0], competition: nil),
-                     Step(id: "1", name: "1", participant: participants[1], competition: nil),
-                     Step(id: "2", name: "1", participant: participants[2], competition: nil),
-                     Step(id: "3", name: "2", participant: participants[0], competition: nil),
-                     Step(id: "4", name: "2", participant: participants[1], competition: nil),
-                     Step(id: "5", name: "2", participant: participants[2], competition: nil)]
+        let steps = [Step(id: "0", name: "1", participant: participants[0], competition: nil, score: 0),
+                     Step(id: "1", name: "1", participant: participants[1], competition: nil, score: 0),
+                     Step(id: "2", name: "1", participant: participants[2], competition: nil, score: 0),
+                     Step(id: "3", name: "2", participant: participants[0], competition: nil, score: 0),
+                     Step(id: "4", name: "2", participant: participants[1], competition: nil, score: 0),
+                     Step(id: "5", name: "2", participant: participants[2], competition: nil, score: 0)]
         
         var resultSteps = [Step]()
         for step in steps {
@@ -60,12 +60,12 @@ class MockGetDataRepository: IGetDataRepository {
     }
     
     func lootsWithSteptId(step matchStep: Step) -> [Loot]? {
-        let steps = [Step(id: "0", name: "1", participant: participants[0], competition: nil),
-                     Step(id: "1", name: "1", participant: participants[1], competition: nil),
-                     Step(id: "2", name: "1", participant: participants[2], competition: nil),
-                     Step(id: "3", name: "2", participant: participants[0], competition: nil),
-                     Step(id: "4", name: "2", participant: participants[1], competition: nil),
-                     Step(id: "5", name: "2", participant: participants[2], competition: nil)]
+        let steps = [Step(id: "0", name: "1", participant: participants[0], competition: nil, score: 0),
+                     Step(id: "1", name: "1", participant: participants[1], competition: nil, score: 0),
+                     Step(id: "2", name: "1", participant: participants[2], competition: nil, score: 0),
+                     Step(id: "3", name: "2", participant: participants[0], competition: nil, score: 0),
+                     Step(id: "4", name: "2", participant: participants[1], competition: nil, score: 0),
+                     Step(id: "5", name: "2", participant: participants[2], competition: nil, score: 0)]
         
         let loots = [Loot(id: "0", fish: "Щука", weight: 1500, step: steps[0], score: 2000), // 0 уч 1 этап
                     Loot(id: "1", fish: "Окунь", weight: 500, step: steps[0], score: 1000), // 0 уч 1 этап

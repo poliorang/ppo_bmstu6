@@ -26,7 +26,7 @@ class BeforeCompetitionRepositoryTest {
     }
     
     func createData() throws {
-        let step = Step(id: "6442852b2b74d595cb4f4756", name: "Add competition")
+        let step = Step(id: "6442852b2b74d595cb4f4756", name: "Add competition", score: 0)
 
         let сompetitionUpdate = Competition(id: "6442852b2b74d595cb4f4760", name: "Update", teams: nil)
         let competitionDelete = Competition(id: "6442852b2b74d595cb4f4764", name: "Delete", teams: nil)

@@ -10,4 +10,8 @@ protocol ILootService {
     
     func updateLoot(previousLoot: Loot?, newLoot: Loot?) throws -> Loot
     func deleteLoot(loot: Loot?) throws
+    
+    func getLoot(fishName: String?, score: Int?) throws -> Loot?
+    
+    func getLootByStep(step: Step?) throws -> [Loot]? 
 }

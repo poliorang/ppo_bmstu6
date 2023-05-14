@@ -51,7 +51,7 @@ class ParticipantRepository: IParticipantRepository, IParticipantByTeamRepositor
         let realmParticipant: ParticipantRealm
         
         do {
-            realmParticipant = try participant.convertParticipantToRealm()
+            realmParticipant = try participant.convertParticipantToRealm(realm)
         } catch {
             throw DatabaseError.addError
         }
@@ -73,8 +73,8 @@ class ParticipantRepository: IParticipantRepository, IParticipantByTeamRepositor
         var newParticipant = newParticipant
         newParticipant.id = previousParticipant.id
         
-        let realmPreviousParticipant = try previousParticipant.convertParticipantToRealm()
-        let realmNewParticipant = try newParticipant.convertParticipantToRealm()
+        let realmPreviousParticipant = try previousParticipant.convertParticipantToRealm(realm)
+        let realmNewParticipant = try newParticipant.convertParticipantToRealm(realm)
         
         let participantFromDB = realm.objects(ParticipantRealm.self).where {
             $0._id == realmPreviousParticipant._id
@@ -98,7 +98,7 @@ class ParticipantRepository: IParticipantRepository, IParticipantByTeamRepositor
     }
     
     func deleteParticipant(participant: Participant) throws {
-        let realmParticipant = try participant.convertParticipantToRealm()
+        let realmParticipant = try participant.convertParticipantToRealm(realm)
         
         let participantFromDB = realm.objects(ParticipantRealm.self).where {
             $0._id == realmParticipant._id
@@ -142,9 +142,41 @@ class ParticipantRepository: IParticipantRepository, IParticipantByTeamRepositor
             }
         }
         
-    
-        
         return resultParticipant.isEmpty ? nil : resultParticipant
+    }
+    
+    func getParticipantScoreByCompetition(participant: Participant, competition: Competition, stepName: StepsName?) throws -> Participant? {
+        guard let participant = try getParticipant(id: participant.id!) else {
+            throw ParameterError.funcParameterError
+        }
+        
+        let participantRealm = try participant.convertParticipantToRealm(realm)
+        let competitionRealm = try competition.convertCompetitionToRealm(realm)
+        let stepsRealm = realm.objects(StepRealm.self)
+        
+        var newScore = 0
+        for step in stepsRealm {
+            if step.participant == participantRealm {
+                if let stepName = stepName {
+                    if step.name == stepName.rawValue && step.competition == competitionRealm { newScore += step.score }
+                } else {
+                    newScore += step.score
+                }
+            }
+        }
+        
+        do {
+            try realm.write {
+                participantRealm.score = newScore
+                realm.add(participantRealm, update: .modified)
+            }
+        } catch {
+            throw DatabaseError.updateError
+        }
+        
+        let resultParticipant = participantRealm.convertParticipantFromRealm()
+        
+        return resultParticipant
     }
 }
 

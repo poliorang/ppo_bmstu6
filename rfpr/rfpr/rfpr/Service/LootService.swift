@@ -8,9 +8,12 @@
 class LootService: ILootService {
 
     let lootRepository: ILootRepository?
+    let lootByStepRepository: ILootByStepRepository?
     
-    init(lootRepository: ILootRepository) {
+    init(lootRepository: ILootRepository,
+         lootByStepRepository: ILootByStepRepository) {
         self.lootRepository = lootRepository
+        self.lootByStepRepository = lootByStepRepository
     }
     
     func createLoot(id: String?, fish: String?, step: Step?, weight: Int?) throws -> Loot {
@@ -69,5 +72,58 @@ class LootService: ILootService {
     
     func getScore(weight: Int) -> Int {
         return weight + 500
+    }
+    
+    func getLootByStep(step: Step?) throws -> [Loot]? {
+        guard let step = step else {
+            throw ParameterError.funcParameterError
+        }
+        
+        let loots: [Loot]?
+        do {
+            loots = try lootByStepRepository?.getLootByStep(step: step)
+        } catch DatabaseError.deleteError {
+            throw DatabaseError.deleteError
+        }
+        
+        return loots
+    }
+    
+    func getLoots() throws -> [Loot]? {
+        let loots: [Loot]?
+        do {
+            try loots = lootRepository?.getLoots()
+        } catch DatabaseError.getError {
+            throw DatabaseError.getError
+        }
+        
+        return loots
+    }
+    
+    func getLoot(fishName: String?, score: Int?) throws -> Loot? {
+        guard let fishName = fishName,
+              let score = score else {
+                  throw ParameterError.funcParameterError
+        }
+        
+        let loots: [Loot]?
+        do {
+            try loots = lootRepository?.getLoots()
+        } catch DatabaseError.getError {
+            throw DatabaseError.getError
+        }
+        
+        
+        guard let loots = loots else {
+            throw DatabaseError.getError
+        }
+        
+        for loot in loots {
+            if loot.fish == fishName && loot.score == score {
+                return loot
+            }
+        }
+        
+        return nil
     }
 }

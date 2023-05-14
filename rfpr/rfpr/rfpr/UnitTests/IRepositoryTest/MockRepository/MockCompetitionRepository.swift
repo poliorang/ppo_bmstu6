@@ -14,7 +14,7 @@ class MockCompetitionRepository: ICompetitionRepository, IStepToCompetitionRepos
     
     private var dbCompetition = [Competition]()
     
-    private let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
+    private let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
     private var dbStep = [Step]()
     
     private let team = Team(id: "1", name: "Увильды", competitions: nil, score: 0)

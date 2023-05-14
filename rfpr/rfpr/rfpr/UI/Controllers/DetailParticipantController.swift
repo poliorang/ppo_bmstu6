@@ -271,25 +271,40 @@ class DetailParticipantViewController: UIViewController, ToDetailParticipantDele
         let city = cityTextField.text?.removingLeadingSpaces().removingFinalSpaces()
         let teamName = teamTextFIeld.text?.removingLeadingSpaces().removingFinalSpaces()
         
+        var team: Team? = nil
+        
+        if teamName != "" {
+            do {
+                team = try services.teamService.getTeam(name: teamName)?.first
+                
+                let participantsByTeam = try services.participantService.getParticipantByTeam(team: team)
+                if participantsByTeam?.count == 3 {
+                    alertManager.showAlert(presentTo: self, title: "Внимание", message: "В команде уже есть 3 участника")
+                    return
+                }
+            } catch {
+                alertManager.showAlert(presentTo: self, title: "Внимание", message: "Команда не найдена")
+            }
+        }
+        
+        
         if let updateParticipant = updateParticipant {
             do {
-                let team = try services.teamService.getTeam(name: teamName)?.first
-                
                 let participant = Participant(id: nil, lastName: lastname, firstName: firstname, patronymic: patronymic, team: team, city: city ?? "", birthday: birthday, role: role, score: 0)
                 _ = try services.participantService.updateParticipant(previousParticipant: updateParticipant, newParticipant: participant)
                 print("\(participant.lastName) WAS UPDATED")
             } catch {
-                alertManager.showAlert(presentTo: self, title: "Внимание", message: "Учатсник не был создан")
+                alertManager.showAlert(presentTo: self, title: "Внимание", message: "Участник не был создан")
             }
             
         } else {
             var participant: Participant? = nil
             do {
-                let team = try services.teamService.getTeam(name: teamName)?.first
-                try participant = services.participantService.createParticipant(id: nil, lastName: lastname, firstName: firstname, patronymic: patronymic, team: nil, city: city, birthday: birthday, role: role, score: 0)
-                try services.teamService.addParticipant(participant: participant, team: team)
+                try participant = services.participantService.createParticipant(id: nil, lastName: lastname, firstName: firstname, patronymic: patronymic, team: team, city: city, birthday: birthday, role: role, score: 0)
+                print("participant ", participant)
+//                try services.teamService.addParticipant(participant: participant, team: team)
             } catch {
-                alertManager.showAlert(presentTo: self, title: "Внимание", message: "Учатсник не был создан")
+                alertManager.showAlert(presentTo: self, title: "Внимание", message: "Участник не был создан")
             }
             print("\(participant?.lastName ?? "") WAS CREATED")
         }
@@ -305,10 +320,13 @@ extension DetailParticipantViewController: UIPickerViewDataSource, UIPickerViewD
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch selectedTextField {
+        
         case teamTextFIeld:
             return teams?.count ?? 0
+        
         case roleTextField:
             return roles.count
+        
         default:
             return 0
         }
@@ -316,10 +334,13 @@ extension DetailParticipantViewController: UIPickerViewDataSource, UIPickerViewD
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch selectedTextField {
+       
         case teamTextFIeld:
             return teams?[row].name
+        
         case roleTextField:
             return roles[row]
+        
         default:
             return nil
         }
@@ -327,11 +348,15 @@ extension DetailParticipantViewController: UIPickerViewDataSource, UIPickerViewD
         
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if selectedTextField == teamTextFIeld {  teamTextFIeld.text = teams?[row].name }
+        
         switch selectedTextField {
+        
         case teamTextFIeld:
             teamTextFIeld.text = teams?[row].name
+        
         case roleTextField:
             roleTextField.text = roles[row]
+        
         default:
             return
         }

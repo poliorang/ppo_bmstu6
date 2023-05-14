@@ -12,11 +12,13 @@ class LootServiceTests: XCTestCase {
     
     var lootService: ILootService!
     var lootRepository: ILootRepository!
+    var lootByStepRepository: ILootByStepRepository!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         lootRepository = MockLootRepository()
-        lootService = LootService(lootRepository: lootRepository)
+        lootByStepRepository = MockLootRepository()
+        lootService = LootService(lootRepository: lootRepository, lootByStepRepository: lootByStepRepository)
     }
 
     override func tearDownWithError() throws {
@@ -26,22 +28,22 @@ class LootServiceTests: XCTestCase {
     }
 
     func testCreateLoot() throws {
-        let step = Step(id: "1", name: "1", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "1", participant: nil, competition: nil, score: 0)
         XCTAssertNoThrow(try lootService.createLoot(id: "1", fish: "Щука", step: step, weight: 500))
     }
     
     func testCreateLootNilId() throws {
-        let step = Step(id: "1", name: "1", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "1", participant: nil, competition: nil, score: 0)
         XCTAssertNoThrow(try lootService.createLoot(id: nil, fish: "Щука", step: step, weight: 500))
     }
     
     func testCreateLootNilName() throws {
-        let step = Step(id: "1", name: "1", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "1", participant: nil, competition: nil, score: 0)
         XCTAssertThrowsError(try lootService.createLoot(id: "1", fish: nil, step: step, weight: 500))
     }
     
     func testCreateLootWeightNil() throws {
-        let step = Step(id: "1", name: "1", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "1", participant: nil, competition: nil, score: 0)
         XCTAssertThrowsError(try lootService.createLoot(id: "1", fish: "Щука", step: step, weight: nil))
     }
     

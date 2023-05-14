@@ -9,8 +9,15 @@ class StepService: IStepService {
 
     let stepRepository: IStepRepository?
     
-    init(stepRepository: IStepRepository) {
+    let stepByParticipantRepository: IStepByParticipantRepository?
+    let lootToStepRepository: ILootToStepRepository?
+    
+    init(stepRepository: IStepRepository,
+         stepByParticipantRepository: IStepByParticipantRepository,
+         lootToStepRepository: ILootToStepRepository) {
         self.stepRepository = stepRepository
+        self.stepByParticipantRepository = stepByParticipantRepository
+        self.lootToStepRepository = lootToStepRepository
     }
     
     func createStep(id: String?, name: String?, participant: Participant?, competition: Competition?) throws -> Step {
@@ -18,7 +25,7 @@ class StepService: IStepService {
                   throw ParameterError.funcParameterError
         }
         
-        let step = Step(id: id, name: name, participant: participant, competition: competition)
+        let step = Step(id: id, name: name, participant: participant, competition: competition, score: 0)
         let createdStep: Step?
         
         do {
@@ -64,6 +71,81 @@ class StepService: IStepService {
         } catch DatabaseError.deleteError {
             throw DatabaseError.deleteError
         }
+    }
+    
+    func getStepByParticipant(participant: Participant?) throws -> [Step]?  {
+        guard let participant = participant else {
+            throw ParameterError.funcParameterError
+        }
+        
+        let steps: [Step]?
+        do {
+            steps = try stepByParticipantRepository?.getStepByParticipant(participant: participant)
+        } catch DatabaseError.getError {
+            throw DatabaseError.getError
+        }
+        
+        return steps
+    }
+    
+    func getStepByName(stepName: String?) throws -> [Step]? {
+        guard let stepName = stepName else {
+            throw ParameterError.funcParameterError
+        }
+        
+        let steps: [Step]?
+        
+        do {
+            steps = try stepRepository?.getSteps()
+        } catch DatabaseError.getError {
+            throw DatabaseError.getError
+        }
+        
+        guard let steps = steps else {
+            return nil
+        }
+        
+        var resultSteps = [Step]()
+        for step in steps {
+            if step.name == stepName {
+                resultSteps.append(step)
+            }
+        }
+        
+        return resultSteps.isEmpty ? nil : resultSteps
+    }
+    
+    func getStepByCompetition(competition: Competition?) throws -> [Step]? {
+        guard let competition = competition else {
+            throw ParameterError.funcParameterError
+        }
+        
+        let steps: [Step]?
+        do {
+            steps = try stepRepository?.getStepByCompetition(competition: competition)
+        } catch DatabaseError.getError {
+            throw DatabaseError.getError
+        }
+        
+        return steps
+    }
+    
+    func addParticipant(participant: Participant?, step: Step?) throws {
+        guard let participant = participant,
+              let step = step else {
+                  throw ParameterError.funcParameterError
+        }
+        
+        try stepRepository?.addParticipant(participant: participant, step: step)
+    }
+    
+    func addLoot(loot: Loot?, step: Step?) throws {
+        guard let loot = loot,
+              let step = step else {
+                  throw ParameterError.funcParameterError
+        }
+        
+        try lootToStepRepository?.addLoot(loot: loot, step: step)
     }
 }
 

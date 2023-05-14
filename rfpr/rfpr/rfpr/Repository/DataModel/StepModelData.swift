@@ -12,8 +12,9 @@ class StepRealm: Object {
     @Persisted var name: String
     @Persisted var participant: ParticipantRealm?
     @Persisted var competition: CompetitionRealm?
+    @Persisted var score: Int
     
-    convenience init(id: String?, name: String, participant: ParticipantRealm?, competition: CompetitionRealm?) {
+    convenience init(id: String?, name: String, participant: ParticipantRealm?, competition: CompetitionRealm?, score: Int) {
         self.init()
         
         self._id = ObjectId.generate()
@@ -21,11 +22,12 @@ class StepRealm: Object {
         self.name = name
         self.participant = participant
         self.competition = competition
+        self.score = score
     }
 }
 
 extension StepRealm {
     func convertStepFromRealm() -> Step {
-        return Step(id: "\(self._id)", name: self.name, participant: self.participant?.convertParticipantFromRealm(), competition: self.competition?.convertCompetitionFromRealm())
+        return Step(id: "\(self._id)", name: self.name, participant: self.participant?.convertParticipantFromRealm(), competition: self.competition?.convertCompetitionFromRealm(), score: self.score)
     }
 }

@@ -39,12 +39,17 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
     var teams: [Team]?              // получается из CompetitionController
     var participants: [Participant]?
     
+    var sortParameter = SortParameter.decreasing
+    var stepName: StepsName? = nil
+    
     let searchBar = UISearchBar()
     let tableView = UITableView.init(frame: .zero, style: UITableView.Style.grouped)
     let headerLabel = UILabel()
     var teamsOrParticipantsButton: UIBarButtonItem? = nil
     let sortButton = UIButton()
     let createTeamButton = UIButton()
+    
+    let setupButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,13 +65,15 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
         setupServices()
         getTeamsByCompetition()
         getParticipants()
+        getScoreByCompetitionByStep()
         
         setupTable()
         setupHeaderLabel(headerLabel)
     
         setupTeamsOrParticipantsBarButton()
         setupCreateTeamsButton(createTeamButton)
-
+        setupSetupButton(setupButton)
+        
         setupSearchBar(searchBar)
     }
 
@@ -86,7 +93,7 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
     
     
     
-    func getParticipants(){
+    func getParticipants() {
         do {
             participants = [Participant]()
             if let teams = teams {
@@ -124,6 +131,25 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
                                    message: "Не удалось получить доступ к базе данных")
         }
     }
+    
+    private func getScoreByCompetitionByStep() {
+        do {
+            participants = try services.participantService.getParticipantsScoreByCompetition(participants: participants, competition: competition, stepName: stepName, parameter: sortParameter)
+        } catch {
+            alertManager.showAlert(presentTo: self,
+                                   title: "Внимание",
+                                   message: "Не удалось получить данные об участниках")
+        }
+        
+        do {
+            teams = try services.teamService.getTeamsScoreByCompetition(teams: teams, competition: competition, stepName: stepName, parameter: sortParameter)
+        } catch {
+            alertManager.showAlert(presentTo: self,
+                                   title: "Внимание",
+                                   message: "Не удалось получить данные о командах")
+        }
+    }
+    
     
     func setupHeaderLabel(_ label: UILabel) {
         view.addSubview(label)
@@ -184,9 +210,25 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 8),
             searchBar.heightAnchor.constraint(equalToConstant: 45),
-            searchBar.widthAnchor.constraint(equalToConstant: view.frame.width),
-            searchBar.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            searchBar.widthAnchor.constraint(equalToConstant: view.frame.width - 50),
+            searchBar.leftAnchor.constraint(equalTo: view.leftAnchor)
         ])
+    }
+    
+    func setupSetupButton(_ button: UIButton) {
+        self.view.addSubview(button)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(systemName: "gear"), for: .normal)
+        
+        NSLayoutConstraint.activate([
+            button.topAnchor.constraint(equalTo: view.topAnchor, constant: 144),
+            button.heightAnchor.constraint(equalToConstant: 50),
+            button.widthAnchor.constraint(equalToConstant: 50),
+            button.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -9)
+        ])
+        
+        button.addTarget(self, action: #selector(buttonSetupTapped(sender:)), for: .touchUpInside)
     }
     
     private func setupTable() {
@@ -267,6 +309,25 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
         default:
             return
         }
+    }
+    
+    @objc
+    func buttonSetupTapped(sender: UIButton) {
+        let setupSortingViewController = SetupSortingViewController()
+        
+        let updateTableCompletion:() -> Void = {
+            self.getTeamsByCompetition()
+            self.getParticipants()
+            self.getScoreByCompetitionByStep()
+            self.tableView.reloadData()
+            
+            print("S ", self.sortParameter, self.stepName)
+        }
+        
+        setupSortingViewController.gettedCompletion = updateTableCompletion
+        setupSortingViewController.teamViewController = self
+        
+        present(setupSortingViewController, animated: true, completion: nil)
     }
 }
 

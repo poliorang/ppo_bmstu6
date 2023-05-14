@@ -54,7 +54,7 @@ class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
         let realmTeam: TeamRealm
         
         do {
-            realmTeam = try team.convertTeamToRealm()
+            realmTeam = try team.convertTeamToRealm(realm)
         } catch {
             throw DatabaseError.addError
         }
@@ -76,8 +76,8 @@ class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
         var newTeam = newTeam
         newTeam.id = previousTeam.id
         
-        let realmPreviousTeam = try previousTeam.convertTeamToRealm()
-        let realmNewTeam = try newTeam.convertTeamToRealm()
+        let realmPreviousTeam = try previousTeam.convertTeamToRealm(realm)
+        let realmNewTeam = try newTeam.convertTeamToRealm(realm)
         
         let teamsFromDB = realm.objects(TeamRealm.self)
         var teamFromDB: TeamRealm? = nil
@@ -107,7 +107,7 @@ class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
     }
     
     func deleteTeam(team: Team) throws {
-        let realmTeam = try team.convertTeamToRealm()
+        let realmTeam = try team.convertTeamToRealm(realm)
         
         let teamsFromDB = realm.objects(TeamRealm.self)
         var teamFromDB: TeamRealm? = nil
@@ -144,8 +144,8 @@ class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
     }
 
     func addCompetition(team: Team, competition: Competition) throws {
-        let realmTeam = try team.convertTeamToRealm()
-        let realmCompetition = try competition.convertCompetitionToRealm()
+        let realmTeam = try team.convertTeamToRealm(realm)
+        let realmCompetition = try competition.convertCompetitionToRealm(realm)
         
         
         let teamsFromDB = realm.objects(TeamRealm.self)
@@ -177,6 +177,10 @@ class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
             throw ParameterError.funcParameterError
         }
         
+        if teamFromDB.competitions.contains(competitionFromDB) {
+            return
+        }
+        
         do {
             try realm.write {
                 teamFromDB.competitions.append(competitionFromDB)
@@ -188,8 +192,8 @@ class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
     }
     
     func addParticipant(participant: Participant, team: Team) throws {
-        let realmTeam = try team.convertTeamToRealm()
-        let realmParticipant = try participant.convertParticipantToRealm()
+        let realmTeam = try team.convertTeamToRealm(realm)
+        let realmParticipant = try participant.convertParticipantToRealm(realm)
         
 
         let teamsFromDB = realm.objects(TeamRealm.self)
@@ -243,6 +247,48 @@ class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
                 }
             }
         }
+        
+        return resultTeam
+    }
+    
+    func getTeamScoreByCompetition(team: Team, competition: Competition, stepName: StepsName?) throws -> Team? {
+        guard let team = try getTeam(id: team.id!) else {
+            throw ParameterError.funcParameterError
+        }
+        
+        let teamRealm = try team.convertTeamToRealm(realm)
+        let competitionRealm = try competition.convertCompetitionToRealm(realm)
+        
+        let participantsRealm = realm.objects(ParticipantRealm.self)
+        let stepsRealm = realm.objects(StepRealm.self)
+        
+        
+        var newScore = 0
+        for participant in participantsRealm {
+            if participant.team != teamRealm { continue }
+                
+            for step in stepsRealm {
+                if step.participant != participant { continue }
+                
+                if let stepName = stepName {
+                    if step.name == stepName.rawValue && step.competition == competitionRealm { newScore += step.score }
+                } else {
+                    newScore += step.score
+                }
+            }
+        }
+        
+        
+        do {
+            try realm.write {
+                teamRealm.score = newScore
+                realm.add(teamRealm, update: .modified)
+            }
+        } catch {
+            throw DatabaseError.updateError
+        }
+        
+        let resultTeam = teamRealm.convertTeamFromRealm()
         
         return resultTeam
     }

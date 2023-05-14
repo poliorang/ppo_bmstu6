@@ -52,7 +52,7 @@ class CompetitionRepository: ICompetitionRepository, IStepToCompetitionRepositor
         let realmCompetition: CompetitionRealm
         
         do {
-            realmCompetition = try competition.convertCompetitionToRealm()
+            realmCompetition = try competition.convertCompetitionToRealm(realm)
         } catch {
             throw DatabaseError.addError
         }
@@ -74,8 +74,8 @@ class CompetitionRepository: ICompetitionRepository, IStepToCompetitionRepositor
         var newCompetition = newCompetition
         newCompetition.id = previousCompetition.id
         
-        let realmPreviousCompetition = try previousCompetition.convertCompetitionToRealm()
-        let realmNewCompetition = try newCompetition.convertCompetitionToRealm()
+        let realmPreviousCompetition = try previousCompetition.convertCompetitionToRealm(realm)
+        let realmNewCompetition = try newCompetition.convertCompetitionToRealm(realm)
         
         let competitionsFromDB = realm.objects(CompetitionRealm.self)
         var competitionFromDB: CompetitionRealm? = nil
@@ -105,7 +105,7 @@ class CompetitionRepository: ICompetitionRepository, IStepToCompetitionRepositor
     }
     
     func deleteCompetition(competition: Competition) throws {
-        let realmCompetition = try competition.convertCompetitionToRealm()
+        let realmCompetition = try competition.convertCompetitionToRealm(realm)
         
         let competitionsFromDB = realm.objects(CompetitionRealm.self)
         var competitionFromDB: CompetitionRealm? = nil
@@ -143,8 +143,8 @@ class CompetitionRepository: ICompetitionRepository, IStepToCompetitionRepositor
     }
     
     func addStep(step: Step, competition: Competition) throws {
-        let realmStep = try step.convertStepToRealm()
-        let realmCompetition = try competition.convertCompetitionToRealm()
+        let realmStep = try step.convertStepToRealm(realm)
+        let realmCompetition = try competition.convertCompetitionToRealm(realm)
         
         let stepFromDB = realm.objects(StepRealm.self).where {
             $0._id == realmStep._id
@@ -179,8 +179,8 @@ class CompetitionRepository: ICompetitionRepository, IStepToCompetitionRepositor
     }
     
     func addTeam(team: Team, competition: Competition) throws {
-        let realmTeam = try team.convertTeamToRealm()
-        let realmCompetition = try competition.convertCompetitionToRealm()
+        let realmTeam = try team.convertTeamToRealm(realm)
+        let realmCompetition = try competition.convertCompetitionToRealm(realm)
         
         let teamsFromDB = realm.objects(TeamRealm.self)
         var teamFromDB: TeamRealm? = nil

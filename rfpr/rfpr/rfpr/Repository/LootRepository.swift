@@ -7,7 +7,7 @@
 import Foundation
 import RealmSwift
 
-class LootRepository: ILootRepository {
+class LootRepository: ILootRepository, ILootByStepRepository {
     
     let realm: Realm!
     var config: Realm.Configuration!
@@ -47,11 +47,104 @@ class LootRepository: ILootRepository {
         return nil
     }
     
+    func updateStepScore(_ step: StepRealm) throws {
+        let lootsRealm = realm.objects(LootRealm.self)
+        
+        var newScore = 0
+        for loot in lootsRealm {
+            if loot.step == step {
+                newScore += loot.score
+            }
+        }
+        
+        let id = "\(step._id)"
+        let newStep = StepRealm(id: id, name: step.name, participant: step.participant, competition: step.competition, score: newScore)
+        
+        do {
+            try realm.write {
+                realm.add(newStep, update: .modified)
+            }
+        } catch {
+            throw DatabaseError.updateError
+        }
+    }
+    
+    func updateParticipantScore(_ participant: ParticipantRealm) throws {
+        let stepsRealm = realm.objects(StepRealm.self)
+        
+        var newScore = 0
+        for step in stepsRealm {
+            if step.participant == participant {
+                newScore += step.score
+            }
+        }
+        
+        let id = "\(participant._id)"
+        let newParticipant = ParticipantRealm(id: id, lastName: participant.lastName, firstName: participant.firstName, patronymic: participant.patronymic, team: participant.team, city: participant.city, birthday: participant.birthday, role: participant.role, score: newScore)
+        
+        do {
+            try realm.write {
+                realm.add(newParticipant, update: .modified)
+            }
+        } catch {
+            throw DatabaseError.updateError
+        }
+    }
+    
+    func triggerLootToStep(_ loot: LootRealm?) throws {
+        print("TRIGGER")
+//        guard let loot = loot else {
+//            throw DatabaseError.triggerError
+//        }
+//
+//        let stepsRealm = realm.objects(StepRealm.self)
+//
+//        var currentStep: StepRealm? = nil
+//        for step in stepsRealm {
+//            if loot.step == step {
+//                currentStep = step
+//                do {
+//                    try updateStepScore(step)
+//                } catch {
+//                    throw DatabaseError.updateError
+//                }
+//                break
+//            }
+//        }
+
+//        guard let currentStep = currentStep else {
+//            return
+//        }
+//
+//        let participantsRealm = realm.objects(ParticipantRealm.self)
+//
+//        for participant in participantsRealm {
+//            if currentStep.participant == participant {
+//                do {
+//                    try updateParticipantScore(participant)
+//                } catch {
+//                    throw DatabaseError.updateError
+//                }
+//                break
+//            }
+//        }
+    
+        let stepsRealm = realm.objects(StepRealm.self)
+
+        for step in stepsRealm {
+            do {
+                try updateStepScore(step)
+            } catch {
+                throw DatabaseError.updateError
+            }
+        }
+    }
+    
     func createLoot(loot: Loot) throws -> Loot? {
         let realmLoot: LootRealm
         
         do {
-            realmLoot = try loot.convertLootToRealm()
+            realmLoot = try loot.convertLootToRealm(realm)
         } catch {
             throw DatabaseError.addError
         }
@@ -66,26 +159,34 @@ class LootRepository: ILootRepository {
         
         let createdLoot = try getLoot(id: "\(realmLoot._id)")
         
+        do {
+            let loot = try createdLoot?.convertLootToRealm(realm)
+            try triggerLootToStep(loot)
+        } catch {
+            throw DatabaseError.triggerError
+        }
+        
         return createdLoot
     }
     
     func updateLoot(previousLoot: Loot, newLoot: Loot) throws -> Loot? {
         var newLoot = newLoot
-        newLoot.id = previousLoot.id
+        newLoot.id = nil
         
-        let realmPreviousLoot = try previousLoot.convertLootToRealm()
-        let realmNewLoot = try newLoot.convertLootToRealm()
+        let realmPreviousLoot = try previousLoot.convertLootToRealm(realm)
+        let realmNewLoot = try newLoot.convertLootToRealm(realm)
         
         let lootFromDB = realm.objects(LootRealm.self).where {
             $0._id == realmPreviousLoot._id
         }.first
         
-        guard let _ = lootFromDB else {
+        guard let lootFromDB = lootFromDB else {
             throw ParameterError.funcParameterError
         }
         
         do {
             try realm.write {
+                realmNewLoot._id = realmPreviousLoot._id
                 realm.add(realmNewLoot, update: .modified)
             }
         } catch {
@@ -93,12 +194,19 @@ class LootRepository: ILootRepository {
         }
         
         let updatedLoot = try getLoot(id: "\(realmNewLoot._id)")
-
+        
+        do {
+            let loot = try updatedLoot?.convertLootToRealm(realm)
+            try triggerLootToStep(loot)
+        } catch {
+            throw DatabaseError.triggerError
+        }
+        
         return updatedLoot
     }
     
     func deleteLoot(loot: Loot) throws {
-        let realmLoot = try loot.convertLootToRealm()
+        let realmLoot = try loot.convertLootToRealm(realm)
         
         let lootFromDB = realm.objects(LootRealm.self).where {
             $0._id == realmLoot._id
@@ -115,5 +223,38 @@ class LootRepository: ILootRepository {
         } catch {
             throw DatabaseError.updateError
         }
+
+        do {
+            let deletedLoot = try loot.convertLootToRealm(realm)
+            try triggerLootToStep(deletedLoot)
+        } catch {
+            throw DatabaseError.triggerError
+        }
+    }
+    
+    func getLoots() throws -> [Loot]? {
+        let lootsRealm = realm.objects(LootRealm.self)
+        var loots = [Loot]()
+        
+        for loot in lootsRealm {
+            loots.append(loot.convertLootFromRealm())
+        }
+
+        return loots.isEmpty ? nil : loots
+    }
+    
+    func getLootByStep(step: Step) throws -> [Loot]? {
+        let loots = try! getLoots()
+        
+        var resultLoots = [Loot]()
+        if let loots = loots {
+            for loot in loots {
+                if loot.step == step {
+                    resultLoots.append(loot)
+                }
+            }
+        }
+        
+        return resultLoots
     }
 }

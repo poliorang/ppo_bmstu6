@@ -210,4 +210,31 @@ class TeamService: ITeamService {
         
         try competitionToTeamRepository?.addCompetition(team: team, competition: competition)
     }
+    
+    func getTeamsScoreByCompetition(teams: [Team]?, competition: Competition?, stepName: StepsName?, parameter: SortParameter?) throws -> [Team]? {
+        guard let teams = teams,
+              let competition = competition else {
+                      throw ParameterError.funcParameterError
+        }
+        
+        var resultTeams = [Team]()
+        for i in 0..<teams.count {
+            do {
+                let team = try teamRepository?.getTeamScoreByCompetition(team: teams[i], competition: competition, stepName: stepName)
+                if let team = team { resultTeams.append(team) }
+            } catch {
+                throw DatabaseError.getError
+            }
+        }
+        
+        if parameter == .ascending {
+            resultTeams = resultTeams.sorted(by: { $0.score < $1.score })
+        }
+        
+        if parameter == .decreasing {
+            resultTeams = resultTeams.sorted(by: { $0.score > $1.score })
+        }
+        
+        return resultTeams.isEmpty ? nil : resultTeams
+    }
 }

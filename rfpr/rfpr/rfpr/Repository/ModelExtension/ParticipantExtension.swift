@@ -6,11 +6,25 @@
 //
 
 import Foundation
+import RealmSwift
 
 extension Participant {
-    func convertParticipantToRealm() throws -> ParticipantRealm {
+    func convertParticipantToRealm(_ realm: Realm) throws -> ParticipantRealm {
+        // проверка, что уже есть в бд
+        var participantFromDB: ParticipantRealm? = nil
+        if let id = self.id {
+            let objId = try ObjectId.init(string: id)
+            participantFromDB = realm.objects(ParticipantRealm.self).where {
+                $0._id == objId
+            }.first
+        }
+        
+        if let participantFromDB = participantFromDB {
+            return participantFromDB
+        }
+        
         do {
-            return try ParticipantRealm(id: self.id, lastName: lastName, firstName: firstName, patronymic: patronymic, team: team?.convertTeamToRealm(), city: city, birthday: birthday, role: role, score: score)
+            return try ParticipantRealm(id: self.id, lastName: lastName, firstName: firstName, patronymic: patronymic, team: team?.convertTeamToRealm(realm), city: city, birthday: birthday, role: role, score: score)
         } catch {
             throw DatabaseError.addError
         }

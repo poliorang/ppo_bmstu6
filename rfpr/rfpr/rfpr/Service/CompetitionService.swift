@@ -9,11 +9,14 @@ class CompetitionService: ICompetitionService {
     
     let competitionRepository: ICompetitionRepository?
     let teamToCompetitionRepository: ITeamToCompetitionRepository?
+    let stepToCompetitionRepository: IStepToCompetitionRepository?
     
     init(competitionRepository: ICompetitionRepository,
-         teamToCompetitionRepository: ITeamToCompetitionRepository) {
+         teamToCompetitionRepository: ITeamToCompetitionRepository,
+         stepToCompetitionRepository: IStepToCompetitionRepository) {
         self.competitionRepository = competitionRepository
         self.teamToCompetitionRepository = teamToCompetitionRepository
+        self.stepToCompetitionRepository = stepToCompetitionRepository
     }
     
     func createCompetition(id: String?, name: String?, teams: [Team]?) throws -> Competition {
@@ -115,6 +118,19 @@ class CompetitionService: ICompetitionService {
         
         do {
             try teamToCompetitionRepository?.addTeam(team: team, competition: competition)
+        } catch DatabaseError.getError {
+            throw DatabaseError.getError
+        }
+    }
+    
+    func addStep(step: Step?, competition: Competition?) throws {
+        guard let step = step,
+              let competition = competition else {
+                  throw ParameterError.funcParameterError
+        }
+        
+        do {
+            try stepToCompetitionRepository?.addStep(step: step, competition: competition)
         } catch DatabaseError.getError {
             throw DatabaseError.getError
         }

@@ -10,7 +10,6 @@ import RealmSwift
 
 class GetDataRepository: IGetDataRepository {
    
-    
     let realm: Realm!
     var config: Realm.Configuration!
     init(configRealm: String) throws {

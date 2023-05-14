@@ -5,11 +5,12 @@
 //  Created by poliorang on 29.03.2023.
 //
 
-struct Step {
+struct Step: Hashable {
     var id: String?
     var name: String
     var participant: Participant?
     var competition: Competition?
+    var score: Int
 }
 
 extension Step: Equatable {
@@ -17,7 +18,8 @@ extension Step: Equatable {
         if lhs.id == rhs.id &&
             lhs.name == rhs.name &&
             lhs.participant == rhs.participant &&
-            lhs.competition == rhs.competition {
+            lhs.competition == rhs.competition &&
+            lhs.score == rhs.score {
             return true
         }
         

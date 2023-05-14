@@ -9,7 +9,6 @@ import Foundation
 
 class MockParticipantRepository: IParticipantRepository,
                                  IParticipantByTeamRepository {
-
     private let team1 = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
     private let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 0)
     private let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 0)
@@ -19,10 +18,10 @@ class MockParticipantRepository: IParticipantRepository,
     private var participant2 = Participant(id: "1", lastName: "Иванов", firstName: "Петр", patronymic: "Петрович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 6600)
     private var participant3 = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 2650)
     
-    private var step1 = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
-    private var step2 = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
-    private var step3 = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
-    private var step4 = Step(id: "1", name: "Второй день", participant: nil, competition: nil)
+    private var step1 = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
+    private var step2 = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
+    private var step3 = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
+    private var step4 = Step(id: "1", name: "Второй день", participant: nil, competition: nil, score: 0)
     
     private var dbParticipants = [Participant]()
     
@@ -97,4 +96,8 @@ class MockParticipantRepository: IParticipantRepository,
         return resultParticipant.isEmpty ? nil : resultParticipant
     }
     
+    
+    func getParticipantScoreByCompetition(participant: Participant, competition: Competition, stepName: StepsName?) throws -> Participant? {
+        return nil
+    }
 }

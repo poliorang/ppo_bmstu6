@@ -7,7 +7,7 @@
 
 class MockTeamRepository: ITeamRepository, ICompetitionToTeamRepository,
                           ITeamByParticipantRepository, IParticipantToTeamRepository {
-
+    
     private let team1 = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
     private let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 0)
     private let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 0)
@@ -117,5 +117,9 @@ class MockTeamRepository: ITeamRepository, ICompetitionToTeamRepository,
         } else {
             throw DatabaseError.addError
         }
+    }
+    
+    func getTeamScoreByCompetition(team: Team, competition: Competition, stepName: StepsName?) throws -> Team? {
+        return nil
     }
 }

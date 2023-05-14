@@ -23,54 +23,54 @@ class IStepRepositoryTests: XCTestCase {
     }
 
     func testCreateStep() throws {
-        let step = Step(id: "1", name: "1", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "1", participant: nil, competition: nil, score: 0)
         XCTAssertNoThrow(try stepRepository.createStep(step: step))
     }
                          
     func testCreateStepNilLoot() throws {
-        let step = Step(id: "1", name: "1", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "1", participant: nil, competition: nil, score: 0)
         XCTAssertNoThrow(try stepRepository.createStep(step: step))
     }
     
     func testUpdateStep() throws {
-        let previousStep = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
-        let newStep = Step(id: "1", name: "2", participant: nil, competition: nil)
+        let previousStep = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
+        let newStep = Step(id: "1", name: "2", participant: nil, competition: nil, score: 0)
         XCTAssertNoThrow(try stepRepository.updateStep(previousStep: previousStep, newStep: newStep))
     }
     
     func testUpdateStepNil() throws {
-        let previousStep = Step(id: "10", name: "Первый день", participant: nil, competition: nil)
-        let newStep = Step(id: "1", name: "2", participant: nil, competition: nil)
+        let previousStep = Step(id: "10", name: "Первый день", participant: nil, competition: nil, score: 0)
+        let newStep = Step(id: "1", name: "2", participant: nil, competition: nil, score: 0)
         XCTAssertThrowsError(try stepRepository.updateStep(previousStep: previousStep, newStep: newStep))
     }
     
     func testDeleteStep() throws {
-        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
         XCTAssertNoThrow(try stepRepository.deleteStep(step: step))
     }
     
     func testDeleteStepNil() throws {
-        let step = Step(id: "10", name: "Первый день", participant: nil, competition: nil)
+        let step = Step(id: "10", name: "Первый день", participant: nil, competition: nil, score: 0)
         XCTAssertThrowsError(try stepRepository.deleteStep(step: step))
     }
     
     func testAddLoot() throws {
         let loot = Loot(id: "1", fish: "Щука", weight: 500, score: 100)
-        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
         
         XCTAssertNoThrow(try stepRepository.addLoot(loot: loot, step: step))
     }
     
     func testAddLootNil() throws {
         let loot = Loot(id: "10", fish: "Щука", weight: 500, score: 100)
-        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
         
         XCTAssertNoThrow(try stepRepository.addLoot(loot: loot, step: step))
     }
     
     func testDeleteLoot() throws {
         let loot = Loot(id: "1", fish: "Щука", weight: 500, score: 1000)
-        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
         
         XCTAssertNoThrow(try stepRepository.deleteLoot(loot: loot, step: step))
     }

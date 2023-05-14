@@ -17,5 +17,7 @@ protocol ITeamService {
     
     func addParticipant(participant: Participant?, team: Team?) throws
     func addCompetition(team: Team?, competition: Competition?) throws
+    
+    func getTeamsScoreByCompetition(teams: [Team]?, competition: Competition?, stepName: StepsName?, parameter: SortParameter?) throws -> [Team]?
 }
 

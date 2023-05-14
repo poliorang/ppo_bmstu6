@@ -12,11 +12,17 @@ class StepServiceTests: XCTestCase {
 
     var stepService: IStepService!
     var stepRepository: IStepRepository!
+    var stepByParticipantRepository: IStepByParticipantRepository!
+    var lootToStepRepository: ILootToStepRepository!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         stepRepository = MockStepRepository()
-        stepService = StepService(stepRepository: stepRepository)
+        stepByParticipantRepository = MockStepRepository()
+        lootToStepRepository = MockStepRepository()
+        stepService = StepService(stepRepository: stepRepository,
+                                  stepByParticipantRepository: stepByParticipantRepository,
+                                  lootToStepRepository: lootToStepRepository)
     }
 
     override func tearDownWithError() throws {
@@ -38,20 +44,20 @@ class StepServiceTests: XCTestCase {
     }
     
     func testUpdateStep() throws {
-        let previousStep = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
-        let newStep = Step(id: "1", name: "2", participant: nil, competition: nil)
+        let previousStep = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
+        let newStep = Step(id: "1", name: "2", participant: nil, competition: nil, score: 0)
         
         XCTAssertNoThrow(try stepService.updateStep(previousStep: previousStep, newStep: newStep))
     }
     
     func testUpdateStepNilPrev() throws {
-        let newStep = Step(id: "1", name: "2", participant: nil, competition: nil)
+        let newStep = Step(id: "1", name: "2", participant: nil, competition: nil, score: 0)
         
         XCTAssertThrowsError(try stepService.updateStep(previousStep: nil, newStep: newStep))
     }
     
     func testUpdateStepNilNew() throws {
-        let previousStep = Step(id: "1", name: "2", participant: nil, competition: nil)
+        let previousStep = Step(id: "1", name: "2", participant: nil, competition: nil, score: 0)
         
         XCTAssertThrowsError(try stepService.updateStep(previousStep: previousStep, newStep: nil))
     }
@@ -61,8 +67,8 @@ class StepServiceTests: XCTestCase {
     }
     
     func testUpdateStepNoPrev() throws {
-        let previousStep = Step(id: "1", name: "aaa", participant: nil, competition: nil)
-        let newStep = Step(id: "1", name: "2", participant: nil, competition: nil)
+        let previousStep = Step(id: "1", name: "aaa", participant: nil, competition: nil, score: 0)
+        let newStep = Step(id: "1", name: "2", participant: nil, competition: nil, score: 0)
         
         XCTAssertThrowsError(try stepService.updateStep(previousStep: previousStep, newStep: newStep))
     }
@@ -72,13 +78,13 @@ class StepServiceTests: XCTestCase {
     }
     
     func testDeleteStep() throws {
-        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
         
         XCTAssertNoThrow(try stepService.deleteStep(step: step))
     }
     
     func testDeleteStepNilId() throws {
-        let step = Step(id: "10", name: "Первый день", participant: nil, competition: nil)
+        let step = Step(id: "10", name: "Первый день", participant: nil, competition: nil, score: 0)
         
         XCTAssertThrowsError(try stepService.deleteStep(step: step))
     }

@@ -21,7 +21,7 @@ class ParticipantServiceTests: XCTestCase {
         getDataService = GetDataService(getDataRepository: getDataRepository)
         
         participantRepository = MockParticipantRepository()
-        participantService = ParticipantService(participantRepository: participantRepository, getDataService: getDataService)
+        participantService = ParticipantService(participantRepository: participantRepository, getDataService: getDataService, participantByTeamRepository: participantRepository as! IParticipantByTeamRepository)
     }
 
     override func tearDownWithError() throws {

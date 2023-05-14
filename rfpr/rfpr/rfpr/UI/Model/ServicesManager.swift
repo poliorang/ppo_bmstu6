@@ -13,11 +13,12 @@ final class ServicesManager {
     var getDataService: GetDataService! = nil
     var participantService: ParticipantService! = nil
     var teamService: TeamService! = nil
+    var stepService: StepService! = nil
+    var lootService: LootService! = nil
     
     init() throws {
         do {
-            try competitionService = CompetitionService(competitionRepository: CompetitionRepository(configRealm: appConfig.config),                                                     teamToCompetitionRepository: CompetitionRepository(configRealm: appConfig.config))
-            
+            try competitionService = CompetitionService(competitionRepository: CompetitionRepository(configRealm: appConfig.config),                                                     teamToCompetitionRepository: CompetitionRepository(configRealm: appConfig.config),                                               stepToCompetitionRepository: CompetitionRepository(configRealm: appConfig.config))
             try getDataService = GetDataService(getDataRepository: GetDataRepository(configRealm: appConfig.config))
             try participantService = ParticipantService(participantRepository: ParticipantRepository(configRealm: appConfig.config),
                                                         getDataService: getDataService,
@@ -27,6 +28,12 @@ final class ServicesManager {
                                           getDataService: getDataService,
                                           participantToTeamRepository: TeamRepository(configRealm: appConfig.config),
                                           competitionToTeamRepository: TeamRepository(configRealm: appConfig.config))
+            try stepService = StepService(stepRepository: StepRepository(configRealm: appConfig.config),
+                                          stepByParticipantRepository: StepRepository(configRealm: appConfig.config),
+                                          lootToStepRepository: StepRepository(configRealm: appConfig.config))
+            try lootService = LootService(lootRepository: LootRepository(configRealm: appConfig.config),
+                                          lootByStepRepository: LootRepository(configRealm: appConfig.config))
+            
         } catch {
             throw DatabaseError.openError
         }

@@ -10,4 +10,10 @@ protocol IStepService {
     
     func updateStep(previousStep: Step?, newStep: Step?) throws -> Step
     func deleteStep(step: Step?) throws
+    
+    func getStepByParticipant(participant: Participant?) throws -> [Step]?
+    func getStepByCompetition(competition: Competition?) throws -> [Step]?
+    func getStepByName(stepName: String?) throws -> [Step]?
+    
+    func addLoot(loot: Loot?, step: Step?) throws
 }

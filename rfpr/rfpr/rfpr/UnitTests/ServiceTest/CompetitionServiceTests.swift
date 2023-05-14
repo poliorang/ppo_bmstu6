@@ -16,7 +16,7 @@ class CompetitionServiceTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         competitionRepository = MockCompetitionRepository()
-        competitionService = CompetitionService(competitionRepository: competitionRepository)
+        competitionService = CompetitionService(competitionRepository: competitionRepository, teamToCompetitionRepository: competitionRepository as! ITeamToCompetitionRepository, stepToCompetitionRepository: competitionRepository as! IStepToCompetitionRepository as! IStepToCompetitionRepository)
     }
 
     override func tearDownWithError() throws {

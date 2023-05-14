@@ -96,21 +96,21 @@ class ICompetitionRepositoryTests: XCTestCase {
     
     func testAddStep() throws {
         let competition = Competition(id: "1", name: "Урал", teams: nil)
-        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
         
         XCTAssertNoThrow(try competitionRepository.addStep(step: step, competition: competition))
     }
     
     func testAddStepNilCompetition() throws {
         let competition = Competition(id: "1", name: "", teams: nil)
-        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
         
         XCTAssertThrowsError(try competitionRepository.addStep(step: step, competition: competition))
     }
     
     func testAddStepNilStep() throws {
         let competition = Competition(id: "1", name: "Урал", teams: nil)
-        let step = Step(id: "1", name: "", participant: nil, competition: nil)
+        let step = Step(id: "1", name: "", participant: nil, competition: nil, score: 0)
 
         XCTAssertThrowsError(try competitionRepository.addStep(step: step, competition: competition))
     }

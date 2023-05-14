@@ -14,4 +14,6 @@ protocol IParticipantRepository {
     func deleteParticipant(participant: Participant) throws
     
     func getParticipants() throws -> [Participant]?
+    
+    func getParticipantScoreByCompetition(participant: Participant, competition: Competition, stepName: StepsName?) throws -> Participant?
 }

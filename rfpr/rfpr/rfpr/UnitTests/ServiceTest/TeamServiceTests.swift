@@ -26,7 +26,9 @@ class TeamServiceTests: XCTestCase {
         teamRepository = MockTeamRepository()
         teamService = TeamService(teamRepository: teamRepository,
                                   participantRepository: participantRepository,
-                                  getDataService: getDataService)
+                                  getDataService: getDataService,
+                                  participantToTeamRepository: teamRepository as! IParticipantToTeamRepository,
+                                  competitionToTeamRepository: teamRepository as! ICompetitionToTeamRepository)
     }
 
     override func tearDownWithError() throws {

@@ -12,4 +12,6 @@ protocol ITeamRepository {
     func deleteTeam(team: Team) throws
     
     func getTeams() throws -> [Team]?
+    
+    func getTeamScoreByCompetition(team: Team, competition: Competition, stepName: StepsName?) throws -> Team? 
 }

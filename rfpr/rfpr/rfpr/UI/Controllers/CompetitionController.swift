@@ -28,16 +28,17 @@ class CompetitionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
-        self.navigationItem.title = "Соренования"
+        self.navigationItem.title = "Соревнования"
         self.navigationController?.navigationBar.prefersLargeTitles = true
-
-        setupViews = CompetitionViews(view: self.view)
         
         setupServices()
         getCompetitions()
+
+        setupViews = CompetitionViews(view: self.view)
+
         setupTable()
         setupViews.setupAddCompetitionButton(addCompetitionButton)
-        
+
         addCompetitionButton.addTarget(self, action: #selector(buttonAddCompetitionTapped(sender:)), for: .touchUpInside)
     }
     
@@ -62,8 +63,8 @@ class CompetitionViewController: UIViewController {
         do {
             try services = ServicesManager()
         } catch {
-            alertManager.showAlert(presentTo: self,
-                                   title: "Внимание",
+            print("SSSS ")
+            alertManager.showAlert(presentTo: self, title: "Внимание",
                                    message: "Не удалось получить доступ к базе данных")
         }
     }
@@ -72,8 +73,7 @@ class CompetitionViewController: UIViewController {
         do {
             try competitions = services.competitionService.getCompetitions() ?? []
         } catch {
-            alertManager.showAlert(presentTo: self,
-                                   title: "Внимание",
+            alertManager.showAlert(presentTo: self, title: "Внимание",
                                    message: "В базе данных нет ни одного соревнования")
         }
     }
@@ -81,8 +81,6 @@ class CompetitionViewController: UIViewController {
     
     @objc
     func buttonAddCompetitionTapped(sender: UIButton) {
-        print("TAPPED")
-        
         let updateTableCompletion:() -> Void = { 
             self.getCompetitions()
             self.tableView.reloadData()

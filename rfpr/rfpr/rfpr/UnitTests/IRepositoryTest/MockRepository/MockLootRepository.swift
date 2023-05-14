@@ -8,8 +8,9 @@
 import Foundation
 var bith = Date()
 
-class MockLootRepository: ILootRepository {
-    
+class MockLootRepository: ILootRepository, ILootByStepRepository {
+
+
     private let loot = Loot(id: "1", fish: "Щука", weight: 500, score: 1000)
     private var db = [Loot]()
     
@@ -50,6 +51,14 @@ class MockLootRepository: ILootRepository {
              return weight + 500
         }
         
+        return nil
+    }
+    
+    func getLoots() throws -> [Loot]? {
+        return nil
+    }
+    
+    func getLootByStep(step: Step) throws -> [Loot]? {
         return nil
     }
 }

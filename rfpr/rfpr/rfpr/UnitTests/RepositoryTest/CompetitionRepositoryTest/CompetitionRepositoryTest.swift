@@ -90,21 +90,21 @@ class CompetitionRepositoryTest: XCTestCase {
 
     
     func testAddStep() throws {
-        let step = Step(id: "6442852b2b74d595cb4f4756", name: "Add competition")
+        let step = Step(id: "6442852b2b74d595cb4f4756", name: "Add competition", score: 0)
         let competition = Competition(id: "6442852b2b74d595cb4f4768", name: "Add", teams: nil)
         
         XCTAssertNoThrow(try competitionRepository.addStep(step: step, competition: competition))
     }
     
     func testAddStepNilStep() throws {
-        let step = Step(id: "6442852b2b74d595cb4f4751", name: "")
+        let step = Step(id: "6442852b2b74d595cb4f4751", name: "", score: 0)
         let competition = Competition(id: "6442852b2b74d595cb4f4768", name: "Add", teams: nil)
         
         XCTAssertThrowsError(try competitionRepository.addStep(step: step, competition: competition))
     }
     
     func testAddStepNiCompetitionl() throws {
-        let step = Step(id: "6442852b2b74d595cb4f4756", name: "Add competition")
+        let step = Step(id: "6442852b2b74d595cb4f4756", name: "Add competition", score: 0)
         let competition = Competition(id: "6442852b2b74d595cb4f4711", name: "", teams: nil)
         
         XCTAssertThrowsError(try competitionRepository.addStep(step: step, competition: competition))

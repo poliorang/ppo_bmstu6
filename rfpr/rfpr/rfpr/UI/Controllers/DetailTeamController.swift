@@ -98,7 +98,7 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol,
         
         if let updateTeam = updateTeam {
             firstlyParticipants = try? services.participantService.getParticipantByTeam(team: updateTeam)
-            print("LJFNSVJKFNVSJKFNJKSR ", firstlyParticipants)
+
             nameTextField.text = updateTeam.name
             
             let participantsByTeam: [Participant]?
@@ -272,9 +272,6 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol,
                 
                 // если есть участники, которых удалили из команды
                 let deletedParticipants = Set(firstlyParticipants ?? []).subtracting(Set(participantOfCreatedTeam ?? []))
-                print("F ", firstlyParticipants)
-                print("NEW ", participantOfCreatedTeam)
-                print("DELETE ", deletedParticipants)
                 
                 if deletedParticipants.isEmpty == false {
                     for participant in deletedParticipants {
@@ -297,8 +294,8 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol,
             
         } else {
             do {
-                try team = services.teamService.createTeam(id: nil, name: teamName, competitions: nil, score: 0)
-                try services.teamService.addCompetition(team: team, competition: competition)
+                try team = services.teamService.createTeam(id: nil, name: teamName, competitions: [competition!], score: 0)
+//                try services.teamService.addCompetition(team: team, competition: competition)
     //            try services.competitionService.addTeam(team: team, competition: competition)
                 
                 for participant in participantOfCreatedTeam ?? [] {

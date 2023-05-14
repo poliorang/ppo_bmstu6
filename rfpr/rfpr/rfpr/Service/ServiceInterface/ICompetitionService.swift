@@ -15,5 +15,6 @@ protocol ICompetitionService {
     func getCompetition(name: String?) throws -> [Competition]?
     func getCompetitions() throws -> [Competition]?
     
-    func addTeam(team: Team?, competition: Competition?) throws 
+    func addTeam(team: Team?, competition: Competition?) throws
+    func addStep(step: Step?, competition: Competition?) throws 
 }

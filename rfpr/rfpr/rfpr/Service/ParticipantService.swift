@@ -74,7 +74,6 @@ class ParticipantService: IParticipantService {
     func deleteParticipant(participant: Participant?) throws {
         guard let participant = participant else {
             throw ParameterError.funcParameterError
-            print("ParameterError")
         }
         
         do {
@@ -145,23 +144,23 @@ class ParticipantService: IParticipantService {
             return nil
         }
         
-        for i in 0..<participants.count {
-            
-            let steps = getDataService?.getStepsByParticipant(participant: participants[i], stepName: stepName)
-            
-            var score = 0
-            if let steps = steps {
-                for step in steps {
-                    
-                    let loots = getDataService?.getLootsByStep(step: step)
-                    if let loots = loots {
-                        for loot in loots { score += loot.score }
-                    }
-                }
-            }
-            
-            participants[i].score = score
-        }
+//        for i in 0..<participants.count {
+//
+//            let steps = getDataService?.getStepsByParticipant(participant: participants[i], stepName: stepName)
+//
+//            var score = 0
+//            if let steps = steps {
+//                for step in steps {
+//
+//                    let loots = getDataService?.getLootsByStep(step: step)
+//                    if let loots = loots {
+//                        for loot in loots { score += loot.score }
+//                    }
+//                }
+//            }
+//
+//            participants[i].score = score
+//        }
         
         if parameter == .ascending {
             participants = participants.sorted(by: { $0.score < $1.score })
@@ -182,6 +181,34 @@ class ParticipantService: IParticipantService {
         let participants = try participantByTeamRepository?.getParticipantByTeam(team: team)
         
         return participants
+    }
+    
+    func getParticipantsScoreByCompetition(participants: [Participant]?, competition: Competition?,
+                                           stepName: StepsName?, parameter: SortParameter?) throws -> [Participant]? {
+        guard let participants = participants,
+              let competition = competition else {
+                      throw ParameterError.funcParameterError
+        }
+        
+        var resultParticipants = [Participant]()
+        for i in 0..<participants.count {
+            do {
+                let participant = try participantRepository?.getParticipantScoreByCompetition(participant: participants[i], competition: competition, stepName: stepName)
+                if let participant = participant { resultParticipants.append(participant) }
+            } catch {
+                throw DatabaseError.getError
+            }
+        }
+        
+        if parameter == .ascending {
+            resultParticipants = resultParticipants.sorted(by: { $0.score < $1.score })
+        }
+        
+        if parameter == .decreasing {
+            resultParticipants = resultParticipants.sorted(by: { $0.score > $1.score })
+        }
+        
+        return resultParticipants.isEmpty ? nil : resultParticipants
     }
 }
 
