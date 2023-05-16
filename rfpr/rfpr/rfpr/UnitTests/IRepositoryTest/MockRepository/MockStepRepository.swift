@@ -6,13 +6,10 @@
 //
 
 class MockStepRepository: IStepRepository, ILootToStepRepository, IStepByParticipantRepository {
-    
-    func getStepByParticipant(participant: Participant) throws -> [Step]? {
-        return nil
-    }
-
-    private let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
+    private var step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
     private let loot = Loot(id: "1", fish: "Щука", weight: 500, score: 1000)
+    private let participant = Participant(id: "1", lastName: "a", firstName: "a", patronymic: nil, team: nil, city: "a", birthday: bith, score: 0)
+    private let competition = Competition(id: "1", name: "aaa", teams: nil)
     
     private var dbSteps = [Step]()
     private var dbLoots = [Loot]()
@@ -78,17 +75,52 @@ class MockStepRepository: IStepRepository, ILootToStepRepository, IStepByPartici
     }
     
     func getSteps() throws -> [Step]? {
-         return nil
-    }
-    
-    func addParticipant(participant: Participant, step: Step) throws {
+        dbSteps.append(step)
         
+        var steps = [Step]()
+        for step in dbSteps {
+            steps.append(step)
+        }
+        
+        return steps.isEmpty ? nil : steps
     }
    
     func getStepByCompetition(competition: Competition) throws -> [Step]? {
-        return nil
+        step.competition = competition
+        
+        let steps = try! getSteps()
+        
+        var resultSteps = [Step]()
+        if let steps = steps {
+            for step in steps {
+                if step.competition == competition {
+                    resultSteps.append(step)
+                }
+            }
+        }
+        
+        return resultSteps.isEmpty ? nil : resultSteps
     }
     
+    func getStepByParticipant(participant: Participant) throws -> [Step]? {
+        step.participant = participant
+        
+        let steps = try! getSteps()
+        
+        var resultSteps = [Step]()
+        if let steps = steps {
+            for step in steps {
+                if step.participant == participant {
+                    resultSteps.append(step)
+                }
+            }
+        }
+        
+        return resultSteps
+    }
+    
+    func addParticipant(participant: Participant, step: Step) throws {
+        var step = step
+        step.participant = participant
+    }
 }
-
-

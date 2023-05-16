@@ -71,7 +71,7 @@ class ParticipantRepository: IParticipantRepository, IParticipantByTeamRepositor
     
     func updateParticipant(previousParticipant: Participant, newParticipant: Participant) throws -> Participant? {
         var newParticipant = newParticipant
-        newParticipant.id = previousParticipant.id
+        newParticipant.id = nil
         
         let realmPreviousParticipant = try previousParticipant.convertParticipantToRealm(realm)
         let realmNewParticipant = try newParticipant.convertParticipantToRealm(realm)
@@ -86,6 +86,7 @@ class ParticipantRepository: IParticipantRepository, IParticipantByTeamRepositor
         
         do {
             try realm.write {
+                realmNewParticipant._id = realmPreviousParticipant._id
                 realm.add(realmNewParticipant, update: .modified)
             }
         } catch {

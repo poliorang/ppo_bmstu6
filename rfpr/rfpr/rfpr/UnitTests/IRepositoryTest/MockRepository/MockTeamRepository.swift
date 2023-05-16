@@ -6,20 +6,20 @@
 //
 
 class MockTeamRepository: ITeamRepository, ICompetitionToTeamRepository,
-                          ITeamByParticipantRepository, IParticipantToTeamRepository {
+                        IParticipantToTeamRepository {
     
     private let team1 = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
     private let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 0)
-    private let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 0)
+    private var team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 0)
     
     private var dbTeam = [Team]()
     
     private let competition = Competition(id: "1", name: "Байкал", teams: nil)
     private var dbCompetition = [Competition]()
     
-    private var participant1 = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 6600)
-    private var participant2 = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 9800)
-    private var participant3 = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 2650)
+    private var participant1 = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, score: 6600)
+    private var participant2 = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, score: 9800)
+    private var participant3 = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, score: 2650)
     
     
     private var dbParticipant = [Participant]()
@@ -60,6 +60,7 @@ class MockTeamRepository: ITeamRepository, ICompetitionToTeamRepository,
     }
     
     func getTeams() throws -> [Team]? {
+        team3.competitions = [competition]
         [team3, team1, team2].forEach {
             dbTeam.append($0)
         }
@@ -123,3 +124,4 @@ class MockTeamRepository: ITeamRepository, ICompetitionToTeamRepository,
         return nil
     }
 }
+

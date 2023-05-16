@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 protocol CompetitionToTeamDelegateProtocol {
     func sendCompetitionToTeamViewController(competition: Competition?)
@@ -18,6 +19,7 @@ class CompetitionViewController: UIViewController {
     
     var services: ServicesManager! = nil
     let alertManager = AlertManager.shared
+    let authorizationManager = AuthorizationManager.shared
     
     var setupViews: CompetitionViews! = nil
     var competitions = [Competition]()
@@ -25,6 +27,7 @@ class CompetitionViewController: UIViewController {
     let tableView = UITableView.init(frame: .zero, style: UITableView.Style.grouped)
     let addCompetitionButton = UIButton()
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
@@ -33,13 +36,16 @@ class CompetitionViewController: UIViewController {
         
         setupServices()
         getCompetitions()
-
+        
         setupViews = CompetitionViews(view: self.view)
 
         setupTable()
         setupViews.setupAddCompetitionButton(addCompetitionButton)
 
         addCompetitionButton.addTarget(self, action: #selector(buttonAddCompetitionTapped(sender:)), for: .touchUpInside)
+        
+        let authorizationViewController = AuthorizationViewController()
+        present(authorizationViewController, animated: true, completion: nil)
     }
     
     private func setupTable() {
@@ -49,12 +55,6 @@ class CompetitionViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-//        NSLayoutConstraint.activate([
-//            tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            tableView.widthAnchor.constraint(equalTo: view.widthAnchor),
-//            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 300),
-//            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -130)
-//        ])
         self.tableView.frame = CGRect.init(origin: .zero, size: self.view.frame.size)
         
     }
@@ -63,7 +63,6 @@ class CompetitionViewController: UIViewController {
         do {
             try services = ServicesManager()
         } catch {
-            print("SSSS ")
             alertManager.showAlert(presentTo: self, title: "Внимание",
                                    message: "Не удалось получить доступ к базе данных")
         }
@@ -81,6 +80,12 @@ class CompetitionViewController: UIViewController {
     
     @objc
     func buttonAddCompetitionTapped(sender: UIButton) {
+        if !authorizationManager.getRight() {
+            alertManager.showAlert(presentTo: self, title: "Доступ запрещен",
+                                   message: "Создавать соревнования может только судья")
+            return
+        }
+        
         let updateTableCompletion:() -> Void = { 
             self.getCompetitions()
             self.tableView.reloadData()

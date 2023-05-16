@@ -11,6 +11,7 @@ class DetailParticipantViewController: UIViewController, ToDetailParticipantDele
                                         ToDetailParticipantUpdateDelegateProtocol {
     var services: ServicesManager! = nil
     let alertManager = AlertManager.shared
+    let authorizationManager = AuthorizationManager.shared
     
     var competition: Competition?       // получить из TeamController
     var updateParticipant: Participant? // получить из TeamController
@@ -26,8 +27,7 @@ class DetailParticipantViewController: UIViewController, ToDetailParticipantDele
     let cityTextField = UITextField(frame: CGRect(x: 20, y: 280, width: 300, height: 40))
     
     let birthdayTextField = UITextField(frame: CGRect(x: 20, y: 340, width: 300, height: 40))
-    let roleTextField = UITextField(frame: CGRect(x: 20, y: 400, width: 300, height: 40))
-    let teamTextFIeld = UITextField(frame: CGRect(x: 20, y: 460, width: 300, height: 40))
+    let teamTextFIeld = UITextField(frame: CGRect(x: 20, y: 400, width: 300, height: 40))
     
     let picker = UIPickerView()
     let pickerToolBar = UIToolbar()
@@ -55,7 +55,7 @@ class DetailParticipantViewController: UIViewController, ToDetailParticipantDele
         getTeamsByCompetition()
         
         setupNameTextFields(lastnameTextField, firstnameTextField, partonymicTextField, cityTextField)
-        setupParametersTextFields(roleTextField, teamTextFIeld, picker, pickerToolBar)
+        setupParametersTextFields(teamTextFIeld, picker, pickerToolBar)
         setupBirthdayField(birthdayTextField, datePicker, datePickerToolBar)
         setupCreateParticipantButton(createParticipantButton)
         
@@ -102,7 +102,6 @@ class DetailParticipantViewController: UIViewController, ToDetailParticipantDele
             firstnameTextField.text = updateParticipant.firstName
             partonymicTextField.text = updateParticipant.patronymic
             cityTextField.text = updateParticipant.city
-            roleTextField.text = updateParticipant.role
             teamTextFIeld.text = updateParticipant.team?.name ?? ""
             
             let formatter = DateFormatter()
@@ -132,8 +131,8 @@ class DetailParticipantViewController: UIViewController, ToDetailParticipantDele
         }
     }
     
-    private func setupNameTextFields(_ first: UITextField, _ second: UITextField, _ third: UITextField, _ fourth: UITextField) {
-        [first, second, third, fourth].forEach {
+    private func setupNameTextFields(_ lastname: UITextField, _ firstname: UITextField, _ patronymic: UITextField, _ city: UITextField) {
+        [lastname, firstname, patronymic, city].forEach {
             view.addSubview($0)
             
             $0.font = UIFont.systemFont(ofSize: 15)
@@ -146,14 +145,14 @@ class DetailParticipantViewController: UIViewController, ToDetailParticipantDele
             $0.delegate = self
         }
         
-        first.placeholder = "Фамилия участникв"
-        second.placeholder = "Имя участника"
-        third.placeholder = "Отчество участника"
-        fourth.placeholder = "Город"
+        lastname.placeholder = "Фамилия участникв"
+        firstname.placeholder = "Имя участника"
+        patronymic.placeholder = "Отчество участника"
+        city.placeholder = "Город"
     }
     
-    private func setupParametersTextFields(_ first: UITextField, _ second: UITextField, _ picker: UIPickerView, _ toolBar: UIToolbar) {
-        [first, second].forEach {
+    private func setupParametersTextFields(_ team: UITextField, _ picker: UIPickerView, _ toolBar: UIToolbar) {
+        [team].forEach {
             view.addSubview($0)
             $0.delegate = self
             $0.font = UIFont.systemFont(ofSize: 15)
@@ -162,9 +161,8 @@ class DetailParticipantViewController: UIViewController, ToDetailParticipantDele
             $0.inputView = picker
             $0.inputAccessoryView = toolBar
         }
-        
-        first.placeholder = "Роль"
-        second.placeholder = "Команда"
+    
+        team.placeholder = "Команда"
     }
     
     private func setupBirthdayField(_ textField: UITextField, _ picker: UIDatePicker, _ toolBar: UIToolbar) {
@@ -245,6 +243,12 @@ class DetailParticipantViewController: UIViewController, ToDetailParticipantDele
     
     @objc
     func buttonCreateParticipantTapped(sender: UIButton) {
+        if !authorizationManager.getRight() {
+            alertManager.showAlert(presentTo: self, title: "Доступ запрещен",
+                                   message: "Изменять профиль участника может только судья")
+            return
+        }
+        
         guard var lastname = lastnameTextField.text else {
             alertManager.showAlert(presentTo: self, title: "Внимание", message: "Введите фамилию")
             return
@@ -257,11 +261,6 @@ class DetailParticipantViewController: UIViewController, ToDetailParticipantDele
         
         guard let birthday = birthday else {
             alertManager.showAlert(presentTo: self, title: "Внимание", message: "Введите дату рождения")
-            return
-        }
-        
-        guard let role = roleTextField.text else {
-            alertManager.showAlert(presentTo: self, title: "Внимание", message: "Введите роль")
             return
         }
         
@@ -290,23 +289,18 @@ class DetailParticipantViewController: UIViewController, ToDetailParticipantDele
         
         if let updateParticipant = updateParticipant {
             do {
-                let participant = Participant(id: nil, lastName: lastname, firstName: firstname, patronymic: patronymic, team: team, city: city ?? "", birthday: birthday, role: role, score: 0)
+                let participant = Participant(id: nil, lastName: lastname, firstName: firstname, patronymic: patronymic, team: team, city: city ?? "", birthday: birthday, score: 0)
                 _ = try services.participantService.updateParticipant(previousParticipant: updateParticipant, newParticipant: participant)
-                print("\(participant.lastName) WAS UPDATED")
             } catch {
                 alertManager.showAlert(presentTo: self, title: "Внимание", message: "Участник не был создан")
             }
             
         } else {
-            var participant: Participant? = nil
             do {
-                try participant = services.participantService.createParticipant(id: nil, lastName: lastname, firstName: firstname, patronymic: patronymic, team: team, city: city, birthday: birthday, role: role, score: 0)
-                print("participant ", participant)
-//                try services.teamService.addParticipant(participant: participant, team: team)
+                _ = try services.participantService.createParticipant(id: nil, lastName: lastname, firstName: firstname, patronymic: patronymic, team: team, city: city, birthday: birthday, score: 0)
             } catch {
                 alertManager.showAlert(presentTo: self, title: "Внимание", message: "Участник не был создан")
             }
-            print("\(participant?.lastName ?? "") WAS CREATED")
         }
         
         dismiss(animated: true, completion: gettedCompletion)
@@ -324,9 +318,6 @@ extension DetailParticipantViewController: UIPickerViewDataSource, UIPickerViewD
         case teamTextFIeld:
             return teams?.count ?? 0
         
-        case roleTextField:
-            return roles.count
-        
         default:
             return 0
         }
@@ -337,9 +328,6 @@ extension DetailParticipantViewController: UIPickerViewDataSource, UIPickerViewD
        
         case teamTextFIeld:
             return teams?[row].name
-        
-        case roleTextField:
-            return roles[row]
         
         default:
             return nil
@@ -353,9 +341,6 @@ extension DetailParticipantViewController: UIPickerViewDataSource, UIPickerViewD
         
         case teamTextFIeld:
             teamTextFIeld.text = teams?[row].name
-        
-        case roleTextField:
-            roleTextField.text = roles[row]
         
         default:
             return

@@ -11,6 +11,7 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol,
                                 ToDetailTeamtUpdateDelegateProtocol {
     var services: ServicesManager! = nil
     let alertManager = AlertManager.shared
+    let authorizationManager = AuthorizationManager.shared
     
     let nameLabel = UILabel(frame: CGRect(x: 20, y: 70, width: 320, height: 40))
     let nameTextField = UITextField(frame: CGRect(x: 20, y: 100, width: 300, height: 40))
@@ -123,7 +124,7 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol,
     
     private func getParticipants() {
         do {
-            try participants = services.participantService.getParticipants(parameter: .none, stepName: nil) ?? []
+            try participants = services.participantService.getParticipants() ?? []
         } catch {
             alertManager.showAlert(presentTo: self,
                                    title: "Внимание",
@@ -242,6 +243,12 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol,
     
     @objc
     func buttonCreateTeamTapped(sender: UIButton) {
+        if !authorizationManager.getRight() {
+            alertManager.showAlert(presentTo: self, title: "Доступ запрещен",
+                                   message: "Формировать команды может только судья")
+            return
+        }
+        
         var team: Team? = nil
         guard var teamName = nameTextField.text else {
             alertManager.showAlert(presentTo: self,
@@ -272,10 +279,9 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol,
                 
                 // если есть участники, которых удалили из команды
                 let deletedParticipants = Set(firstlyParticipants ?? []).subtracting(Set(participantOfCreatedTeam ?? []))
-                
                 if deletedParticipants.isEmpty == false {
                     for participant in deletedParticipants {
-                        let newParticipant = Participant(id: participant.id, lastName: participant.lastName, firstName: participant.firstName, patronymic: participant.patronymic, team: nil, city: participant.city, birthday: participant.birthday, role: participant.role, score: participant.score)
+                        let newParticipant = Participant(id: participant.id, lastName: participant.lastName, firstName: participant.firstName, patronymic: participant.patronymic, team: nil, city: participant.city, birthday: participant.birthday, score: participant.score)
                         do {
                             _ = try services.participantService.updateParticipant(previousParticipant: participant, newParticipant: newParticipant)
                         } catch {
@@ -287,7 +293,6 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol,
                 }
                 
             } catch {
-                print("\(team?.name ?? "") WASN'T CREATED")
                 alertManager.showAlert(presentTo: self, title: "Внимание",
                                        message: "Команда не была обновлена")
             }
@@ -295,20 +300,15 @@ class DetailTeamViewController: UIViewController, ToDetailTeamDelegateProtocol,
         } else {
             do {
                 try team = services.teamService.createTeam(id: nil, name: teamName, competitions: [competition!], score: 0)
-//                try services.teamService.addCompetition(team: team, competition: competition)
-    //            try services.competitionService.addTeam(team: team, competition: competition)
-                
                 for participant in participantOfCreatedTeam ?? [] {
                     try services.teamService.addParticipant(participant: participant, team: team)
                 }
                 
             } catch {
-                print("\(team?.name ?? "") WASN'T CREATED")
                 alertManager.showAlert(presentTo: self, title: "Внимание",
                                        message: "Команда не была создано")
                 
             }
-            print("\(team?.name ?? "") WAS CREATED")
         }
         
         dismiss(animated: true, completion: gettedCompletion)

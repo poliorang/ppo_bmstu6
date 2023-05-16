@@ -7,10 +7,9 @@
 
 import Foundation
 
-enum Role: Int {
-    case participant = 1
-    case referee = 2
-    case admin = 3
+enum Role: String {
+    case participant    = "Участник"
+    case referee        = "Судья"
 }
 
 struct Participant: Hashable {
@@ -21,7 +20,6 @@ struct Participant: Hashable {
     var team: Team?
     var city: String
     var birthday: Date
-    var role: String
     var score: Int
 }
 
@@ -33,8 +31,7 @@ extension Participant: Equatable {
             lhs.team == rhs.team &&
             lhs.patronymic == rhs.patronymic &&
             lhs.city == rhs.city &&
-            lhs.birthday == rhs.birthday &&
-            lhs.role == rhs.role {
+            lhs.birthday == rhs.birthday {
             return true
         }
         

@@ -13,10 +13,9 @@ class MockParticipantRepository: IParticipantRepository,
     private let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 0)
     private let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 0)
 
-    
-    private var participant1 = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 9800)
-    private var participant2 = Participant(id: "1", lastName: "Иванов", firstName: "Петр", patronymic: "Петрович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 6600)
-    private var participant3 = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 2650)
+    private var participant1 = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, score: 9800)
+    private var participant2 = Participant(id: "1", lastName: "Иванов", firstName: "Петр", patronymic: "Петрович", team: nil, city: "Москва", birthday: bith, score: 6600)
+    private var participant3 = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", team: nil, city: "Москва", birthday: bith, score: 2650)
     
     private var step1 = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
     private var step2 = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)

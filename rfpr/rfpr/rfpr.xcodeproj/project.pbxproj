@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4A172F9B29ED6BB9004774C0 /* CompetitionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A172F9A29ED6BB9004774C0 /* CompetitionRepository.swift */; };
 		4A172F9D29ED6F81004774C0 /* CompetitionRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A172F9C29ED6F80004774C0 /* CompetitionRepositoryTest.swift */; };
+		4A1E02642A10D06B00DDF407 /* SetupSortingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1E02632A10D06B00DDF407 /* SetupSortingController.swift */; };
 		4A1F1E952A011B77002DFE7B /* CompetitionViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1F1E942A011B77002DFE7B /* CompetitionViews.swift */; };
 		4A24422829D2EF480065E32B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A24422729D2EF480065E32B /* AppDelegate.swift */; };
 		4A24422A29D2EF480065E32B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A24422929D2EF480065E32B /* SceneDelegate.swift */; };
@@ -30,7 +31,6 @@
 		4A24428A29D49D8A0065E32B /* ILootRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A24428929D49D8A0065E32B /* ILootRepository.swift */; };
 		4A56F4FA2A09360500AAFC27 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A56F4F92A09360400AAFC27 /* StringExtension.swift */; };
 		4A6132A229E86A810025CDC9 /* DataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6132A129E86A810025CDC9 /* DataError.swift */; };
-		4A8E36FF29FDA229009A0930 /* MockGetDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8E36F929FDA229009A0930 /* MockGetDataRepository.swift */; };
 		4A8E370029FDA229009A0930 /* MockParticipantRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8E36FA29FDA229009A0930 /* MockParticipantRepository.swift */; };
 		4A8E370129FDA229009A0930 /* MockLootRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8E36FB29FDA229009A0930 /* MockLootRepository.swift */; };
 		4A8E370229FDA229009A0930 /* MockCompetitionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8E36FC29FDA229009A0930 /* MockCompetitionRepository.swift */; };
@@ -57,10 +57,8 @@
 		4AE1776829D8DD92009FF250 /* IStepToCompetitionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1776729D8DD92009FF250 /* IStepToCompetitionRepository.swift */; };
 		4AE1776C29D8E183009FF250 /* ICompetitionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1776B29D8E183009FF250 /* ICompetitionRepository.swift */; };
 		4AE1776F29D9AE84009FF250 /* ITeamRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1776E29D9AE84009FF250 /* ITeamRepository.swift */; };
-		4AE1777329D9B375009FF250 /* ITeamToCompetitionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1777229D9B375009FF250 /* ITeamToCompetitionRepository.swift */; };
 		4AE1777529D9B496009FF250 /* ICompetitionToTeamRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1777429D9B496009FF250 /* ICompetitionToTeamRepository.swift */; };
 		4AE1777729D9B8D5009FF250 /* IParticipantRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1777629D9B8D5009FF250 /* IParticipantRepository.swift */; };
-		4AE1777B29D9BFB7009FF250 /* ITeamByParticipantRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1777A29D9BFB7009FF250 /* ITeamByParticipantRepository.swift */; };
 		4AE1777D29D9C5BB009FF250 /* IParticipantByTeamRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1777C29D9C5BB009FF250 /* IParticipantByTeamRepository.swift */; };
 		4AE1777F29D9C712009FF250 /* IParticipantToTeamRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1777E29D9C712009FF250 /* IParticipantToTeamRepository.swift */; };
 		4AE1778129D9CB06009FF250 /* CompetitionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1778029D9CB06009FF250 /* CompetitionService.swift */; };
@@ -68,6 +66,11 @@
 		4AE1778529D9CC25009FF250 /* ParticipantService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1778429D9CC25009FF250 /* ParticipantService.swift */; };
 		4AE1778729DA31C2009FF250 /* StepServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1778629DA31C2009FF250 /* StepServiceTests.swift */; };
 		4AE1778B29DA33F3009FF250 /* LootServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1778A29DA33F3009FF250 /* LootServiceTests.swift */; };
+		4AE317232A0B7C1E00387419 /* LootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE317222A0B7C1D00387419 /* LootController.swift */; };
+		4AE317252A0B896C00387419 /* ParicipantLootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE317242A0B896C00387419 /* ParicipantLootController.swift */; };
+		4AE317272A0BB63900387419 /* IStepByParticipant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE317262A0BB63900387419 /* IStepByParticipant.swift */; };
+		4AE317292A0BB99400387419 /* ILootByStepRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE317282A0BB99400387419 /* ILootByStepRepository.swift */; };
+		4AE3172B2A0BC40800387419 /* DetailLootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE3172A2A0BC40800387419 /* DetailLootController.swift */; };
 		4AED2B7D2A098C58000FFDFD /* DetailParticipantController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AED2B7C2A098C58000FFDFD /* DetailParticipantController.swift */; };
 		4AED395529F2B58200FA45F0 /* LootExtencion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AED395429F2B58200FA45F0 /* LootExtencion.swift */; };
 		4AED395729F2B5B300FA45F0 /* StepExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AED395629F2B5B300FA45F0 /* StepExtension.swift */; };
@@ -86,6 +89,23 @@
 		4AEE59FB2A00379400534AC8 /* CompetitionsControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE59FA2A00379400534AC8 /* CompetitionsControllerExtension.swift */; };
 		4AEE59FD2A003B7500534AC8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE59FC2A003B7500534AC8 /* TabBarController.swift */; };
 		4AEFA0D929E96D0E00883AAC /* ParameterError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEFA0D829E96D0E00883AAC /* ParameterError.swift */; };
+		4AF2DCB82A11829C001B1BF1 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCB72A11829C001B1BF1 /* UserModel.swift */; };
+		4AF2DCBA2A118383001B1BF1 /* AuthorizationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCB92A118383001B1BF1 /* AuthorizationModel.swift */; };
+		4AF2DCBC2A1183A7001B1BF1 /* AuthorizationModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCBB2A1183A7001B1BF1 /* AuthorizationModelData.swift */; };
+		4AF2DCBE2A118473001B1BF1 /* UserModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCBD2A118473001B1BF1 /* UserModelData.swift */; };
+		4AF2DCC02A118529001B1BF1 /* AuthorizationExtencion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCBF2A118529001B1BF1 /* AuthorizationExtencion.swift */; };
+		4AF2DCC22A11859A001B1BF1 /* UserExtencion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCC12A11859A001B1BF1 /* UserExtencion.swift */; };
+		4AF2DCC42A120851001B1BF1 /* AuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCC32A120851001B1BF1 /* AuthorizationController.swift */; };
+		4AF2DCC62A121314001B1BF1 /* AuthorizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCC52A121314001B1BF1 /* AuthorizationManager.swift */; };
+		4AF2DCC82A1221AA001B1BF1 /* IAuthorizationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCC72A1221AA001B1BF1 /* IAuthorizationRepository.swift */; };
+		4AF2DCCA2A12222C001B1BF1 /* AuthorizationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCC92A12222C001B1BF1 /* AuthorizationRepository.swift */; };
+		4AF2DCCC2A122D7B001B1BF1 /* IAuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCCB2A122D7B001B1BF1 /* IAuthorizationService.swift */; };
+		4AF2DCCE2A122D8F001B1BF1 /* AuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCCD2A122D8F001B1BF1 /* AuthorizationService.swift */; };
+		4AF2DCD02A1232CD001B1BF1 /* IUserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCCF2A1232CD001B1BF1 /* IUserRepository.swift */; };
+		4AF2DCD22A12332F001B1BF1 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCD12A12332F001B1BF1 /* UserRepository.swift */; };
+		4AF2DCD42A123586001B1BF1 /* IUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCD32A123586001B1BF1 /* IUserService.swift */; };
+		4AF2DCD62A1235A0001B1BF1 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCD52A1235A0001B1BF1 /* UserService.swift */; };
+		4AF2DCD82A1242EF001B1BF1 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF2DCD72A1242EF001B1BF1 /* RegistrationController.swift */; };
 		4AF3404B29DADED900463098 /* ILootRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF3404A29DADED900463098 /* ILootRepositoryTests.swift */; };
 		4AF3404E29DAE4BC00463098 /* IStepRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF3404D29DAE4BC00463098 /* IStepRepositoryTests.swift */; };
 		4AF3405029DB1F8500463098 /* ICompetitionRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF3404F29DB1F8500463098 /* ICompetitionRepositoryTests.swift */; };
@@ -95,11 +115,6 @@
 		4AF5A19E2A02C817005DD13D /* ServicesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF5A19D2A02C817005DD13D /* ServicesManager.swift */; };
 		4AF5A1A02A02C846005DD13D /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF5A19F2A02C846005DD13D /* config.swift */; };
 		4AF5A1A22A05A72D005DD13D /* TeamController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF5A1A12A05A72D005DD13D /* TeamController.swift */; };
-		4AF5A1A42A079AC3005DD13D /* GetDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF5A1A32A079AC3005DD13D /* GetDataRepository.swift */; };
-		4AFA3EF92A0A7CCD0038B7CE /* TeamParticipantTableMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFA3EF82A0A7CCD0038B7CE /* TeamParticipantTableMode.swift */; };
-		4AFBE92F29DF328600C2F705 /* GetDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBE92E29DF328500C2F705 /* GetDataService.swift */; };
-		4AFBE93129DF335F00C2F705 /* IGetDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBE93029DF335F00C2F705 /* IGetDataRepository.swift */; };
-		4AFBE93629DF344D00C2F705 /* IGetDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFBE93529DF344D00C2F705 /* IGetDataService.swift */; };
 		8C672E4FE570B9B24D2BB1CC /* Pods_rfpr.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EEFD55FD8AAF49D48D020C /* Pods_rfpr.framework */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +133,7 @@
 		40EEFD55FD8AAF49D48D020C /* Pods_rfpr.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_rfpr.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A172F9A29ED6BB9004774C0 /* CompetitionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionRepository.swift; sourceTree = "<group>"; };
 		4A172F9C29ED6F80004774C0 /* CompetitionRepositoryTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionRepositoryTest.swift; sourceTree = "<group>"; };
+		4A1E02632A10D06B00DDF407 /* SetupSortingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupSortingController.swift; sourceTree = "<group>"; };
 		4A1F1E942A011B77002DFE7B /* CompetitionViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionViews.swift; sourceTree = "<group>"; };
 		4A24422429D2EF480065E32B /* rfpr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rfpr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A24422729D2EF480065E32B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -142,7 +158,6 @@
 		4A24428929D49D8A0065E32B /* ILootRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ILootRepository.swift; sourceTree = "<group>"; };
 		4A56F4F92A09360400AAFC27 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		4A6132A129E86A810025CDC9 /* DataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataError.swift; sourceTree = "<group>"; };
-		4A8E36F929FDA229009A0930 /* MockGetDataRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockGetDataRepository.swift; sourceTree = "<group>"; };
 		4A8E36FA29FDA229009A0930 /* MockParticipantRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockParticipantRepository.swift; sourceTree = "<group>"; };
 		4A8E36FB29FDA229009A0930 /* MockLootRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockLootRepository.swift; sourceTree = "<group>"; };
 		4A8E36FC29FDA229009A0930 /* MockCompetitionRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockCompetitionRepository.swift; sourceTree = "<group>"; };
@@ -169,10 +184,8 @@
 		4AE1776729D8DD92009FF250 /* IStepToCompetitionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IStepToCompetitionRepository.swift; sourceTree = "<group>"; };
 		4AE1776B29D8E183009FF250 /* ICompetitionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICompetitionRepository.swift; sourceTree = "<group>"; };
 		4AE1776E29D9AE84009FF250 /* ITeamRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITeamRepository.swift; sourceTree = "<group>"; };
-		4AE1777229D9B375009FF250 /* ITeamToCompetitionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITeamToCompetitionRepository.swift; sourceTree = "<group>"; };
 		4AE1777429D9B496009FF250 /* ICompetitionToTeamRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICompetitionToTeamRepository.swift; sourceTree = "<group>"; };
 		4AE1777629D9B8D5009FF250 /* IParticipantRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IParticipantRepository.swift; sourceTree = "<group>"; };
-		4AE1777A29D9BFB7009FF250 /* ITeamByParticipantRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITeamByParticipantRepository.swift; sourceTree = "<group>"; };
 		4AE1777C29D9C5BB009FF250 /* IParticipantByTeamRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IParticipantByTeamRepository.swift; sourceTree = "<group>"; };
 		4AE1777E29D9C712009FF250 /* IParticipantToTeamRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IParticipantToTeamRepository.swift; sourceTree = "<group>"; };
 		4AE1778029D9CB06009FF250 /* CompetitionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionService.swift; sourceTree = "<group>"; };
@@ -180,6 +193,11 @@
 		4AE1778429D9CC25009FF250 /* ParticipantService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipantService.swift; sourceTree = "<group>"; };
 		4AE1778629DA31C2009FF250 /* StepServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepServiceTests.swift; sourceTree = "<group>"; };
 		4AE1778A29DA33F3009FF250 /* LootServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LootServiceTests.swift; sourceTree = "<group>"; };
+		4AE317222A0B7C1D00387419 /* LootController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LootController.swift; sourceTree = "<group>"; };
+		4AE317242A0B896C00387419 /* ParicipantLootController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParicipantLootController.swift; sourceTree = "<group>"; };
+		4AE317262A0BB63900387419 /* IStepByParticipant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IStepByParticipant.swift; sourceTree = "<group>"; };
+		4AE317282A0BB99400387419 /* ILootByStepRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ILootByStepRepository.swift; sourceTree = "<group>"; };
+		4AE3172A2A0BC40800387419 /* DetailLootController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailLootController.swift; sourceTree = "<group>"; };
 		4AED2B7C2A098C58000FFDFD /* DetailParticipantController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailParticipantController.swift; sourceTree = "<group>"; };
 		4AED395429F2B58200FA45F0 /* LootExtencion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LootExtencion.swift; sourceTree = "<group>"; };
 		4AED395629F2B5B300FA45F0 /* StepExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepExtension.swift; sourceTree = "<group>"; };
@@ -198,6 +216,23 @@
 		4AEE59FA2A00379400534AC8 /* CompetitionsControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompetitionsControllerExtension.swift; sourceTree = "<group>"; };
 		4AEE59FC2A003B7500534AC8 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4AEFA0D829E96D0E00883AAC /* ParameterError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterError.swift; sourceTree = "<group>"; };
+		4AF2DCB72A11829C001B1BF1 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		4AF2DCB92A118383001B1BF1 /* AuthorizationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationModel.swift; sourceTree = "<group>"; };
+		4AF2DCBB2A1183A7001B1BF1 /* AuthorizationModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationModelData.swift; sourceTree = "<group>"; };
+		4AF2DCBD2A118473001B1BF1 /* UserModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModelData.swift; sourceTree = "<group>"; };
+		4AF2DCBF2A118529001B1BF1 /* AuthorizationExtencion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationExtencion.swift; sourceTree = "<group>"; };
+		4AF2DCC12A11859A001B1BF1 /* UserExtencion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserExtencion.swift; sourceTree = "<group>"; };
+		4AF2DCC32A120851001B1BF1 /* AuthorizationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationController.swift; sourceTree = "<group>"; };
+		4AF2DCC52A121314001B1BF1 /* AuthorizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationManager.swift; sourceTree = "<group>"; };
+		4AF2DCC72A1221AA001B1BF1 /* IAuthorizationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAuthorizationRepository.swift; sourceTree = "<group>"; };
+		4AF2DCC92A12222C001B1BF1 /* AuthorizationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRepository.swift; sourceTree = "<group>"; };
+		4AF2DCCB2A122D7B001B1BF1 /* IAuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAuthorizationService.swift; sourceTree = "<group>"; };
+		4AF2DCCD2A122D8F001B1BF1 /* AuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationService.swift; sourceTree = "<group>"; };
+		4AF2DCCF2A1232CD001B1BF1 /* IUserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IUserRepository.swift; sourceTree = "<group>"; };
+		4AF2DCD12A12332F001B1BF1 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		4AF2DCD32A123586001B1BF1 /* IUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IUserService.swift; sourceTree = "<group>"; };
+		4AF2DCD52A1235A0001B1BF1 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		4AF2DCD72A1242EF001B1BF1 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		4AF3404A29DADED900463098 /* ILootRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ILootRepositoryTests.swift; sourceTree = "<group>"; };
 		4AF3404D29DAE4BC00463098 /* IStepRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IStepRepositoryTests.swift; sourceTree = "<group>"; };
 		4AF3404F29DB1F8500463098 /* ICompetitionRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICompetitionRepositoryTests.swift; sourceTree = "<group>"; };
@@ -207,11 +242,6 @@
 		4AF5A19D2A02C817005DD13D /* ServicesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesManager.swift; sourceTree = "<group>"; };
 		4AF5A19F2A02C846005DD13D /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 		4AF5A1A12A05A72D005DD13D /* TeamController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamController.swift; sourceTree = "<group>"; };
-		4AF5A1A32A079AC3005DD13D /* GetDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDataRepository.swift; sourceTree = "<group>"; };
-		4AFA3EF82A0A7CCD0038B7CE /* TeamParticipantTableMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamParticipantTableMode.swift; sourceTree = "<group>"; };
-		4AFBE92E29DF328500C2F705 /* GetDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDataService.swift; sourceTree = "<group>"; };
-		4AFBE93029DF335F00C2F705 /* IGetDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGetDataRepository.swift; sourceTree = "<group>"; };
-		4AFBE93529DF344D00C2F705 /* IGetDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGetDataService.swift; sourceTree = "<group>"; };
 		D1D9294DE36F72030674310C /* Pods-rfpr.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rfpr.debug.xcconfig"; path = "Target Support Files/Pods-rfpr/Pods-rfpr.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -287,6 +317,8 @@
 				4A24427129D47C1A0065E32B /* TeamModel.swift */,
 				4A24423C29D2F09C0065E32B /* ParticipantModel.swift */,
 				4A24427C29D488B30065E32B /* SortParamertModel.swift */,
+				4AF2DCB72A11829C001B1BF1 /* UserModel.swift */,
+				4AF2DCB92A118383001B1BF1 /* AuthorizationModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -300,7 +332,8 @@
 				4AE1778029D9CB06009FF250 /* CompetitionService.swift */,
 				4AE1778229D9CC08009FF250 /* TeamService.swift */,
 				4AE1778429D9CC25009FF250 /* ParticipantService.swift */,
-				4AFBE92E29DF328500C2F705 /* GetDataService.swift */,
+				4AF2DCCD2A122D8F001B1BF1 /* AuthorizationService.swift */,
+				4AF2DCD52A1235A0001B1BF1 /* UserService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -323,7 +356,8 @@
 				4A24427829D482F10065E32B /* ICompetitionService.swift */,
 				4A24427A29D486120065E32B /* ITeamService.swift */,
 				4A24427E29D489890065E32B /* IParticipantService.swift */,
-				4AFBE93529DF344D00C2F705 /* IGetDataService.swift */,
+				4AF2DCCB2A122D7B001B1BF1 /* IAuthorizationService.swift */,
+				4AF2DCD32A123586001B1BF1 /* IUserService.swift */,
 			);
 			path = ServiceInterface;
 			sourceTree = "<group>";
@@ -339,7 +373,8 @@
 				4A172F9A29ED6BB9004774C0 /* CompetitionRepository.swift */,
 				4A9D46BF29EEBA420059750F /* TeamRepository.swift */,
 				4AAF0AEE29EAE64500C0ECCE /* ParticipantRepository.swift */,
-				4AF5A1A32A079AC3005DD13D /* GetDataRepository.swift */,
+				4AF2DCC92A12222C001B1BF1 /* AuthorizationRepository.swift */,
+				4AF2DCD12A12332F001B1BF1 /* UserRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -347,19 +382,20 @@
 		4A24428129D48ADA0065E32B /* RepositoryInterface */ = {
 			isa = PBXGroup;
 			children = (
+				4AE317282A0BB99400387419 /* ILootByStepRepository.swift */,
 				4A24428929D49D8A0065E32B /* ILootRepository.swift */,
-				4AE1775F29D71BA9009FF250 /* IStepRepository.swift */,
 				4AE1776329D78D15009FF250 /* ILootToStepRepository.swift */,
+				4AE317262A0BB63900387419 /* IStepByParticipant.swift */,
+				4AE1775F29D71BA9009FF250 /* IStepRepository.swift */,
 				4AE1776729D8DD92009FF250 /* IStepToCompetitionRepository.swift */,
 				4AE1776B29D8E183009FF250 /* ICompetitionRepository.swift */,
-				4AE1776E29D9AE84009FF250 /* ITeamRepository.swift */,
-				4AE1777229D9B375009FF250 /* ITeamToCompetitionRepository.swift */,
 				4AE1777429D9B496009FF250 /* ICompetitionToTeamRepository.swift */,
-				4AE1777629D9B8D5009FF250 /* IParticipantRepository.swift */,
-				4AE1777A29D9BFB7009FF250 /* ITeamByParticipantRepository.swift */,
-				4AE1777C29D9C5BB009FF250 /* IParticipantByTeamRepository.swift */,
+				4AE1776E29D9AE84009FF250 /* ITeamRepository.swift */,
 				4AE1777E29D9C712009FF250 /* IParticipantToTeamRepository.swift */,
-				4AFBE93029DF335F00C2F705 /* IGetDataRepository.swift */,
+				4AE1777629D9B8D5009FF250 /* IParticipantRepository.swift */,
+				4AE1777C29D9C5BB009FF250 /* IParticipantByTeamRepository.swift */,
+				4AF2DCC72A1221AA001B1BF1 /* IAuthorizationRepository.swift */,
+				4AF2DCCF2A1232CD001B1BF1 /* IUserRepository.swift */,
 			);
 			path = RepositoryInterface;
 			sourceTree = "<group>";
@@ -377,12 +413,11 @@
 		4A8E36F829FDA229009A0930 /* MockRepository */ = {
 			isa = PBXGroup;
 			children = (
-				4A8E36F929FDA229009A0930 /* MockGetDataRepository.swift */,
-				4A8E36FA29FDA229009A0930 /* MockParticipantRepository.swift */,
 				4A8E36FB29FDA229009A0930 /* MockLootRepository.swift */,
+				4A8E36FE29FDA229009A0930 /* MockStepRepository.swift */,
 				4A8E36FC29FDA229009A0930 /* MockCompetitionRepository.swift */,
 				4A8E36FD29FDA229009A0930 /* MockTeamRepository.swift */,
-				4A8E36FE29FDA229009A0930 /* MockStepRepository.swift */,
+				4A8E36FA29FDA229009A0930 /* MockParticipantRepository.swift */,
 			);
 			path = MockRepository;
 			sourceTree = "<group>";
@@ -471,6 +506,8 @@
 				4AED395829F2B5DF00FA45F0 /* CompetitionExtension.swift */,
 				4AED395A29F2B60000FA45F0 /* TeamExtension.swift */,
 				4AED395C29F2B63800FA45F0 /* ParticipantExtension.swift */,
+				4AF2DCBF2A118529001B1BF1 /* AuthorizationExtencion.swift */,
+				4AF2DCC12A11859A001B1BF1 /* UserExtencion.swift */,
 			);
 			path = ModelExtension;
 			sourceTree = "<group>";
@@ -501,6 +538,8 @@
 				4AED902B29E1B238009F6805 /* CompetitionModelData.swift */,
 				4AED902D29E1B2E5009F6805 /* TeamModelData.swift */,
 				4AED902F29E1B462009F6805 /* ParticipantModelData.swift */,
+				4AF2DCBB2A1183A7001B1BF1 /* AuthorizationModelData.swift */,
+				4AF2DCBD2A118473001B1BF1 /* UserModelData.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -526,12 +565,18 @@
 		4AF5A1982A02BE7C005DD13D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				4A1E02632A10D06B00DDF407 /* SetupSortingController.swift */,
+				4AE3172A2A0BC40800387419 /* DetailLootController.swift */,
+				4AE317242A0B896C00387419 /* ParicipantLootController.swift */,
+				4AE317222A0B7C1D00387419 /* LootController.swift */,
 				4AED2B7C2A098C58000FFDFD /* DetailParticipantController.swift */,
 				4AD3E60E2A07B1C80005AC18 /* DetailTeamController.swift */,
 				4AF5A1A12A05A72D005DD13D /* TeamController.swift */,
 				4AF5A19A2A02C588005DD13D /* AddCompetitionController.swift */,
 				4A24422B29D2EF480065E32B /* CompetitionController.swift */,
 				4AEE59FC2A003B7500534AC8 /* TabBarController.swift */,
+				4AF2DCD72A1242EF001B1BF1 /* RegistrationController.swift */,
+				4AF2DCC32A120851001B1BF1 /* AuthorizationController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -549,8 +594,8 @@
 			children = (
 				4AEE59F72A0030E500534AC8 /* AlertManager.swift */,
 				4AF5A19D2A02C817005DD13D /* ServicesManager.swift */,
+				4AF2DCC52A121314001B1BF1 /* AuthorizationManager.swift */,
 				4AF5A19F2A02C846005DD13D /* config.swift */,
-				4AFA3EF82A0A7CCD0038B7CE /* TeamParticipantTableMode.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -708,42 +753,53 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A1E02642A10D06B00DDF407 /* SetupSortingController.swift in Sources */,
 				4AE1778129D9CB06009FF250 /* CompetitionService.swift in Sources */,
-				4AFBE93129DF335F00C2F705 /* IGetDataRepository.swift in Sources */,
+				4AF2DCC22A11859A001B1BF1 /* UserExtencion.swift in Sources */,
+				4AF2DCC82A1221AA001B1BF1 /* IAuthorizationRepository.swift in Sources */,
+				4AF2DCBC2A1183A7001B1BF1 /* AuthorizationModelData.swift in Sources */,
 				4A8E370029FDA229009A0930 /* MockParticipantRepository.swift in Sources */,
-				4AFBE92F29DF328600C2F705 /* GetDataService.swift in Sources */,
-				4AFBE93629DF344D00C2F705 /* IGetDataService.swift in Sources */,
+				4AE317232A0B7C1E00387419 /* LootController.swift in Sources */,
 				4AED395529F2B58200FA45F0 /* LootExtencion.swift in Sources */,
 				4A24427029D47BD40065E32B /* CompetitionModel.swift in Sources */,
 				4AE1777D29D9C5BB009FF250 /* IParticipantByTeamRepository.swift in Sources */,
 				4AEFA0D929E96D0E00883AAC /* ParameterError.swift in Sources */,
+				4AF2DCD22A12332F001B1BF1 /* UserRepository.swift in Sources */,
 				4AE1777729D9B8D5009FF250 /* IParticipantRepository.swift in Sources */,
 				4A24426E29D47B870065E32B /* StepModel.swift in Sources */,
+				4AE317252A0B896C00387419 /* ParicipantLootController.swift in Sources */,
 				4AED902529E1A6B2009F6805 /* LootRepository.swift in Sources */,
+				4AE3172B2A0BC40800387419 /* DetailLootController.swift in Sources */,
 				4AE1776F29D9AE84009FF250 /* ITeamRepository.swift in Sources */,
-				4AE1777B29D9BFB7009FF250 /* ITeamByParticipantRepository.swift in Sources */,
+				4AF2DCB82A11829C001B1BF1 /* UserModel.swift in Sources */,
 				4AED902829E1A6EE009F6805 /* LootModelData.swift in Sources */,
 				4AE1777F29D9C712009FF250 /* IParticipantToTeamRepository.swift in Sources */,
 				4AF5A1A22A05A72D005DD13D /* TeamController.swift in Sources */,
 				4AE1776429D78D15009FF250 /* ILootToStepRepository.swift in Sources */,
+				4AE317292A0BB99400387419 /* ILootByStepRepository.swift in Sources */,
+				4AF2DCD82A1242EF001B1BF1 /* RegistrationController.swift in Sources */,
 				4AE1778329D9CC08009FF250 /* TeamService.swift in Sources */,
 				4AED903029E1B462009F6805 /* ParticipantModelData.swift in Sources */,
 				4AD3E60F2A07B1C80005AC18 /* DetailTeamController.swift in Sources */,
+				4AF2DCCC2A122D7B001B1BF1 /* IAuthorizationService.swift in Sources */,
+				4AE317272A0BB63900387419 /* IStepByParticipant.swift in Sources */,
 				4ADB9F5629F44D50009A3C24 /* BeforeParticipantRepository.swift in Sources */,
 				4AAF0AEF29EAE64500C0ECCE /* ParticipantRepository.swift in Sources */,
 				4AED396629F3198B00FA45F0 /* BeforeLootRepositoryTests.swift in Sources */,
-				4AE1777329D9B375009FF250 /* ITeamToCompetitionRepository.swift in Sources */,
 				4AE1777529D9B496009FF250 /* ICompetitionToTeamRepository.swift in Sources */,
 				4A172F9B29ED6BB9004774C0 /* CompetitionRepository.swift in Sources */,
-				4A8E36FF29FDA229009A0930 /* MockGetDataRepository.swift in Sources */,
+				4AF2DCCE2A122D8F001B1BF1 /* AuthorizationService.swift in Sources */,
 				4A24426C29D47B020065E32B /* LootModel.swift in Sources */,
-				4AF5A1A42A079AC3005DD13D /* GetDataRepository.swift in Sources */,
 				4A24428A29D49D8A0065E32B /* ILootRepository.swift in Sources */,
 				4A24427929D482F10065E32B /* ICompetitionService.swift in Sources */,
 				4A24427529D47F1E0065E32B /* ILootService.swift in Sources */,
 				4AEE59FB2A00379400534AC8 /* CompetitionsControllerExtension.swift in Sources */,
+				4AF2DCBE2A118473001B1BF1 /* UserModelData.swift in Sources */,
+				4AF2DCBA2A118383001B1BF1 /* AuthorizationModel.swift in Sources */,
 				4A24428329D48B860065E32B /* LootService.swift in Sources */,
 				4AED902C29E1B238009F6805 /* CompetitionModelData.swift in Sources */,
+				4AF2DCC62A121314001B1BF1 /* AuthorizationManager.swift in Sources */,
+				4AF2DCCA2A12222C001B1BF1 /* AuthorizationRepository.swift in Sources */,
 				4AEE59F82A0030E500534AC8 /* AlertManager.swift in Sources */,
 				4A8E370329FDA229009A0930 /* MockTeamRepository.swift in Sources */,
 				4A24427D29D488B30065E32B /* SortParamertModel.swift in Sources */,
@@ -762,6 +818,7 @@
 				4A9809D129E9EFA600B6886E /* StepRepository.swift in Sources */,
 				4AED395B29F2B60000FA45F0 /* TeamExtension.swift in Sources */,
 				4AE1776029D71BA9009FF250 /* IStepRepository.swift in Sources */,
+				4AF2DCD02A1232CD001B1BF1 /* IUserRepository.swift in Sources */,
 				4AED396529F318FD00FA45F0 /* BeforeStepRepository.swift in Sources */,
 				4AE1778529D9CC25009FF250 /* ParticipantService.swift in Sources */,
 				4AED902A29E1B1AD009F6805 /* StepModelData.swift in Sources */,
@@ -769,18 +826,21 @@
 				4AE1775E29D71B79009FF250 /* StepService.swift in Sources */,
 				4AE1776829D8DD92009FF250 /* IStepToCompetitionRepository.swift in Sources */,
 				4A24427B29D486120065E32B /* ITeamService.swift in Sources */,
+				4AF2DCC02A118529001B1BF1 /* AuthorizationExtencion.swift in Sources */,
 				4AED2B7D2A098C58000FFDFD /* DetailParticipantController.swift in Sources */,
+				4AF2DCC42A120851001B1BF1 /* AuthorizationController.swift in Sources */,
 				4A24427F29D489890065E32B /* IParticipantService.swift in Sources */,
 				4ADB9F5029F412E8009A3C24 /* BeforeCompetitionRepository.swift in Sources */,
+				4AF2DCD62A1235A0001B1BF1 /* UserService.swift in Sources */,
 				4AED395729F2B5B300FA45F0 /* StepExtension.swift in Sources */,
 				4A24427229D47C1A0065E32B /* TeamModel.swift in Sources */,
 				4A24422829D2EF480065E32B /* AppDelegate.swift in Sources */,
 				4AF5A19B2A02C589005DD13D /* AddCompetitionController.swift in Sources */,
+				4AF2DCD42A123586001B1BF1 /* IUserService.swift in Sources */,
 				4AED902E29E1B2E5009F6805 /* TeamModelData.swift in Sources */,
 				4A6132A229E86A810025CDC9 /* DataError.swift in Sources */,
 				4A9D46C029EEBA420059750F /* TeamRepository.swift in Sources */,
 				4A24422A29D2EF480065E32B /* SceneDelegate.swift in Sources */,
-				4AFA3EF92A0A7CCD0038B7CE /* TeamParticipantTableMode.swift in Sources */,
 				4AF5A19E2A02C817005DD13D /* ServicesManager.swift in Sources */,
 				4A1F1E952A011B77002DFE7B /* CompetitionViews.swift in Sources */,
 				4A8E370129FDA229009A0930 /* MockLootRepository.swift in Sources */,

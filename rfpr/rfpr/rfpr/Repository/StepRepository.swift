@@ -70,34 +70,6 @@ class StepRepository: IStepRepository, ILootToStepRepository, IStepByParticipant
         return createdStep
     }
     
-    func updateStep(previousStep: Step, newStep: Step) throws -> Step? {
-        var newStep = newStep
-        newStep.id = previousStep.id
-        
-        let realmPreviousStep = try previousStep.convertStepToRealm(realm)
-        let realmNewStep = try newStep.convertStepToRealm(realm)
-        
-        let stepFromDB = realm.objects(StepRealm.self).where {
-            $0._id == realmPreviousStep._id
-        }.first
-        
-        guard let _ = stepFromDB else {
-            throw ParameterError.funcParameterError
-        }
-        
-        do {
-            try realm.write {
-                realm.add(realmNewStep, update: .modified)
-            }
-        } catch {
-            throw DatabaseError.updateError
-        }
-        
-        let updatedStep = try getStep(id: "\(realmNewStep._id)")
-
-        return updatedStep
-    }
-    
     func deleteStep(step: Step) throws {
         let realmStep = try step.convertStepToRealm(realm)
         
@@ -117,7 +89,6 @@ class StepRepository: IStepRepository, ILootToStepRepository, IStepByParticipant
             throw DatabaseError.updateError
         }
     }
-    
     
     func addLoot(loot: Loot, step: Step) throws {
         let realmStep = try step.convertStepToRealm(realm)
@@ -170,17 +141,6 @@ class StepRepository: IStepRepository, ILootToStepRepository, IStepByParticipant
         }
     }
     
-    func getSteps() throws -> [Step]? {
-        let stepsRealm = realm.objects(StepRealm.self)
-        var steps = [Step]()
-        
-        for step in stepsRealm {
-            steps.append(step.convertStepFromRealm())
-        }
-
-        return steps.isEmpty ? nil : steps
-    }
-    
     func getStepByParticipant(participant: Participant) throws -> [Step]? {
         let steps = try! getSteps()
         
@@ -215,7 +175,6 @@ class StepRepository: IStepRepository, ILootToStepRepository, IStepByParticipant
         let realmStep = try step.convertStepToRealm(realm)
         let realmParticipant = try participant.convertParticipantToRealm(realm)
         
-
         let stepsFromDB = realm.objects(StepRealm.self)
         var stepFromDB: StepRealm? = nil
         
@@ -229,7 +188,6 @@ class StepRepository: IStepRepository, ILootToStepRepository, IStepByParticipant
         guard let stepFromDB = stepFromDB else {
             throw ParameterError.funcParameterError
         }
-        
         
         let participantsFromDB = realm.objects(ParticipantRealm.self)
         var participantFromDB: ParticipantRealm? = nil
@@ -255,4 +213,14 @@ class StepRepository: IStepRepository, ILootToStepRepository, IStepByParticipant
         }
     }
     
+    func getSteps() throws -> [Step]? {
+        let stepsRealm = realm.objects(StepRealm.self)
+        var steps = [Step]()
+        
+        for step in stepsRealm {
+            steps.append(step.convertStepFromRealm())
+        }
+
+        return steps.isEmpty ? nil : steps
+    }
 }

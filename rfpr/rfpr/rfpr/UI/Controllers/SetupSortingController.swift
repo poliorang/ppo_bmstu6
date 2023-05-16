@@ -120,9 +120,8 @@ class SetupSortingViewController: UIViewController {
     
     @objc
     func buttonCreateLootTapped(sender: UIButton) {
-        print("TAPPED")
-       
         switch stepTextField.text {
+        
         case StepsName.day1.rawValue:
             stepName = StepsName.day1
         
@@ -134,6 +133,7 @@ class SetupSortingViewController: UIViewController {
         }
         
         switch sortingTextField.text {
+        
         case  SortParameter.ascending.rawValue:
             sortParameterName = SortParameter.ascending
         
@@ -145,7 +145,7 @@ class SetupSortingViewController: UIViewController {
             lootViewController.sortParameter = sortParameterName
             lootViewController.stepName = stepName
         }
-        
+
         if let teamViewController = teamViewController {
             teamViewController.sortParameter = sortParameterName
             teamViewController.stepName = stepName

@@ -73,9 +73,6 @@ class LootViewController: UIViewController, ToLootFromSetupDelegateProtocol {
     func sendSortParamsToLootViewController(stepName: StepsName?, sortParameter: SortParameter) {
         self.stepName = stepName
         self.sortParameter = sortParameter
-        
-        print("STEP1 ", self.stepName)
-        print("SORT2 ", self.sortParameter)
     }
 
     private func setupServices() {
@@ -126,8 +123,6 @@ class LootViewController: UIViewController, ToLootFromSetupDelegateProtocol {
     
     private func getScoreByCompetitionByStep() {
         do {
-            print("STEP ", self.stepName)
-            print("SORT ", self.sortParameter)
             participants = try services.participantService.getParticipantsScoreByCompetition(participants: participants, competition: competition, stepName: stepName, parameter: sortParameter)
         } catch {
             alertManager.showAlert(presentTo: self,
@@ -239,7 +234,7 @@ class LootViewController: UIViewController, ToLootFromSetupDelegateProtocol {
     @objc
     func buttonCompetitionTapped(sender: UIButton) {
         getCompetitions()
-        print("TAPPED")
+
         if picker.isHidden {
             picker.isHidden = false
             pickerToolBar.isHidden = false
@@ -306,7 +301,7 @@ extension LootViewController: UITableViewDataSource, UITableViewDelegate {
 
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("TAPPED")
+        
         let participant: Participant?
         
         let fullname = "\(participants?[indexPath.row].lastName ?? "") \(participants?[indexPath.row].firstName ?? "")"

@@ -33,9 +33,9 @@ class BeforeTeamRepositoryTest {
         let teamAddTeam = Team(id: "5442852b2b74d595cb4f4734", name: "AddParticipant", competitions: nil, score: 0)
         let teamBy = Team(id: "5442852b2b74d595cb4f4738", name: "Команда Гурова", competitions: nil, score: 0)
         
-        let participantBy = Participant(id: "5442852b2b74d595cb4f4742", lastName: "Гуров", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
-        let participantAdd = Participant(id: "5442852b2b74d595cb4f4730", lastName: "Абрамов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
-        let participantNilTeam = Participant(id: "5442852b2b74d595cb4f4755", lastName: "Артемов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participantBy = Participant(id: "5442852b2b74d595cb4f4742", lastName: "Гуров", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, score: 0)
+        let participantAdd = Participant(id: "5442852b2b74d595cb4f4730", lastName: "Абрамов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, score: 0)
+        let participantNilTeam = Participant(id: "5442852b2b74d595cb4f4755", lastName: "Артемов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, score: 0)
         
         let competitionAdd = Competition(id: "5442852b2b74d595cb4f4728", name: "Added", teams: nil)
         
@@ -50,7 +50,7 @@ class BeforeTeamRepositoryTest {
                 try _ = participantRepository.createParticipant(participant: $0)
             }
             
-            let participantBy1 = Participant(id: "5442852b2b74d595cb4f4742", lastName: "Гуров", firstName: "Иван", patronymic: "Иванович", team: teamBy, city: "Москва", birthday: bith, role: "Участник", score: 0)
+            let participantBy1 = Participant(id: "5442852b2b74d595cb4f4742", lastName: "Гуров", firstName: "Иван", patronymic: "Иванович", team: teamBy, city: "Москва", birthday: bith, score: 0)
             
             try _ = participantRepository.updateParticipant(previousParticipant: participantBy, newParticipant: participantBy1)
         

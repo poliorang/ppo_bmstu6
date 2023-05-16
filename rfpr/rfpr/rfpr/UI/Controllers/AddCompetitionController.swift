@@ -84,9 +84,6 @@ class AddCompetitionController: UIViewController{
     
     @objc
     func buttonAddCompetitionTapped(sender: UIButton) {
-        print("TAPPED")
-        
-        var competition: Competition? = nil
         guard var competitionName = nameTextField.text else {
             alertManager.showAlert(presentTo: self,
                                    title: "Внимание",
@@ -104,15 +101,13 @@ class AddCompetitionController: UIViewController{
         }
         
         do {
-            try competition = services.competitionService.createCompetition(id: nil, name: competitionName, teams: nil)
+            _ = try services.competitionService.createCompetition(id: nil, name: competitionName, teams: nil)
         } catch {
-            print("\(competition?.name ?? "") WASN'T CREATED")
             alertManager.showAlert(presentTo: self,
                                    title: "Внимание",
                                    message: "Соревнование не было создано")
             
         }
-        print("\(competition?.name ?? "") WAS CREATED")
         
         dismiss(animated: true, completion: gettedCompletion)
     }

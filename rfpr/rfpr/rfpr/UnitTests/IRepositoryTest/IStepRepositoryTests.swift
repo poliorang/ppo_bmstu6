@@ -74,4 +74,31 @@ class IStepRepositoryTests: XCTestCase {
         
         XCTAssertNoThrow(try stepRepository.deleteLoot(loot: loot, step: step))
     }
+    
+    func testGetSteps() throws {
+        let steps = [Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)]
+        
+        XCTAssertEqual(try stepRepository.getSteps(), steps)
+    }
+    
+    func testGetStepByParticipant() throws {
+        let participant = Participant(id: "1", lastName: "a", firstName: "a", patronymic: nil, team: nil, city: "a", birthday: bith, score: 0)
+        let steps = [Step(id: "1", name: "Первый день", participant: participant, competition: nil, score: 0)]
+        
+        XCTAssertEqual(try stepRepository.getStepByParticipant(participant: participant), steps)
+    }
+    
+    func testGetStepByCompetition() throws {
+        let competition = Competition(id: "1", name: "aaa", teams: nil)
+        let steps = [Step(id: "1", name: "Первый день", participant: nil, competition: competition, score: 0)]
+        
+        XCTAssertEqual(try stepRepository.getStepByCompetition(competition: competition), steps)
+    }
+    
+    func testStepAddParticipant() throws {
+        let participant = Participant(id: "1", lastName: "a", firstName: "a", patronymic: nil, team: nil, city: "a", birthday: bith, score: 0)
+        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
+        
+        XCTAssertNoThrow(try stepRepository.addParticipant(participant: participant, step: step))
+    }
 }

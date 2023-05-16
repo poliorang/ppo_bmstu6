@@ -47,99 +47,6 @@ class LootRepository: ILootRepository, ILootByStepRepository {
         return nil
     }
     
-    func updateStepScore(_ step: StepRealm) throws {
-        let lootsRealm = realm.objects(LootRealm.self)
-        
-        var newScore = 0
-        for loot in lootsRealm {
-            if loot.step == step {
-                newScore += loot.score
-            }
-        }
-        
-        let id = "\(step._id)"
-        let newStep = StepRealm(id: id, name: step.name, participant: step.participant, competition: step.competition, score: newScore)
-        
-        do {
-            try realm.write {
-                realm.add(newStep, update: .modified)
-            }
-        } catch {
-            throw DatabaseError.updateError
-        }
-    }
-    
-    func updateParticipantScore(_ participant: ParticipantRealm) throws {
-        let stepsRealm = realm.objects(StepRealm.self)
-        
-        var newScore = 0
-        for step in stepsRealm {
-            if step.participant == participant {
-                newScore += step.score
-            }
-        }
-        
-        let id = "\(participant._id)"
-        let newParticipant = ParticipantRealm(id: id, lastName: participant.lastName, firstName: participant.firstName, patronymic: participant.patronymic, team: participant.team, city: participant.city, birthday: participant.birthday, role: participant.role, score: newScore)
-        
-        do {
-            try realm.write {
-                realm.add(newParticipant, update: .modified)
-            }
-        } catch {
-            throw DatabaseError.updateError
-        }
-    }
-    
-    func triggerLootToStep(_ loot: LootRealm?) throws {
-        print("TRIGGER")
-//        guard let loot = loot else {
-//            throw DatabaseError.triggerError
-//        }
-//
-//        let stepsRealm = realm.objects(StepRealm.self)
-//
-//        var currentStep: StepRealm? = nil
-//        for step in stepsRealm {
-//            if loot.step == step {
-//                currentStep = step
-//                do {
-//                    try updateStepScore(step)
-//                } catch {
-//                    throw DatabaseError.updateError
-//                }
-//                break
-//            }
-//        }
-
-//        guard let currentStep = currentStep else {
-//            return
-//        }
-//
-//        let participantsRealm = realm.objects(ParticipantRealm.self)
-//
-//        for participant in participantsRealm {
-//            if currentStep.participant == participant {
-//                do {
-//                    try updateParticipantScore(participant)
-//                } catch {
-//                    throw DatabaseError.updateError
-//                }
-//                break
-//            }
-//        }
-    
-        let stepsRealm = realm.objects(StepRealm.self)
-
-        for step in stepsRealm {
-            do {
-                try updateStepScore(step)
-            } catch {
-                throw DatabaseError.updateError
-            }
-        }
-    }
-    
     func createLoot(loot: Loot) throws -> Loot? {
         let realmLoot: LootRealm
         
@@ -180,7 +87,7 @@ class LootRepository: ILootRepository, ILootByStepRepository {
             $0._id == realmPreviousLoot._id
         }.first
         
-        guard let lootFromDB = lootFromDB else {
+        guard lootFromDB != nil else {
             throw ParameterError.funcParameterError
         }
         
@@ -258,3 +165,63 @@ class LootRepository: ILootRepository, ILootByStepRepository {
         return resultLoots
     }
 }
+
+extension LootRepository {
+    func updateStepScore(_ step: StepRealm) throws {
+        let lootsRealm = realm.objects(LootRealm.self)
+        
+        var newScore = 0
+        for loot in lootsRealm {
+            if loot.step == step {
+                newScore += loot.score
+            }
+        }
+        
+        let id = "\(step._id)"
+        let newStep = StepRealm(id: id, name: step.name, participant: step.participant, competition: step.competition, score: newScore)
+        
+        do {
+            try realm.write {
+                realm.add(newStep, update: .modified)
+            }
+        } catch {
+            throw DatabaseError.updateError
+        }
+    }
+    
+    func updateParticipantScore(_ participant: ParticipantRealm) throws {
+        let stepsRealm = realm.objects(StepRealm.self)
+        
+        var newScore = 0
+        for step in stepsRealm {
+            if step.participant == participant {
+                newScore += step.score
+            }
+        }
+        
+        let id = "\(participant._id)"
+        let newParticipant = ParticipantRealm(id: id, lastName: participant.lastName, firstName: participant.firstName, patronymic: participant.patronymic, team: participant.team, city: participant.city, birthday: participant.birthday, score: newScore)
+        
+        do {
+            try realm.write {
+                realm.add(newParticipant, update: .modified)
+            }
+        } catch {
+            throw DatabaseError.updateError
+        }
+    }
+    
+    func triggerLootToStep(_ loot: LootRealm?) throws {
+        let stepsRealm = realm.objects(StepRealm.self)
+
+        for step in stepsRealm {
+            do {
+                try updateStepScore(step)
+            } catch {
+                throw DatabaseError.updateError
+            }
+        }
+    }
+}
+
+

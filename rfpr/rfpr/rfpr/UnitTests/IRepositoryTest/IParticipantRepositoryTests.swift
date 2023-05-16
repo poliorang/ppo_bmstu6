@@ -23,38 +23,38 @@ class IParticipantRepositoryTests: XCTestCase {
     }
 
     func testCreateParticipant() throws {
-        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, score: 0)
         
         XCTAssertNoThrow(try participantRepository.createParticipant(participant: participant))
     }
     
     func testCreateParticipantNillPatronymic() throws {
-        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: nil, team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: nil, team: nil, city: "Москва", birthday: bith, score: 0)
         
         XCTAssertNoThrow(try participantRepository.createParticipant(participant: participant))
     }
     
     func testUpdateParticipant() {
-        let previousParticipant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
-        let newParticipant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let previousParticipant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, score: 0)
+        let newParticipant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, score: 0)
         
         XCTAssertNoThrow(try participantRepository.updateParticipant(previousParticipant: previousParticipant, newParticipant: newParticipant))
     }
     
     func testUpdateParticipantNil() {
-        let previousParticipant = Participant(id: "10", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
-        let newParticipant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let previousParticipant = Participant(id: "10", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, score: 0)
+        let newParticipant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, score: 0)
         
         XCTAssertThrowsError(try participantRepository.updateParticipant(previousParticipant: previousParticipant, newParticipant: newParticipant))
     }
     
     func testDeleteParticipant() {
-        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, score: 0)
         XCTAssertNoThrow(try participantRepository.deleteParticipant(participant: participant))
     }
     
     func testDeleteParticipantNil() {
-        let participant = Participant(id: "10", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participant = Participant(id: "10", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: nil, city: "Москва", birthday: bith, score: 0)
         XCTAssertThrowsError(try participantRepository.deleteParticipant(participant: participant))
     }
     
@@ -63,9 +63,9 @@ class IParticipantRepositoryTests: XCTestCase {
         let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 0)
         let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 0)
         
-        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: team1, city: "Москва", birthday: bith, role: "Участник", score: 9800)
-        let participant1 = Participant(id: "1", lastName: "Иванов", firstName: "Петр", patronymic: "Петрович", team: team2, city: "Москва", birthday: bith, role: "Участник", score: 6600)
-        let participant2 = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", team: team3, city: "Москва", birthday: bith, role: "Участник", score: 2650)
+        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: team1, city: "Москва", birthday: bith, score: 9800)
+        let participant1 = Participant(id: "1", lastName: "Иванов", firstName: "Петр", patronymic: "Петрович", team: team2, city: "Москва", birthday: bith, score: 6600)
+        let participant2 = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", team: team3, city: "Москва", birthday: bith, score: 2650)
         
         let participants = [participant, participant1, participant2]
         
@@ -75,7 +75,7 @@ class IParticipantRepositoryTests: XCTestCase {
     func testGetParticipantByTeam() throws {
         let team = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
         
-        let participant1 = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: team, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participant1 = Participant(id: "1", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", team: team, city: "Москва", birthday: bith, score: 0)
         
         let participants = [participant1]
         

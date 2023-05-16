@@ -8,8 +8,6 @@
 
 protocol ICompetitionRepository {
     func createCompetition(competition: Competition) throws -> Competition? 
-    
-    func updateCompetition(previousCompetition: Competition, newCompetition: Competition) throws -> Competition? 
     func deleteCompetition(competition: Competition) throws
     
     func getCompetitions() throws -> [Competition]?

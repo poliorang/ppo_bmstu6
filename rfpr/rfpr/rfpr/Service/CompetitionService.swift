@@ -8,14 +8,11 @@
 class CompetitionService: ICompetitionService {
     
     let competitionRepository: ICompetitionRepository?
-    let teamToCompetitionRepository: ITeamToCompetitionRepository?
     let stepToCompetitionRepository: IStepToCompetitionRepository?
     
     init(competitionRepository: ICompetitionRepository,
-         teamToCompetitionRepository: ITeamToCompetitionRepository,
          stepToCompetitionRepository: IStepToCompetitionRepository) {
         self.competitionRepository = competitionRepository
-        self.teamToCompetitionRepository = teamToCompetitionRepository
         self.stepToCompetitionRepository = stepToCompetitionRepository
     }
     
@@ -38,26 +35,6 @@ class CompetitionService: ICompetitionService {
         }
         
         return createdCompetition
-    }
-    
-    func updateCompetition(previousCompetition: Competition?, newCompetition: Competition?) throws -> Competition {
-        guard let previousCompetition = previousCompetition,
-              let newCompetition = newCompetition else {
-                  throw ParameterError.funcParameterError
-        }
-        
-        let updatedCompetition: Competition?
-        do {
-            updatedCompetition = try competitionRepository?.updateCompetition(previousCompetition: previousCompetition, newCompetition: newCompetition)
-        } catch DatabaseError.updateError {
-            throw DatabaseError.updateError
-        }
-        
-        guard let updatedCompetition = updatedCompetition else {
-            throw DatabaseError.updateError
-        }
-        
-        return updatedCompetition
     }
     
     func deleteCompetition(competition: Competition?) throws {
@@ -108,19 +85,6 @@ class CompetitionService: ICompetitionService {
         }
         
         return competitions
-    }
-    
-    func addTeam(team: Team?, competition: Competition?) throws {
-        guard let team = team,
-              let competition = competition else {
-                  throw ParameterError.funcParameterError
-        }
-        
-        do {
-            try teamToCompetitionRepository?.addTeam(team: team, competition: competition)
-        } catch DatabaseError.getError {
-            throw DatabaseError.getError
-        }
     }
     
     func addStep(step: Step?, competition: Competition?) throws {

@@ -12,6 +12,5 @@ protocol ILootService {
     func deleteLoot(loot: Loot?) throws
     
     func getLoot(fishName: String?, score: Int?) throws -> Loot?
-    
     func getLootByStep(step: Step?) throws -> [Loot]? 
 }

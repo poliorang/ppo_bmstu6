@@ -5,8 +5,7 @@
 //  Created by poliorang on 02.04.2023.
 //
 
-class MockCompetitionRepository: ICompetitionRepository, IStepToCompetitionRepository,
-                                 ITeamToCompetitionRepository {
+class MockCompetitionRepository: ICompetitionRepository, IStepToCompetitionRepository {
 
     private let competition1 = Competition(id: "1", name: "Урал", teams: nil)
     private let competition2 = Competition(id: "1", name: "Урал-Юг", teams: nil)
@@ -27,19 +26,6 @@ class MockCompetitionRepository: ICompetitionRepository, IStepToCompetitionRepos
         }
         
         return competition
-    }
-    
-    func updateCompetition(previousCompetition: Competition, newCompetition: Competition) throws -> Competition? {
-        dbCompetition.append(competition1)
-        
-        if let index = dbCompetition.firstIndex(where: { $0 == previousCompetition }) {
-            dbCompetition.remove(at: index)
-            dbCompetition.append(newCompetition)
-        } else {
-            throw DatabaseError.updateError
-        }
-        
-        return newCompetition
     }
     
     func deleteCompetition(competition removeCompetition: Competition) throws {
@@ -72,33 +58,6 @@ class MockCompetitionRepository: ICompetitionRepository, IStepToCompetitionRepos
         if let indexStep = dbStep.firstIndex(where: { $0 == newStep }) {
             if let indexCompetition = dbCompetition.firstIndex(where: { $0 == newCompetition }) {
                 dbStep[indexStep].competition = dbCompetition[indexCompetition]
-            } else {
-                throw DatabaseError.addError
-            }
-        } else {
-            throw DatabaseError.addError
-        }
-    }
-    
-    
-    func addTeam(team newTeam: Team, competition newCompetition: Competition) throws {
-        dbTeam.append(team)
-        dbCompetition.append(competition1)
-        
-        if let indexStep = dbTeam.firstIndex(where: { $0 == newTeam }) {
-            if let indexCompetition = dbCompetition.firstIndex(where: { $0 == newCompetition }) {
-                
-                if let _ = dbTeam[indexStep].competitions {
-                    dbTeam[indexStep].competitions!.append(dbCompetition[indexCompetition])
-                } else {
-                    dbTeam[indexStep].competitions = [dbCompetition[indexCompetition]]
-                }
-                
-                if let _ = dbCompetition[indexStep].teams {
-                    dbCompetition[indexCompetition].teams!.append(dbTeam[indexStep])
-                } else {
-                    dbCompetition[indexCompetition].teams = [dbTeam[indexStep]]
-                }
             } else {
                 throw DatabaseError.addError
             }

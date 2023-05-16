@@ -28,7 +28,7 @@ class BeforeCompetitionRepositoryTest {
     func createData() throws {
         let step = Step(id: "6442852b2b74d595cb4f4756", name: "Add competition", score: 0)
 
-        let сompetitionUpdate = Competition(id: "6442852b2b74d595cb4f4760", name: "Update", teams: nil)
+//        let сompetitionUpdate = Competition(id: "6442852b2b74d595cb4f4760", name: "Update", teams: nil)
         let competitionDelete = Competition(id: "6442852b2b74d595cb4f4764", name: "Delete", teams: nil)
         let competitionAddStep = Competition(id: "6442852b2b74d595cb4f4768", name: "Add", teams: nil)
         let competitionAddTeam = Competition(id: "6442852b2b74d595cb4f4772", name: "Added Team", teams: nil)
@@ -40,7 +40,7 @@ class BeforeCompetitionRepositoryTest {
                 try _ = stepRepository.createStep(step: $0)
                 
             }
-            try [сompetitionUpdate, competitionDelete, competitionAddStep, competitionAddTeam].forEach {
+            try [competitionDelete, competitionAddStep, competitionAddTeam].forEach {
                 try _ = competitionRepository.createCompetition(competition: $0)
             }
             try [team].forEach {

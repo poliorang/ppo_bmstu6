@@ -22,6 +22,7 @@ class ParicipantLootViewController: UIViewController, ToParticipantLootDelegateP
     
     var services: ServicesManager! = nil
     let alertManager = AlertManager.shared
+    let authorizationManager = AuthorizationManager.shared
     
     var participantDelegatePartLoot: ToLootDelegateProtocol? = nil
     var detailLootDelegate: ToDetailLootDelegateProtocol? = nil
@@ -127,10 +128,7 @@ class ParicipantLootViewController: UIViewController, ToParticipantLootDelegateP
     private func getSteps() {
         do {
             steps = try services.stepService.getStepByParticipant(participant: participant)
-            print("STEPS ")
-            for step in steps ?? [] {
-                print(step.name, " ", step.score)
-            }
+
             if steps == nil || steps!.isEmpty {
                 alertManager.showAlert(presentTo: self, title: "Внимание",
                                        message: "У участника нет ни одного зачета")
@@ -160,12 +158,16 @@ class ParicipantLootViewController: UIViewController, ToParticipantLootDelegateP
                                        message: "У зачета нет ни одного улова")
             }
         }
-    
-        print("LOOTS ", loots)
     }
     
     @objc
     func buttonCreateLootTapped(sender: UIButton) {
+        if !authorizationManager.getRight() {
+            alertManager.showAlert(presentTo: self, title: "Доступ запрещен",
+                                   message: "Добавлять улов участнику может только судья")
+            return
+        }
+        
        let detailLootController = DetailLootViewController()
             
         // чтобы можно было использовать только методы, определенные протоколе
@@ -251,8 +253,6 @@ extension ParicipantLootViewController: UITableViewDataSource, UITableViewDelega
                     }
                 }
                 
-                print("LOOT ", loot as Any)
-                
                 do {
                     try services.lootService.deleteLoot(loot: loot)
                 } catch {
@@ -279,8 +279,6 @@ extension ParicipantLootViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("section: \(indexPath.section)")
-        print("row: \(indexPath.row)")
         
         let loot: Loot?
         

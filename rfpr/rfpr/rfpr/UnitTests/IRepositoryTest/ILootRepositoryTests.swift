@@ -46,4 +46,17 @@ class ILootRepositoryTests: XCTestCase {
         let loot = Loot(id: "1", fish: "Щука", weight: 500, score: 1000)
         XCTAssertNoThrow(try lootRepository.deleteLoot(loot: loot))
     }
+    
+    func testGetLoots() throws {
+        let loots = [Loot(id: "1", fish: "Щука", weight: 500, score: 1000)]
+        
+        XCTAssertEqual(try lootRepository.getLoots(), loots)
+    }
+    
+    func testGetLootByStep() throws {
+        let step = Step(id: "1", name: "A", participant: nil, competition: nil, score: 1000)
+        let loot = Loot(id: "2", fish: "Щука", weight: 500, step: step, score: 1000)
+        
+        XCTAssertEqual(try lootRepository.getLootByStep(step: step), [loot])
+    }
 }

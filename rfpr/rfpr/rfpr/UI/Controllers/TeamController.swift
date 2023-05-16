@@ -24,6 +24,11 @@ protocol ToDetailTeamtUpdateDelegateProtocol {
     func sendTeamToTeamViewController(team: Team?)
 }
 
+enum tableMode: String {
+    case participants = "Участники"
+    case teams        = "Команды"
+}
+
 class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
     typealias TeamTableViewCell = UITableViewCell
     
@@ -34,6 +39,7 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
     
     var services: ServicesManager! = nil
     let alertManager = AlertManager.shared
+    let authorizationManager = AuthorizationManager.shared
     
     var competition: Competition?   // получается из CompetitionController
     var teams: [Team]?              // получается из CompetitionController
@@ -239,14 +245,6 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
         tableView.dataSource = self
         
         tableView.backgroundColor = UIColor.systemBackground
-        
-//        NSLayoutConstraint.activate([
-//            tableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            tableView.widthAnchor.constraint(equalTo: view.widthAnchor),
-//            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 300),
-//            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -130)
-//        ])
-//        self.tableView.frame = CGRect.init(origin: .zero, size: self.view.frame.size)
         let yOffset = 190.0
         self.tableView.frame = CGRect.init(x: view.frame.origin.x, y: view.frame.origin.y + yOffset,
                                             width: view.frame.size.width, height: view.frame.size.height)
@@ -254,6 +252,12 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
     
     @objc
     func buttonCreateTeamTapped(sender: UIButton) {
+        if !authorizationManager.getRight() {
+            alertManager.showAlert(presentTo: self, title: "Доступ запрещен",
+                                   message: "Формировать команды может только судья")
+            return
+        }
+        
         if teamsOrParticipantsButton?.title == tableMode.teams.rawValue {
             let detailTeamController = DetailTeamViewController()
             
@@ -320,8 +324,6 @@ class TeamViewController: UIViewController, CompetitionToTeamDelegateProtocol {
             self.getParticipants()
             self.getScoreByCompetitionByStep()
             self.tableView.reloadData()
-            
-            print("S ", self.sortParameter, self.stepName)
         }
         
         setupSortingViewController.gettedCompletion = updateTableCompletion
@@ -361,9 +363,6 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "TeamTableViewCell", for: indexPath)
-
-//        getTeamsByCompetition()
-//        getParticipants()
         
         if teamsOrParticipantsButton?.title == tableMode.teams.rawValue {
             let team = self.teams?[indexPath.row]
@@ -474,8 +473,6 @@ extension TeamViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("section: \(indexPath.section)")
-        print("row: \(indexPath.row)")
         
         if teamsOrParticipantsButton?.title == tableMode.participants.rawValue {
             let participant: Participant?

@@ -41,9 +41,10 @@ class ITeamRepositoryTests: XCTestCase {
     }
     
     func testGetTeams() throws {
+        let competition = Competition(id: "1", name: "Байкал", teams: nil)
         let team1 = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
         let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 0)
-        let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 0)
+        let team3 = Team(id: "1", name: "Пелагик", competitions: [competition], score: 0)
         
         XCTAssertEqual(Set(try (teamRepository.getTeams() ?? [])), Set([team1, team2, team3]))
     }
@@ -71,34 +72,34 @@ class ITeamRepositoryTests: XCTestCase {
     
     func testAddParticipant() throws {
         let team = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
-        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, score: 0)
         
         XCTAssertNoThrow(try teamRepository.addParticipant(participant: participant, team: team))
     }
     
     func testAddParticipantNilTeam() throws {
         let team = Team(id: "1", name: "", competitions: nil, score: 0)
-        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, score: 0)
         
         XCTAssertThrowsError(try teamRepository.addParticipant(participant: participant, team: team))
     }
     
     func testAddParticipantNilParticipant() throws {
         let team = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
-        let participant = Participant(id: "1", lastName: "", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participant = Participant(id: "1", lastName: "", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, score: 0)
         
         XCTAssertNoThrow(try teamRepository.addParticipant(participant: participant, team: team))
     }
     
     func testGetTeamByParticipant() throws {
         let team = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
-        let participant = Participant(id: "1", lastName: "", firstName: "Сергей", patronymic: "Сергеевич", team: team, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participant = Participant(id: "1", lastName: "", firstName: "Сергей", patronymic: "Сергеевич", team: team, city: "Москва", birthday: bith, score: 0)
         
         XCTAssertEqual(try teamRepository.getTeamByParticipant(participant: participant), team)
     }
     
     func testGetTeamByParticipantNil() throws {
-        let participant = Participant(id: "1", lastName: "", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participant = Participant(id: "1", lastName: "", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, score: 0)
         
         XCTAssertEqual(try teamRepository.getTeamByParticipant(participant: participant), nil)
     }

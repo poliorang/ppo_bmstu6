@@ -37,20 +37,6 @@ class ICompetitionRepositoryTests: XCTestCase {
         XCTAssertNoThrow(try competitionRepository.createCompetition(competition: competition))
     }
     
-    func testUpdateCompetition() throws {
-        let previousCompetition = Competition(id: "1", name: "Урал", teams: nil)
-        let newCompetition = Competition(id: "1", name: "Сахалин", teams: nil)
-        
-        XCTAssertNoThrow(try competitionRepository.updateCompetition(previousCompetition: previousCompetition, newCompetition: newCompetition))
-    }
-    
-    func testUpdateCompetitionNil() throws {
-        let previousCompetition = Competition(id: "1", name: "Север", teams: nil)
-        let newCompetition = Competition(id: "1", name: "Сахалин", teams: nil)
-        
-        XCTAssertThrowsError(try competitionRepository.updateCompetition(previousCompetition: previousCompetition, newCompetition: newCompetition))
-    }
-    
     func testDeleteCompetition() throws {
         let competition = Competition(id: "1", name: "Урал", teams: nil)
         
@@ -71,27 +57,6 @@ class ICompetitionRepositoryTests: XCTestCase {
         let competitions = [competition1, competition2, competition3]
         
         XCTAssertEqual(try competitionRepository.getCompetitions(), competitions)
-    }
-        
-    func testAddTeam() throws {
-        let competition = Competition(id: "1", name: "Урал", teams: nil)
-        let team = Team(id: "1", name: "Увильды", competitions: nil, score: 0)
-        
-        XCTAssertNoThrow(try competitionRepository.addTeam(team: team, competition: competition))
-    }
-    
-    func testAddTeamNilCompetition() throws {
-        let competition = Competition(id: "1", name: "", teams: nil)
-        let team = Team(id: "1", name: "Увильды", competitions: nil, score: 0)
-
-        XCTAssertThrowsError(try competitionRepository.addTeam(team: team, competition: competition))
-    }
-    
-    func testAddTeamNilTeam() throws {
-        let competition = Competition(id: "1", name: "Урал", teams: nil)
-        let team = Team(id: "1", name: "", competitions: nil, score: 0)
-
-        XCTAssertThrowsError(try competitionRepository.addTeam(team: team, competition: competition))
     }
     
     func testAddStep() throws {

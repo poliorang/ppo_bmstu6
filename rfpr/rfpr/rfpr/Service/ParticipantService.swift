@@ -10,31 +10,26 @@ import Foundation
 class ParticipantService: IParticipantService {
     
     let participantRepository: IParticipantRepository?
-    let getDataService: IGetDataService?
     
     let participantByTeamRepository: IParticipantByTeamRepository?
     
     init(participantRepository: IParticipantRepository,
-         getDataService: IGetDataService,
          participantByTeamRepository: IParticipantByTeamRepository) {
         self.participantRepository = participantRepository
-        self.getDataService = getDataService
-        
         self.participantByTeamRepository = participantByTeamRepository
     }
     
     
-    func createParticipant(id: String?, lastName: String?, firstName: String?, patronymic: String?, team: Team?, city: String?, birthday: Date?, role: String?, score: Int) throws -> Participant {
+    func createParticipant(id: String?, lastName: String?, firstName: String?, patronymic: String?, team: Team?, city: String?, birthday: Date?, score: Int) throws -> Participant {
         
         guard let lastName = lastName,
               let firstName = firstName,
               let city = city,
-              let birthday = birthday,
-              let role = role else {
+              let birthday = birthday else {
                   throw ParameterError.funcParameterError
         }
         
-        let participant = Participant(id: id, lastName: lastName, firstName: firstName, patronymic: patronymic, team: team, city: city, birthday: birthday, role: role, score: score)
+        let participant = Participant(id: id, lastName: lastName, firstName: firstName, patronymic: patronymic, team: team, city: city, birthday: birthday, score: score)
         let createdParticipant: Participant?
         
         do {
@@ -131,7 +126,7 @@ class ParticipantService: IParticipantService {
     }
     
     
-    func getParticipants(parameter: SortParameter?, stepName: String?) throws -> [Participant]? {
+    func getParticipants() throws -> [Participant]? {
         
         let participants: [Participant]?
         do {
@@ -140,34 +135,8 @@ class ParticipantService: IParticipantService {
             throw DatabaseError.getError
         }
         
-        guard var participants = participants else {
+        guard let participants = participants else {
             return nil
-        }
-        
-//        for i in 0..<participants.count {
-//
-//            let steps = getDataService?.getStepsByParticipant(participant: participants[i], stepName: stepName)
-//
-//            var score = 0
-//            if let steps = steps {
-//                for step in steps {
-//
-//                    let loots = getDataService?.getLootsByStep(step: step)
-//                    if let loots = loots {
-//                        for loot in loots { score += loot.score }
-//                    }
-//                }
-//            }
-//
-//            participants[i].score = score
-//        }
-        
-        if parameter == .ascending {
-            participants = participants.sorted(by: { $0.score < $1.score })
-        }
-        
-        if parameter == .decreasing {
-            participants = participants.sorted(by: { $0.score > $1.score })
         }
         
         return participants

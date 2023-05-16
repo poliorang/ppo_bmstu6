@@ -13,20 +13,15 @@ class TeamServiceTests: XCTestCase {
     var teamService: ITeamService!
     var teamRepository: ITeamRepository!
     var participantRepository: IParticipantByTeamRepository!
-    var getDataRepository: IGetDataRepository!
-    var getDataService: IGetDataService!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
-        getDataRepository = MockGetDataRepository()
-        getDataService = GetDataService(getDataRepository: getDataRepository)
         
         participantRepository = MockParticipantRepository()
         
         teamRepository = MockTeamRepository()
         teamService = TeamService(teamRepository: teamRepository,
                                   participantRepository: participantRepository,
-                                  getDataService: getDataService,
                                   participantToTeamRepository: teamRepository as! IParticipantToTeamRepository,
                                   competitionToTeamRepository: teamRepository as! ICompetitionToTeamRepository)
     }
@@ -34,8 +29,6 @@ class TeamServiceTests: XCTestCase {
     override func tearDownWithError() throws {
         teamService = nil
         teamRepository = nil
-        getDataService = nil
-        getDataRepository = nil
         try super.tearDownWithError()
     }
     
@@ -114,67 +107,52 @@ class TeamServiceTests: XCTestCase {
         XCTAssertEqual(try teamService.getTeam(name: "ggg"), nil)
     }
     
-    func testsGetTeamsByAscendingNilStep() throws {
+    func testAddCompetition() throws {
+        let team = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
+        let competition = Competition(id: "1", name: "Байкал", teams: nil)
         
-        let team1 = Team(id: "1", name: "Батискаф", competitions: nil, score: 9800)
-        let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 6600)
-        let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 2650)
-        
-        let teams = [team3, team2, team1]
-
-        XCTAssertEqual(try teamService.getTeams(parameter: .ascending, stepName: nil), teams)
+        XCTAssertNoThrow(try teamService.addCompetition(team: team, competition: competition))
     }
     
-    func testsGetTeamsByDecreasingNilStep() throws {
+    func testAddCompetitionNilTeam() throws {
+        let team = Team(id: "1", name: "", competitions: nil, score: 0)
+        let competition = Competition(id: "1", name: "Байкал", teams: nil)
         
-        let team1 = Team(id: "1", name: "Батискаф", competitions: nil, score: 9800)
-        let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 6600)
-        let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 2650)
-        
-        let teams = [team1, team2, team3]
-
-        XCTAssertEqual(try teamService.getTeams(parameter: .decreasing, stepName: nil), teams)
+        XCTAssertThrowsError(try teamService.addCompetition(team: team, competition: competition))
     }
     
-    func testsGetTeamsByNilNilStep() throws {
+    func testAddCompetitionNilCompetition() throws {
+        let team = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
+        let competition = Competition(id: "1", name: "", teams: nil)
         
-        let team1 = Team(id: "1", name: "Батискаф", competitions: nil, score: 9800)
-        let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 6600)
-        let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 2650)
-        
-        let teams = [team3, team1, team2]
-
-        XCTAssertEqual(try teamService.getTeams(parameter: nil, stepName: nil), teams)
+        XCTAssertThrowsError(try teamService.addCompetition(team: team, competition: competition))
     }
     
-    func testsGetTeamsByAscending() throws {
-        let team1 = Team(id: "1", name: "Батискаф", competitions: nil, score: 1300)
-        let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 1600)
-        let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 2200)
+    func testAddParticipant() throws {
+        let team = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
+        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, score: 0)
         
-        let teams = [team1, team2, team3]
-
-        XCTAssertEqual(try teamService.getTeams(parameter: .ascending, stepName: "2"), teams)
+        XCTAssertNoThrow(try teamService.addParticipant(participant: participant, team: team))
     }
     
-    func testsGetTeamsByDecreasing() throws {
-        let team1 = Team(id: "1", name: "Батискаф", competitions: nil, score: 1300)
-        let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 1600)
-        let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 2200)
+    func testAddParticipantNilTeam() throws {
+        let team = Team(id: "1", name: "", competitions: nil, score: 0)
+        let participant = Participant(id: "1", lastName: "Иванов", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, score: 0)
         
-        let teams = [team3, team2, team1]
-
-        XCTAssertEqual(try teamService.getTeams(parameter: .decreasing, stepName: "2"), teams)
+        XCTAssertThrowsError(try teamService.addParticipant(participant: participant, team: team))
     }
     
-    func testsGetTeamsByNil() throws {
-        let team1 = Team(id: "1", name: "Батискаф", competitions: nil, score: 1300)
-        let team2 = Team(id: "1", name: "Барракуда", competitions: nil, score: 1600)
-        let team3 = Team(id: "1", name: "Пелагик", competitions: nil, score: 2200)
+    func testAddParticipantNilParticipant() throws {
+        let team = Team(id: "1", name: "Батискаф", competitions: nil, score: 0)
+        let participant = Participant(id: "1", lastName: "", firstName: "Сергей", patronymic: "Сергеевич", team: nil, city: "Москва", birthday: bith, score: 0)
         
-        let teams = [team3, team1, team2]
-
-        XCTAssertEqual(try teamService.getTeams(parameter: nil, stepName: "2"), teams)
+        XCTAssertNoThrow(try teamService.addParticipant(participant: participant, team: team))
     }
-
+    
+    func testGetTeamsByCompetition() throws {
+        let competition = Competition(id: "1", name: "Байкал", teams: nil)
+        let team = Team(id: "1", name: "Пелагик", competitions: [competition], score: 0)
+        
+        XCTAssertEqual(try teamService.getTeamsByCompetition(competitionName: "Байкал"), [team])
+    }
 }

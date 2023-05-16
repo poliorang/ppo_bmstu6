@@ -41,26 +41,6 @@ class StepService: IStepService {
         return createdStep
     }
     
-    func updateStep(previousStep: Step?, newStep: Step?) throws -> Step {
-        guard let previousStep = previousStep,
-              let newStep = newStep else {
-                  throw ParameterError.funcParameterError
-        }
-        
-        let updatedStep: Step?
-        do {
-            updatedStep = try stepRepository?.updateStep(previousStep: previousStep, newStep: newStep)
-        } catch DatabaseError.updateError {
-            throw DatabaseError.updateError
-        }
-        
-        guard let updatedStep = updatedStep else {
-            throw DatabaseError.updateError
-        }
-        
-        return updatedStep
-    }
-    
     func deleteStep(step: Step?) throws {
         guard let step = step else {
             throw ParameterError.funcParameterError
@@ -145,7 +125,24 @@ class StepService: IStepService {
                   throw ParameterError.funcParameterError
         }
         
-        try lootToStepRepository?.addLoot(loot: loot, step: step)
+        do {
+            try lootToStepRepository?.addLoot(loot: loot, step: step)
+        } catch {
+            throw DatabaseError.addError
+        }
+    }
+    
+    func deleteLoot(loot: Loot?, step: Step?) throws {
+        guard let loot = loot,
+              let step = step else {
+                  throw ParameterError.funcParameterError
+        }
+        
+        do {
+            try lootToStepRepository?.deleteLoot(loot: loot, step: step)
+        } catch {
+            throw DatabaseError.deleteError
+        }
     }
 }
 

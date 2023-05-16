@@ -7,11 +7,11 @@
 
 protocol IStepRepository {
     func createStep(step: Step) throws -> Step?
-    
-    func updateStep(previousStep: Step, newStep: Step) throws -> Step? 
     func deleteStep(step: Step) throws
+    
     func getSteps() throws -> [Step]?
     
     func addParticipant(participant: Participant, step: Step) throws
+    
     func getStepByCompetition(competition: Competition) throws -> [Step]? 
 }

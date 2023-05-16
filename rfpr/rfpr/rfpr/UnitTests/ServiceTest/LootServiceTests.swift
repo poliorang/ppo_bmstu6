@@ -88,4 +88,17 @@ class LootServiceTests: XCTestCase {
         
         XCTAssertThrowsError(try lootService.deleteLoot(loot: loot))
     }
+    
+    func testGetLoot() throws {
+        let loot = Loot(id: "1", fish: "Щука", weight: 500, score: 1000)
+        
+        XCTAssertEqual(try lootService.getLoot(fishName: "Щука", score: 1000), loot)
+    }
+    
+    func testGetLootByStep() throws {
+        let step = Step(id: "1", name: "A", participant: nil, competition: nil, score: 1000)
+        let loot = Loot(id: "2", fish: "Щука", weight: 500, step: step, score: 1000)
+        
+        XCTAssertEqual(try lootService.getLootByStep(step: step), [loot])
+    }
 }

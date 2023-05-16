@@ -7,12 +7,10 @@
 
 protocol ITeamService {
     func createTeam(id: String?, name: String?, competitions: [Competition]?, score: Int) throws -> Team
-    
     func updateTeam(previousTeam: Team?, newTeam: Team?) throws -> Team
     func deleteTeam(team: Team?) throws
     
     func getTeam(name: String?) throws -> [Team]?
-    func getTeams(parameter: SortParameter?, stepName: String?) throws -> [Team]?
     func getTeamsByCompetition(competitionName: String?) throws -> [Team]?
     
     func addParticipant(participant: Participant?, team: Team?) throws
@@ -20,4 +18,3 @@ protocol ITeamService {
     
     func getTeamsScoreByCompetition(teams: [Team]?, competition: Competition?, stepName: StepsName?, parameter: SortParameter?) throws -> [Team]?
 }
-

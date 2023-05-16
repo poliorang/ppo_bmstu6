@@ -29,7 +29,7 @@ extension Step {
         
         if let participant = self.participant {
             do {
-                try participantRealm = ParticipantRealm(id: participant.id, lastName: participant.lastName, firstName: participant.firstName, patronymic: participant.patronymic, team: participant.team?.convertTeamToRealm(realm), city: participant.city, birthday: participant.birthday, role: participant.role, score: participant.score)
+                try participantRealm = ParticipantRealm(id: participant.id, lastName: participant.lastName, firstName: participant.firstName, patronymic: participant.patronymic, team: participant.team?.convertTeamToRealm(realm), city: participant.city, birthday: participant.birthday, score: participant.score)
             } catch {
                 throw DatabaseError.addError
             }

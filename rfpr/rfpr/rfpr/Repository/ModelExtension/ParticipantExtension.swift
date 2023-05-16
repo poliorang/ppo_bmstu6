@@ -24,7 +24,7 @@ extension Participant {
         }
         
         do {
-            return try ParticipantRealm(id: self.id, lastName: lastName, firstName: firstName, patronymic: patronymic, team: team?.convertTeamToRealm(realm), city: city, birthday: birthday, role: role, score: score)
+            return try ParticipantRealm(id: self.id, lastName: lastName, firstName: firstName, patronymic: patronymic, team: team?.convertTeamToRealm(realm), city: city, birthday: birthday, score: score)
         } catch {
             throw DatabaseError.addError
         }

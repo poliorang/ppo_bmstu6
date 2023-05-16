@@ -11,6 +11,7 @@ class DetailLootViewController: UIViewController, ToLootDelegateProtocol, ToDeta
     
     var services: ServicesManager! = nil
     let alertManager = AlertManager.shared
+    let authorizationManager = AuthorizationManager.shared
     
     var participant: Participant?       // получить из ParticipantLootController
     var gettedCompletion: (() -> Void)? // обновление таблицы в PariticipantLootController
@@ -55,7 +56,6 @@ class DetailLootViewController: UIViewController, ToLootDelegateProtocol, ToDeta
         setupCreateLootButton(createLootButton)
         
         setupUpdate()
-        print("UOD ", updateLoot)
     }
     
     // delegate
@@ -124,12 +124,11 @@ class DetailLootViewController: UIViewController, ToLootDelegateProtocol, ToDeta
                 $0.inputAccessoryView = toolBar
             }
         }
-//
-//        competition.placeholder = "Соревнование"
-        step.placeholder = "Этап"
-        fish.placeholder = "Рыба"
-        weight.placeholder = "Вес"
-        score.placeholder = "Очки"
+        
+        step.placeholder    = "Этап"
+        fish.placeholder    = "Рыба"
+        weight.placeholder  = "Вес"
+        score.placeholder   = "Очки"
     }
     
     private func setupPicker(_ picker: UIPickerView) {
@@ -181,12 +180,22 @@ class DetailLootViewController: UIViewController, ToLootDelegateProtocol, ToDeta
         selectedTextField?.resignFirstResponder()
     }
     
+    func correctTextFieldsReturn(_ text: String) -> Bool {
+        if text == "" || text == " " {
+            return true
+        }
+        
+        return false
+    }
+    
     @objc
     func buttonCreateLootTapped(sender: UIButton) {
-        guard let competitionName = competitionTextField.text else {
-            alertManager.showAlert(presentTo: self, title: "Внимание", message: "Введите соревнование")
+        if !authorizationManager.getRight() {
+            alertManager.showAlert(presentTo: self, title: "Доступ запрещен",
+                                   message: "Изменять улов участника может только судья")
             return
         }
+        
         
         guard let stepName = stepTextField.text else {
             alertManager.showAlert(presentTo: self, title: "Внимание", message: "Введите этап")
@@ -202,6 +211,13 @@ class DetailLootViewController: UIViewController, ToLootDelegateProtocol, ToDeta
             alertManager.showAlert(presentTo: self, title: "Внимание", message: "Введите вес")
             return
         }
+        
+        if correctTextFieldsReturn(stepName) ||
+            correctTextFieldsReturn(fish) ||
+            correctTextFieldsReturn(weight) {
+             alertManager.showAlert(presentTo: self, title: "Внимание", message: "Вся поля должны быть заполнены")
+             return
+         }
         
         let weightInt = Int(weight)
         
@@ -224,14 +240,15 @@ class DetailLootViewController: UIViewController, ToLootDelegateProtocol, ToDeta
                     return
                 }
                 
+                
+                
                 if let updateLoot = updateLoot {
-                    print("updateLoot ", updateLoot)
+                    try services.stepService.deleteLoot(loot: updateLoot, step: currentStep)
                     let newLoot = Loot(id: updateLoot.id, fish: fish, weight: weightInt, step: currentStep, score: weightInt + 500)
                     _ = try services.lootService.updateLoot(previousLoot: updateLoot, newLoot: newLoot)
                     
                 } else {
                     _ = try services.lootService.createLoot(id: nil, fish: fish, step: currentStep, weight: weightInt)
-    //                try services.stepService.addLoot(loot: loot, step: currentStep)
                 }
                 
             } catch {

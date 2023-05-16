@@ -16,7 +16,7 @@ class CompetitionServiceTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         competitionRepository = MockCompetitionRepository()
-        competitionService = CompetitionService(competitionRepository: competitionRepository, teamToCompetitionRepository: competitionRepository as! ITeamToCompetitionRepository, stepToCompetitionRepository: competitionRepository as! IStepToCompetitionRepository as! IStepToCompetitionRepository)
+        competitionService = CompetitionService(competitionRepository: competitionRepository, stepToCompetitionRepository: competitionRepository as! IStepToCompetitionRepository as! IStepToCompetitionRepository)
     }
 
     override func tearDownWithError() throws {
@@ -37,32 +37,6 @@ class CompetitionServiceTests: XCTestCase {
     
     func testCreateCompetitionNilName() throws {
         XCTAssertThrowsError(try competitionService.createCompetition(id: "1", name: nil, teams: nil))
-    }
-    
-    func testUpdateCompetition() throws {
-        let previousCompetition = Competition(id: "1", name: "Урал", teams: nil)
-        let newCompetition = Competition(id: "1", name: "Сахалин", teams: nil)
-        
-        XCTAssertNoThrow(try competitionService.updateCompetition(previousCompetition: previousCompetition, newCompetition: newCompetition))
-    }
-    
-    func testUpdateCompetitionNilPrev() throws {
-        let newCompetition = Competition(id: "1", name: "Сахалин", teams: nil)
-        
-        XCTAssertThrowsError(try competitionService.updateCompetition(previousCompetition: nil, newCompetition: newCompetition))
-    }
-    
-    func testUpdateCompetitionNilNew() throws {
-        let previousCompetition = Competition(id: "1", name: "Урал", teams: nil)
-        
-        XCTAssertThrowsError(try competitionService.updateCompetition(previousCompetition: previousCompetition, newCompetition: nil))
-    }
-    
-    func testUpdateCompetitionNil() throws {
-        let previousCompetition = Competition(id: "1", name: "Север", teams: nil)
-        let newCompetition = Competition(id: "1", name: "Сахалин", teams: nil)
-        
-        XCTAssertThrowsError(try competitionService.updateCompetition(previousCompetition: previousCompetition, newCompetition: newCompetition))
     }
     
     func testDeleteCompetition() throws {
@@ -108,4 +82,24 @@ class CompetitionServiceTests: XCTestCase {
         XCTAssertThrowsError(try competitionService.getCompetition(name: nil))
     }
     
+    func testAddStep() throws {
+        let competition = Competition(id: "1", name: "Урал", teams: nil)
+        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
+        
+        XCTAssertNoThrow(try competitionService.addStep(step: step, competition: competition))
+    }
+    
+    func testAddStepNilCompetition() throws {
+        let competition = Competition(id: "1", name: "", teams: nil)
+        let step = Step(id: "1", name: "Первый день", participant: nil, competition: nil, score: 0)
+        
+        XCTAssertThrowsError(try competitionService.addStep(step: step, competition: competition))
+    }
+    
+    func testAddStepNilStep() throws {
+        let competition = Competition(id: "1", name: "Урал", teams: nil)
+        let step = Step(id: "1", name: "", participant: nil, competition: nil, score: 0)
+
+        XCTAssertThrowsError(try competitionService.addStep(step: step, competition: competition))
+    }
 }

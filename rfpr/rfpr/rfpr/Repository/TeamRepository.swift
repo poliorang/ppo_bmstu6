@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
-                      IParticipantToTeamRepository, ITeamByParticipantRepository {
+                      IParticipantToTeamRepository {
     
     let realm: Realm!
     var config: Realm.Configuration!
@@ -73,28 +73,24 @@ class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
     }
     
     func updateTeam(previousTeam: Team, newTeam: Team) throws -> Team? {
+        
         var newTeam = newTeam
-        newTeam.id = previousTeam.id
+        newTeam.id = nil
         
         let realmPreviousTeam = try previousTeam.convertTeamToRealm(realm)
         let realmNewTeam = try newTeam.convertTeamToRealm(realm)
         
-        let teamsFromDB = realm.objects(TeamRealm.self)
-        var teamFromDB: TeamRealm? = nil
+        let teamFromDB = realm.objects(TeamRealm.self).where {
+            $0._id == realmPreviousTeam._id
+        }.first
         
-        for team in teamsFromDB {
-            if team._id == realmPreviousTeam._id {
-                teamFromDB = team
-                break
-            }
-        }
-            
         guard teamFromDB != nil else {
             throw ParameterError.funcParameterError
         }
         
         do {
             try realm.write {
+                realmNewTeam._id = realmPreviousTeam._id
                 realm.add(realmNewTeam, update: .modified)
             }
         } catch {
@@ -102,7 +98,7 @@ class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
         }
         
         let updatedTeam = try getTeam(id: "\(realmNewTeam._id)")
-
+        
         return updatedTeam
     }
     
@@ -234,23 +230,7 @@ class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
             throw DatabaseError.updateError
         }
     }
-    
-    func getTeamByParticipant(participant: Participant) throws -> Team? {
-        let teams = try! getTeams()
-        
-        var resultTeam: Team? = nil
-        if let teams = teams {
-            for team in teams {
-                if participant.team == team {
-                    resultTeam = team
-                    break
-                }
-            }
-        }
-        
-        return resultTeam
-    }
-    
+
     func getTeamScoreByCompetition(team: Team, competition: Competition, stepName: StepsName?) throws -> Team? {
         guard let team = try getTeam(id: team.id!) else {
             throw ParameterError.funcParameterError
@@ -261,7 +241,6 @@ class TeamRepository: ITeamRepository, ICompetitionToTeamRepository,
         
         let participantsRealm = realm.objects(ParticipantRealm.self)
         let stepsRealm = realm.objects(StepRealm.self)
-        
         
         var newScore = 0
         for participant in participantsRealm {

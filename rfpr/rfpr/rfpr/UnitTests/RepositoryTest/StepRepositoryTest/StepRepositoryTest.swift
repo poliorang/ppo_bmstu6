@@ -48,24 +48,24 @@ class StepRepositoryTests: XCTestCase {
         XCTAssertNoThrow(try createdStep = stepRepository.createStep(step: step))
         XCTAssertEqual(createdStep, step)
     }
+//    
+//    func testUpdateStep() throws {
+//        let previousStep = Step(id: "6442852b2b74d595cb4f4164", name: "Третий день", participant: nil, competition: nil, score: 0)
+//        let newStep = Step(id: "6442852b2b74d595cb4f4164", name: "3 день", participant: nil, competition: nil, score: 0)
+//        var updatedStep: Step?
+//        
+//        XCTAssertNoThrow(try updatedStep = stepRepository.updateStep(previousStep: previousStep, newStep: newStep))
+//        XCTAssertEqual(updatedStep, newStep)
+//    }
     
-    func testUpdateStep() throws {
-        let previousStep = Step(id: "6442852b2b74d595cb4f4164", name: "Третий день", participant: nil, competition: nil, score: 0)
-        let newStep = Step(id: "6442852b2b74d595cb4f4164", name: "3 день", participant: nil, competition: nil, score: 0)
-        var updatedStep: Step?
-        
-        XCTAssertNoThrow(try updatedStep = stepRepository.updateStep(previousStep: previousStep, newStep: newStep))
-        XCTAssertEqual(updatedStep, newStep)
-    }
-    
-    func testUpdateLootNilPrev() throws {
-        let previousStep = Step(id: "6442852b2b74d595cb4f4740", name: "Пятый день", participant: nil, competition: nil, score: 0)
-        let newStep = Step(id: "6442852b2b74d595cb4f4740", name: "Третий день", participant: nil, competition: nil, score: 0)
-        var updatedStep: Step?
-        
-        XCTAssertThrowsError(try updatedStep = stepRepository.updateStep(previousStep: previousStep, newStep: newStep))
-        XCTAssertEqual(updatedStep, nil)
-    }
+//    func testUpdateLootNilPrev() throws {
+//        let previousStep = Step(id: "6442852b2b74d595cb4f4740", name: "Пятый день", participant: nil, competition: nil, score: 0)
+//        let newStep = Step(id: "6442852b2b74d595cb4f4740", name: "Третий день", participant: nil, competition: nil, score: 0)
+//        var updatedStep: Step?
+//        
+//        XCTAssertThrowsError(try updatedStep = stepRepository.updateStep(previousStep: previousStep, newStep: newStep))
+//        XCTAssertEqual(updatedStep, nil)
+//    }
     
     func testDeleteStep() throws {
         let step = Step(id: "6442852b2b74d595cb4f4768", name: "Пятый день", participant: nil, competition: nil, score: 0)

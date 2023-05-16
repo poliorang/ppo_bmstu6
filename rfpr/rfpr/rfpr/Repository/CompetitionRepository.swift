@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class CompetitionRepository: ICompetitionRepository, IStepToCompetitionRepository, ITeamToCompetitionRepository {
+class CompetitionRepository: ICompetitionRepository, IStepToCompetitionRepository {
     
     let realm: Realm!
     var config: Realm.Configuration!
@@ -68,40 +68,6 @@ class CompetitionRepository: ICompetitionRepository, IStepToCompetitionRepositor
         let createdCompetition = try getCompetition(id: "\(realmCompetition._id)")
         
         return createdCompetition
-    }
-    
-    func updateCompetition(previousCompetition: Competition, newCompetition: Competition) throws -> Competition? {
-        var newCompetition = newCompetition
-        newCompetition.id = previousCompetition.id
-        
-        let realmPreviousCompetition = try previousCompetition.convertCompetitionToRealm(realm)
-        let realmNewCompetition = try newCompetition.convertCompetitionToRealm(realm)
-        
-        let competitionsFromDB = realm.objects(CompetitionRealm.self)
-        var competitionFromDB: CompetitionRealm? = nil
-        
-        for competition in competitionsFromDB {
-            if competition._id == realmPreviousCompetition._id {
-                competitionFromDB = competition
-                break
-            }
-        }
-            
-        guard let _ = competitionFromDB else {
-            throw ParameterError.funcParameterError
-        }
-        
-        do {
-            try realm.write {
-                realm.add(realmNewCompetition, update: .modified)
-            }
-        } catch {
-            throw DatabaseError.updateError
-        }
-        
-        let updatedCompetition = try getCompetition(id: "\(realmNewCompetition._id)")
-
-        return updatedCompetition
     }
     
     func deleteCompetition(competition: Competition) throws {
@@ -172,48 +138,6 @@ class CompetitionRepository: ICompetitionRepository, IStepToCompetitionRepositor
             try realm.write {
                 stepFromDB.competition = competitionFromDB
                 realm.add(stepFromDB, update: .modified)
-            }
-        } catch {
-            throw DatabaseError.updateError
-        }
-    }
-    
-    func addTeam(team: Team, competition: Competition) throws {
-        let realmTeam = try team.convertTeamToRealm(realm)
-        let realmCompetition = try competition.convertCompetitionToRealm(realm)
-        
-        let teamsFromDB = realm.objects(TeamRealm.self)
-        var teamFromDB: TeamRealm? = nil
-        
-        for team in teamsFromDB {
-            if team._id == realmTeam._id {
-                teamFromDB = team
-                break
-            }
-        }
-        
-        guard let teamFromDB = teamFromDB else {
-            throw ParameterError.funcParameterError
-        }
-        
-        let competitionsFromDB = realm.objects(CompetitionRealm.self)
-        var competitionFromDB: CompetitionRealm? = nil
-        
-        for competition in competitionsFromDB {
-            if competition._id == realmCompetition._id {
-                competitionFromDB = competition
-                break
-            }
-        }
-        
-        guard let competitionFromDB = competitionFromDB else {
-            throw ParameterError.funcParameterError
-        }
-        
-        do {
-            try realm.write {
-                competitionFromDB.teams.append(teamFromDB)
-                realm.add(competitionFromDB, update: .modified)
             }
         } catch {
             throw DatabaseError.updateError

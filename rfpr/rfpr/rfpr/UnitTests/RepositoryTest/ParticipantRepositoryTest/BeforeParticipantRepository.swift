@@ -24,13 +24,13 @@ class BeforeParticipantRepositoryTest {
     
     
     func createData() throws {
-        let participantUpdate = Participant(id: "4442852b2b74d595cb4f4700", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", city: "Москва", birthday: bith, role: "Участник", score: 0)
-        let participantDelete = Participant(id: "4442852b2b74d595cb4f4704", lastName: "Алексеев", firstName: "Алексей", city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participantUpdate = Participant(id: "4442852b2b74d595cb4f4700", lastName: "Иванов", firstName: "Иван", patronymic: "Иванович", city: "Москва", birthday: bith, score: 0)
+        let participantDelete = Participant(id: "4442852b2b74d595cb4f4704", lastName: "Алексеев", firstName: "Алексей", city: "Москва", birthday: bith, score: 0)
     
         let team = Team(id: "4442852b2b74d595cb4f4732", name: "Козлов и Захаров", competitions: nil, score: 0)
-        let participant1 = Participant(id: "4442852b2b74d595cb4f4720", lastName: "Козлов", firstName: "Иван", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
-        let participant2 = Participant(id: "4442852b2b74d595cb4f4724", lastName: "Звягин", firstName: "Иван", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
-        let participant3 = Participant(id: "4442852b2b74d595cb4f4728", lastName: "Захаров", firstName: "Иван", team: nil, city: "Москва", birthday: bith, role: "Участник", score: 0)
+        let participant1 = Participant(id: "4442852b2b74d595cb4f4720", lastName: "Козлов", firstName: "Иван", team: nil, city: "Москва", birthday: bith, score: 0)
+        let participant2 = Participant(id: "4442852b2b74d595cb4f4724", lastName: "Звягин", firstName: "Иван", team: nil, city: "Москва", birthday: bith, score: 0)
+        let participant3 = Participant(id: "4442852b2b74d595cb4f4728", lastName: "Захаров", firstName: "Иван", team: nil, city: "Москва", birthday: bith, score: 0)
         
         do {
             try [team].forEach {
@@ -41,8 +41,8 @@ class BeforeParticipantRepositoryTest {
                 try _ =  participantRepository.createParticipant(participant: $0)
             }
             
-            let participant11 = Participant(id: "4442852b2b74d595cb4f4720", lastName: "Козлов", firstName: "Иван", team: team, city: "Москва", birthday: bith, role: "Участник", score: 0)
-            let participant33 = Participant(id: "4442852b2b74d595cb4f4728", lastName: "Захаров", firstName: "Иван", team: team, city: "Москва", birthday: bith, role: "Участник", score: 0)
+            let participant11 = Participant(id: "4442852b2b74d595cb4f4720", lastName: "Козлов", firstName: "Иван", team: team, city: "Москва", birthday: bith, score: 0)
+            let participant33 = Participant(id: "4442852b2b74d595cb4f4728", lastName: "Захаров", firstName: "Иван", team: team, city: "Москва", birthday: bith, score: 0)
             
             
             try _ = participantRepository.updateParticipant(previousParticipant: participant1, newParticipant: participant11)

@@ -70,10 +70,6 @@ class LootService: ILootService {
         }
     }
     
-    func getScore(weight: Int) -> Int {
-        return weight + 500
-    }
-    
     func getLootByStep(step: Step?) throws -> [Loot]? {
         guard let step = step else {
             throw ParameterError.funcParameterError
@@ -84,17 +80,6 @@ class LootService: ILootService {
             loots = try lootByStepRepository?.getLootByStep(step: step)
         } catch DatabaseError.deleteError {
             throw DatabaseError.deleteError
-        }
-        
-        return loots
-    }
-    
-    func getLoots() throws -> [Loot]? {
-        let loots: [Loot]?
-        do {
-            try loots = lootRepository?.getLoots()
-        } catch DatabaseError.getError {
-            throw DatabaseError.getError
         }
         
         return loots
@@ -125,5 +110,20 @@ class LootService: ILootService {
         }
         
         return nil
+    }
+    
+    func getLoots() throws -> [Loot]? {
+        let loots: [Loot]?
+        do {
+            try loots = lootRepository?.getLoots()
+        } catch DatabaseError.getError {
+            throw DatabaseError.getError
+        }
+        
+        return loots
+    }
+    
+    func getScore(weight: Int) -> Int {
+        return weight + 500
     }
 }

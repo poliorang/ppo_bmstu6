@@ -16,10 +16,9 @@ class ParticipantRealm: Object {
     @Persisted var team: TeamRealm?
     @Persisted var city: String
     @Persisted var birthday: Date
-    @Persisted var role: String
     @Persisted var score: Int
     
-    convenience init(id: String?, lastName: String, firstName: String, patronymic: String?, team: TeamRealm?, city: String, birthday: Date, role: String, score: Int) {
+    convenience init(id: String?, lastName: String, firstName: String, patronymic: String?, team: TeamRealm?, city: String, birthday: Date, score: Int) {
         self.init()
         
         self._id = ObjectId.generate()
@@ -30,13 +29,12 @@ class ParticipantRealm: Object {
         self.patronymic = patronymic
         self.city = city
         self.birthday = birthday
-        self.role = role
         self.score = score
     }
 }
 
 extension ParticipantRealm {
     func convertParticipantFromRealm() -> Participant {
-        return Participant(id: "\(self._id)", lastName: lastName, firstName: firstName, patronymic: patronymic, team: team?.convertTeamFromRealm(), city: city, birthday: birthday, role: role, score: score)
+        return Participant(id: "\(self._id)", lastName: lastName, firstName: firstName, patronymic: patronymic, team: team?.convertTeamFromRealm(), city: city, birthday: birthday, score: score)
     }
 }

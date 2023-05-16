@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 final class AlertManager {
-    
     static let shared = AlertManager()
     
     init() { }
