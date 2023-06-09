@@ -19,7 +19,7 @@
 
 ### ER (В нотации Чена)
 
-![ER](./diagrams/svg/Сhen.svg)
+![ER_Chen](./diagrams/svg/Сhen.svg)
 
 ### ER 
 
