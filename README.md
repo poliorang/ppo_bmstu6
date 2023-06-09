@@ -17,7 +17,11 @@
 
 ![UC](./diagrams/svg/UseCase.svg)
 
-### ER 
+### ER (В нотации Чена)
+
+![ER](./diagrams/svg/ER_Сhen.svg)
+
+### ER (В нотации Чена)
 
 ![ER](./diagrams/svg/ER.svg)
 
